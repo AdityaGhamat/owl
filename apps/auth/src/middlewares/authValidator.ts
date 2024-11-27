@@ -13,9 +13,9 @@ async function authValidator(
     const userId = await session.verifySession(req, res);
     if (!userId) {
       const errorResponse = ResponseUtil.errorResponse(
-        {},
-        "login or signup required",
-        StatusCodes.UNAUTHORIZED
+        res,
+        StatusCodes.UNAUTHORIZED,
+        "login or signup required"
       );
       res.status(StatusCodes.UNAUTHORIZED).json(errorResponse);
     }
@@ -27,9 +27,9 @@ async function authValidator(
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json(
         ResponseUtil.errorResponse(
-          error,
-          error.message,
-          StatusCodes.INTERNAL_SERVER_ERROR
+          res,
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          error.message
         )
       );
   }

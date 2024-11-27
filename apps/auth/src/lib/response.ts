@@ -1,22 +1,36 @@
-class Response {
-  constructor(message: string, data?: any, error?: any) {}
-
-  static successResponse(message: string, data?: any) {
-    return {
+import { Response } from "express";
+class ResponseUtil {
+  static successResponse(
+    res: Response,
+    status: number,
+    message: string,
+    data: any = null
+  ) {
+    const response = {
       success: true,
+      status,
       message,
-      data: data || null,
+      data,
     };
+
+    res.status(status).json(response);
   }
 
-  static errorResponse(error: any, message?: string, statusCode?: number) {
-    return {
+  static errorResponse(
+    res: Response,
+    status: number,
+    message: string,
+    error: any = {}
+  ) {
+    const response = {
       success: false,
+      status,
       message: message || "An error occurred",
-      error: error || {},
-      statusCode: statusCode || 500,
+      error,
     };
+
+    res.status(status).json(response);
   }
 }
 
-export default Response;
+export default ResponseUtil;

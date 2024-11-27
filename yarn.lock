@@ -422,7 +422,7 @@
     react "19.0.0-rc-5c56b873-20241107"
     react-dom "19.0.0-rc-5c56b873-20241107"
 
-"@repo/validations@file:/Users/adityaghamat/Desktop/ongoing/projec/owl/packages/validations":
+"@repo/validations@*", "@repo/validations@file:/Users/adityaghamat/Desktop/ongoing/projec/owl/packages/validations":
   version "1.0.0"
   resolved "file:packages/validations"
   dependencies:

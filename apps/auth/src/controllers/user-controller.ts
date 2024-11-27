@@ -1,73 +1,66 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import userServices from "../services/user-services.js";
 import logger from "../config/logger-config.js";
-import { userCreation } from "../types/auth.js";
-import ErrorHandler from "../errors/error.js";
-import { StatusCodes } from "http-status-codes";
 import ResponseUtil from "../lib/response.js";
 import { CustomRequest } from "../types/system.js";
 import session from "../lib/session.js";
 import { userCover } from "../lib/response_covers.js";
-
 class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
-    const { name, email, encryptedPassword, role, phoneNumber }: userCreation =
-      req.body;
+    const { name, email, encryptedPassword, role, phoneNumber } = req.body;
+
     try {
-      console.log(req.body);
       const user = await userServices.createUser({
         name,
         email,
         encryptedPassword,
         role,
         phoneNumber,
-        createdAt: new Date(Date.now()),
+        createdAt: new Date(),
       });
+
       if (!user) {
-        throw new ErrorHandler("User is not created", StatusCodes.BAD_REQUEST);
+        return ResponseUtil.errorResponse(res, 400, "User creation failed");
       }
-      const successResponse = ResponseUtil.successResponse(
-        "user is created",
-        {}
-      );
       await session.createSession(user.user_id!, res);
-      res.status(StatusCodes.CREATED).json(successResponse);
+      ResponseUtil.successResponse(res, 201, "User created successfully", user);
     } catch (error: any) {
-      logger.error(error.message + "in user controller");
-      if (error instanceof ErrorHandler) {
-        next(error);
-      }
+      logger.error(error.message);
+      next(error);
     }
   }
 
   async getUser(req: CustomRequest, res: Response, next: NextFunction) {
-    const userId = req.user_id;
+    const user_id = req.user_id;
     try {
-      const user = await userServices.getUser(userId!);
+      const user = await userServices.getUser(user_id!);
       if (!user) {
-        res
-          .status(StatusCodes.NOT_FOUND)
-          .json(
-            ResponseUtil.errorResponse(
-              {},
-              "User not found",
-              StatusCodes.NOT_FOUND
-            )
-          );
+        return ResponseUtil.errorResponse(res, 404, "User not found");
       }
-      res
-        .status(StatusCodes.OK)
-        .json(
-          ResponseUtil.successResponse(
-            "User found successfully",
-            userCover(user)
-          )
-        );
+      ResponseUtil.successResponse(
+        res,
+        200,
+        "User fetched successfully",
+        userCover(user)
+      );
     } catch (error: any) {
       logger.error(error.message);
-      if (error instanceof ErrorHandler) {
-        next(error);
+      next(error);
+    }
+  }
+
+  async login(req: Request, res: Response, next: NextFunction) {
+    const { email, encryptedPassword } = req.body;
+    try {
+      const user = await userServices.login(email, encryptedPassword);
+      if (!user) {
+        return ResponseUtil.errorResponse(res, 401, "Invalid credentials");
       }
+      await session.createSession(user.user_id!, res);
+      ResponseUtil.successResponse(res, 200, "Login successful", user);
+    } catch (error: any) {
+      logger.error(error.message + "inside login controller");
+      next(error);
     }
   }
 }

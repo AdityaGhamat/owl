@@ -66,4 +66,13 @@ const editUserSchemaTrpc = z.object({
   userId: userId,
   data: editUserSchema,
 });
-export { userSchema, editUserSchema, userId, editUserSchemaTrpc };
+
+const loginSchema = z.object({
+  email: z.string().email("Invalid email format").optional(),
+  encryptedPassword: z
+    .string()
+    .min(5, "Mininum length is 5 required")
+    .max(30, "Maximum length 30 reached"),
+});
+
+export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema };

@@ -15,6 +15,7 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "@repo/validations": "*",
     "@trpc/client": "^10.45.2",
     "@trpc/server": "^10.45.2",
     "bcryptjs": "^2.4.3",
@@ -24,8 +25,7 @@
     "express": "^4.21.1",
     "jose": "^5.9.6",
     "prisma": "^5.22.0",
-    "winston": "^3.17.0",
-    "@repo/validations": "*"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

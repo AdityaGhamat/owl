@@ -1,8 +1,8 @@
 import pkg from "bcryptjs";
 
 class PasswordLib {
-  hash;
-  compare;
+  private hash;
+  private compare;
   constructor() {
     const { hash, compare } = pkg;
     this.hash = hash;

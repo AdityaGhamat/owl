@@ -216,5 +216,15 @@ declare const editUserSchemaTrpc: z.ZodObject<{
         isDeleted?: boolean | undefined;
     };
 }>;
-export { userSchema, editUserSchema, userId, editUserSchemaTrpc };
+declare const loginSchema: z.ZodObject<{
+    email: z.ZodOptional<z.ZodString>;
+    encryptedPassword: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    encryptedPassword: string;
+    email?: string | undefined;
+}, {
+    encryptedPassword: string;
+    email?: string | undefined;
+}>;
+export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema };
 //# sourceMappingURL=index.d.ts.map

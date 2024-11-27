@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editUserSchemaTrpc = exports.userId = exports.editUserSchema = exports.userSchema = void 0;
+exports.loginSchema = exports.editUserSchemaTrpc = exports.userId = exports.editUserSchema = exports.userSchema = void 0;
 const zod_1 = require("zod");
 const UserRoles = zod_1.z.enum(["Admin", "Employee", "Manager", "Other"]);
 const userSchema = zod_1.z.object({
@@ -68,3 +68,11 @@ const editUserSchemaTrpc = zod_1.z.object({
     data: editUserSchema,
 });
 exports.editUserSchemaTrpc = editUserSchemaTrpc;
+const loginSchema = zod_1.z.object({
+    email: zod_1.z.string().email("Invalid email format").optional(),
+    encryptedPassword: zod_1.z
+        .string()
+        .min(5, "Mininum length is 5 required")
+        .max(30, "Maximum length 30 reached"),
+});
+exports.loginSchema = loginSchema;

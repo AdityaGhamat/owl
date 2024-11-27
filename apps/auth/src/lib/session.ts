@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { JWTPayload, SignJWT, jwtVerify } from "jose";
-import ErrorHandler from "../errors/error.js";
-import { StatusCodes } from "http-status-codes";
 import { CustomJWTPayload } from "../types/system.js";
+import NotFoundException from "../errors/notAuthorizedException.js";
+import UnauthorizedException from "../errors/unauthorizedException.js";
 
 class Session {
   private key: Uint8Array;
@@ -54,18 +54,12 @@ class Session {
   async verifySession(req: Request, res: Response) {
     const cookie = req.cookies?.["session"];
     if (!cookie) {
-      throw new ErrorHandler(
-        "Session cookie not found",
-        StatusCodes.UNAUTHORIZED
-      );
+      throw new NotFoundException("Session cookie not found");
     }
 
     const session = await this.decrypt(cookie);
     if (!session || !session.userId) {
-      throw new ErrorHandler(
-        "Invalid or expired session",
-        StatusCodes.UNAUTHORIZED
-      );
+      throw new UnauthorizedException("Invalid or expired session");
     }
     return session.userId;
   }
