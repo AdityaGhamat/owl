@@ -1,6 +1,6 @@
 import logger from "../config/logger-config.js";
 import userRepository from "../repository/user-repository.js";
-import { editUser, userCreation } from "../types/auth.js";
+import { userCreation } from "../types/auth.js";
 import PasswordLib from "../lib/password.js";
 import BadRequestException from "../errors/badRequestException.js";
 import NotFoundException from "../errors/notAuthorizedException.js";

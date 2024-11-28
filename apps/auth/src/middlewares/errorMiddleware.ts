@@ -18,18 +18,18 @@ function ErrorMiddleware(
 
     return ResponseUtil.errorResponse(
       res,
-      400, // Bad Request for validation issues
+      400,
       "Validation failed",
       errorMessages
     );
   }
 
   if (error instanceof HttpException) {
-    const status = error.status || 500;
+    const status = error.status;
     const message = error.message || "Something went wrong";
     const errorDetails = error.errorDetails || {};
 
-    console.log("Error middleware caught:", error);
+    console.log("Error middleware caught:", error.status);
     console.error(`[${req.method} ${req.url}]`, {
       status,
       message,
@@ -39,8 +39,9 @@ function ErrorMiddleware(
     return ResponseUtil.errorResponse(res, status, message, errorDetails);
   }
 
-  console.error("Unhandled error:", error);
-  return ResponseUtil.errorResponse(res, 500, "Internal Server Error", {});
+  return ResponseUtil.errorResponse(res, 500, "Internal Server Error", {
+    detail: "inside unknown",
+  });
 }
 
 export default ErrorMiddleware;

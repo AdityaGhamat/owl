@@ -23,15 +23,7 @@ async function authValidator(
     next();
   } catch (error: any) {
     logger.error(error);
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json(
-        ResponseUtil.errorResponse(
-          res,
-          StatusCodes.INTERNAL_SERVER_ERROR,
-          error.message
-        )
-      );
+    next(error);
   }
 }
 export default authValidator;
