@@ -3,12 +3,13 @@ import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { CustomJWTPayload } from "../types/system.js";
 import NotFoundException from "../errors/notAuthorizedException.js";
 import UnauthorizedException from "../errors/unauthorizedException.js";
+import serverConfig from "../config/server-config.js";
 
 class Session {
   private key: Uint8Array;
   private cookieOptions: { name: string; options: object; duration: number };
   constructor() {
-    this.key = new TextEncoder().encode(process.env.SECRET_KEY);
+    this.key = new TextEncoder().encode(serverConfig.SECRET_KEY);
     this.cookieOptions = {
       name: "session",
       options: {

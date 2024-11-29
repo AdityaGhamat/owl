@@ -32,9 +32,9 @@ export class CrudRepository<T, K> implements ICrudRepository<T, K> {
     });
   }
 
-  async update(id: K, data: Partial<T>): Promise<T> {
+  async update(user_id: K, data: Partial<T>): Promise<T> {
     return this.model.update({
-      where: { id },
+      where: { user_id },
       data,
     });
   }

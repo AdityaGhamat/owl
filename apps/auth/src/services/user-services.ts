@@ -27,7 +27,7 @@ class UserServices {
       if (!user) {
         throw new BadRequestException("User is not created");
       }
-      return { user_id: user?.user_id };
+      return { user_id: user?.user_id, email: user.email };
     } catch (error: any) {
       logger.error(error + "in services");
     }

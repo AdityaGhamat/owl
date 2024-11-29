@@ -5,6 +5,9 @@ import ResponseUtil from "../lib/response.js";
 import { CustomRequest } from "../types/system.js";
 import session from "../lib/session.js";
 import { userCover } from "../lib/response_covers.js";
+import TokenServices from "../services/token-services.js";
+import { verification_Mail } from "../lib/mail-producer.js";
+
 class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
     const { name, email, encryptedPassword, role, phoneNumber } = req.body;
@@ -23,6 +26,12 @@ class UserController {
         return ResponseUtil.errorResponse(res, 400, "User creation failed");
       }
       await session.createSession(user.user_id!, res);
+      //create a verification code
+      const tokenService = new TokenServices(user.user_id!);
+      const verification_token = await tokenService.generateVerificationCode();
+      //creating message for queue
+      const message = { email: user.email, verification_token };
+      await verification_Mail(message);
       ResponseUtil.successResponse(res, 201, "User created successfully", user);
     } catch (error: any) {
       logger.error(error.message);
