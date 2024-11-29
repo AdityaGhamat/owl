@@ -3,9 +3,9 @@ import userRepository from "../repository/user-repository.js";
 class TokenServices {
   private user_id: string;
   private expiryDate: number;
-  constructor(user_id: string, customExpiryDate: number = 10) {
-    this.user_id = user_id;
-    this.expiryDate = customExpiryDate;
+  constructor(user_id?: string, customExpiryDate: number = 10) {
+    this.user_id = user_id as string;
+    this.expiryDate = customExpiryDate as number;
   }
   private getExpiryDate(): Date {
     return new Date(Date.now() + this.expiryDate * 60 * 1000);
@@ -18,9 +18,9 @@ class TokenServices {
     });
     return code;
   }
-  async generateRestToken() {
+  async generateRestToken(email: string) {
     const resetToken = crypto.randomBytes(32).toString("hex");
-    await userRepository.update(this.user_id, {
+    await userRepository.updateByEmail(email, {
       reset_password_token: resetToken,
       reset_password_expires_on: this.getExpiryDate(),
     });

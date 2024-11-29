@@ -5,7 +5,10 @@ import PasswordLib from "../lib/password.js";
 import BadRequestException from "../errors/badRequestException.js";
 import NotFoundException from "../errors/notAuthorizedException.js";
 import ConflictException from "../errors/conflictExeption.js";
-import { sendVerificationMail } from "../lib/mail-producer.js";
+import {
+  sendPasswordResetMail,
+  sendVerificationMail,
+} from "../lib/mail-producer.js";
 
 class UserServices {
   private passwordLib: PasswordLib;
@@ -113,6 +116,47 @@ class UserServices {
       return true;
     } catch (error) {
       logger.error(error + "in services resend verification");
+      throw error;
+    }
+  }
+
+  async forgotPassword(email: string) {
+    try {
+      const user = await userRepository.findFirst(email);
+      if (!user) {
+        throw new NotFoundException("Email not found");
+      }
+      await sendPasswordResetMail(email);
+      return true;
+    } catch (error) {
+      logger.error(error + "in services forgot password");
+      throw error;
+    }
+  }
+
+  async resetPassword(password: string, reset_token: string) {
+    try {
+      const user_check =
+        await userRepository.checkPasswordResetToken(reset_token);
+      if (!user_check) {
+        throw new NotFoundException("Reset token is not correct");
+      }
+      const current_time = new Date();
+      const { reset_password_expires_on, user_id } = user_check;
+      if (
+        !reset_password_expires_on ||
+        (reset_password_expires_on as Date) < current_time
+      ) {
+        throw new BadRequestException("reset password session is expired");
+      }
+      const encryptedPassword =
+        await this.passwordLib.encryptPassword(password);
+      const new_user = await userRepository.update(user_id!, {
+        encryptedPassword: encryptedPassword,
+      });
+      return { email: new_user.email, user_id: new_user.email };
+    } catch (error) {
+      logger.error(error);
       throw error;
     }
   }

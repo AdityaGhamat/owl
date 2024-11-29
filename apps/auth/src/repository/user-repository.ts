@@ -7,11 +7,22 @@ export class UserRepository extends CrudRepository<userCreation, string> {
   constructor(prisma: PrismaClient) {
     super(prisma, prisma.user);
   }
-  // async findUserById(user_id: string): Promise<User> {
-  //   return prisma.findUnique({
-  //     where: { user_id },
-  //   });
-  // }
+  async updateByEmail(
+    email: string,
+    data: Partial<userCreation>
+  ): Promise<userCreation | null> {
+    return this.model.update({
+      where: { email },
+      data,
+    });
+  }
+  async checkPasswordResetToken(
+    reset_token: string
+  ): Promise<userCreation | null> {
+    return this.model.findFirst({
+      where: { reset_password_token: reset_token },
+    });
+  }
 }
 
 export default new UserRepository(prisma);

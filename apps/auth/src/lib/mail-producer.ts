@@ -35,10 +35,25 @@ async function sendVerificationMail(user_id: string, email: string) {
     throw error;
   }
 }
-export { verification_Mail, reset_Password_Mail, sendVerificationMail };
 
-// const tokenService = new TokenServices(user.user_id!);
-// const verification_token = await tokenService.generateVerificationCode();
-// //creating message for queue
-// const message = { email: user.email, verification_token };
-// await verification_Mail(message);
+async function sendPasswordResetMail(email: string) {
+  try {
+    const tokenService = new TokenServices();
+    const reset_password_token = await tokenService.generateRestToken(email);
+    const message = {
+      email: email,
+      reset_password_token: reset_password_token,
+    };
+    await reset_Password_Mail(message);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+}
+
+export {
+  verification_Mail,
+  reset_Password_Mail,
+  sendVerificationMail,
+  sendPasswordResetMail,
+};

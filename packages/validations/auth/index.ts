@@ -68,7 +68,11 @@ const editUserSchemaTrpc = z.object({
 });
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email format").optional(),
+  email: z
+    .string()
+    .email("Invalid email format")
+    .min(3, "Minimum 3 characters are required")
+    .max(70, "Maximum length 70 reached"),
   encryptedPassword: z
     .string()
     .min(5, "Mininum length is 5 required")
@@ -81,6 +85,24 @@ const verifyEmailSchema = z.object({
   }),
 });
 
+const emailSchema = z.object({
+  email: z
+    .string()
+    .email("Invalid email format")
+    .min(3, "Minimum 3 characters are required")
+    .max(70, "Maximum length 70 reached"),
+});
+const passwordSchema = z.object({
+  encryptedPassword: z
+    .string()
+    .min(5, "Mininum length is 5 required")
+    .max(30, "Maximum length 30 reached"),
+});
+const resetTokenSchema = z.object({
+  reset_token: z.string({
+    message: "Enter valid reset token",
+  }),
+});
 export {
   userSchema,
   editUserSchema,
@@ -88,4 +110,7 @@ export {
   editUserSchemaTrpc,
   loginSchema,
   verifyEmailSchema,
+  emailSchema,
+  passwordSchema,
+  resetTokenSchema,
 };

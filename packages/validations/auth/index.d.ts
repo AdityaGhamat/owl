@@ -217,14 +217,14 @@ declare const editUserSchemaTrpc: z.ZodObject<{
     };
 }>;
 declare const loginSchema: z.ZodObject<{
-    email: z.ZodOptional<z.ZodString>;
+    email: z.ZodString;
     encryptedPassword: z.ZodString;
 }, "strip", z.ZodTypeAny, {
+    email: string;
     encryptedPassword: string;
-    email?: string | undefined;
 }, {
+    email: string;
     encryptedPassword: string;
-    email?: string | undefined;
 }>;
 declare const verifyEmailSchema: z.ZodObject<{
     verification_token: z.ZodString;
@@ -233,5 +233,26 @@ declare const verifyEmailSchema: z.ZodObject<{
 }, {
     verification_token: string;
 }>;
-export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema, verifyEmailSchema, };
+declare const emailSchema: z.ZodObject<{
+    email: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    email: string;
+}, {
+    email: string;
+}>;
+declare const passwordSchema: z.ZodObject<{
+    encryptedPassword: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    encryptedPassword: string;
+}, {
+    encryptedPassword: string;
+}>;
+declare const resetTokenSchema: z.ZodObject<{
+    reset_token: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    reset_token: string;
+}, {
+    reset_token: string;
+}>;
+export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema, verifyEmailSchema, emailSchema, passwordSchema, resetTokenSchema, };
 //# sourceMappingURL=index.d.ts.map

@@ -4,7 +4,7 @@ import { ICrudRepository } from "@repo/types/src/common.js";
 export class CrudRepository<T, K> implements ICrudRepository<T, K> {
   constructor(
     private prisma: PrismaClient,
-    private model: any
+    protected model: any
   ) {
     this.prisma = prisma;
     this.model = model;

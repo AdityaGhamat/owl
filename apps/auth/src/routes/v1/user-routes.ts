@@ -1,7 +1,14 @@
 import { Router } from "express";
 import userController from "../../controllers/user-controller.js";
 import authValidator from "../../middlewares/authValidator.js";
-import { userSchema, loginSchema, verifyEmailSchema } from "@repo/validations";
+import {
+  userSchema,
+  loginSchema,
+  verifyEmailSchema,
+  resetTokenSchema,
+  passwordSchema,
+  emailSchema,
+} from "@repo/validations";
 import zValidator from "../../middlewares/zValidator.js";
 
 const app = Router();
@@ -18,5 +25,16 @@ app.get(
   "/resend_verification_email",
   authValidator,
   userController.resendVerificationEmail
+);
+app.put(
+  "/forgot_password",
+  zValidator(emailSchema, "body"),
+  userController.fogotPassword
+);
+app.put(
+  "/reset_password/:reset_token",
+  zValidator(resetTokenSchema, "params"),
+  zValidator(passwordSchema, "body"),
+  userController.resetPassword
 );
 export default app;

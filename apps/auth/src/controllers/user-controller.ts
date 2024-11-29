@@ -6,8 +6,8 @@ import { CustomRequest } from "../types/system.js";
 import session from "../lib/session.js";
 import { userCover } from "../lib/response_covers.js";
 import { sendVerificationMail } from "../lib/mail-producer.js";
-import { verifyEmailType } from "../types/auth.js";
 import { StatusCodes } from "http-status-codes";
+import type { emailType, passwordType, resetTokenType } from "../types/auth.js";
 
 class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
@@ -107,6 +107,50 @@ class UserController {
         res,
         StatusCodes.OK,
         "verification code has been sent"
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+  async fogotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email }: emailType = req.body; // change the type to validation of it.
+      const user = await userServices.forgotPassword(email);
+      if (!user) {
+        return ResponseUtil.errorResponse(
+          res,
+          StatusCodes.BAD_REQUEST,
+          "Failed to send password reset email"
+        );
+      }
+      return ResponseUtil.successResponse(
+        res,
+        StatusCodes.OK,
+        "Sent email for resetting the password"
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+  async resetPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { encryptedPassword }: passwordType = req.body; // change the type to validation of it.
+      const { reset_token } = req.params;
+      const user = await userServices.resetPassword(
+        encryptedPassword,
+        reset_token!
+      );
+      if (!user) {
+        return ResponseUtil.errorResponse(
+          res,
+          StatusCodes.BAD_REQUEST,
+          "Failed to reset password"
+        );
+      }
+      return ResponseUtil.successResponse(
+        res,
+        StatusCodes.OK,
+        `Password has been reset for ${user.email}`
       );
     } catch (error) {
       next(error);

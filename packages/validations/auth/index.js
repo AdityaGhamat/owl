@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyEmailSchema = exports.loginSchema = exports.editUserSchemaTrpc = exports.userId = exports.editUserSchema = exports.userSchema = void 0;
+exports.resetTokenSchema = exports.passwordSchema = exports.emailSchema = exports.verifyEmailSchema = exports.loginSchema = exports.editUserSchemaTrpc = exports.userId = exports.editUserSchema = exports.userSchema = void 0;
 const zod_1 = require("zod");
 const UserRoles = zod_1.z.enum(["Admin", "Employee", "Manager", "Other"]);
 const userSchema = zod_1.z.object({
@@ -69,7 +69,11 @@ const editUserSchemaTrpc = zod_1.z.object({
 });
 exports.editUserSchemaTrpc = editUserSchemaTrpc;
 const loginSchema = zod_1.z.object({
-    email: zod_1.z.string().email("Invalid email format").optional(),
+    email: zod_1.z
+        .string()
+        .email("Invalid email format")
+        .min(3, "Minimum 3 characters are required")
+        .max(70, "Maximum length 70 reached"),
     encryptedPassword: zod_1.z
         .string()
         .min(5, "Mininum length is 5 required")
@@ -82,3 +86,24 @@ const verifyEmailSchema = zod_1.z.object({
     }),
 });
 exports.verifyEmailSchema = verifyEmailSchema;
+const emailSchema = zod_1.z.object({
+    email: zod_1.z
+        .string()
+        .email("Invalid email format")
+        .min(3, "Minimum 3 characters are required")
+        .max(70, "Maximum length 70 reached"),
+});
+exports.emailSchema = emailSchema;
+const passwordSchema = zod_1.z.object({
+    encryptedPassword: zod_1.z
+        .string()
+        .min(5, "Mininum length is 5 required")
+        .max(30, "Maximum length 30 reached"),
+});
+exports.passwordSchema = passwordSchema;
+const resetTokenSchema = zod_1.z.object({
+    reset_token: zod_1.z.string({
+        message: "Enter valid reset token",
+    }),
+});
+exports.resetTokenSchema = resetTokenSchema;
