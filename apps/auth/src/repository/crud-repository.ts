@@ -28,7 +28,7 @@ export class CrudRepository<T, K> implements ICrudRepository<T, K> {
 
   async findUnique(user_id: K): Promise<T | null> {
     return this.model.findUnique({
-      where: { user_id },
+      where: { user_id: user_id },
     });
   }
 

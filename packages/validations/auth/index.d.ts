@@ -226,5 +226,12 @@ declare const loginSchema: z.ZodObject<{
     encryptedPassword: string;
     email?: string | undefined;
 }>;
-export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema };
+declare const verifyEmailSchema: z.ZodObject<{
+    verification_token: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    verification_token: string;
+}, {
+    verification_token: string;
+}>;
+export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema, verifyEmailSchema, };
 //# sourceMappingURL=index.d.ts.map

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginSchema = exports.editUserSchemaTrpc = exports.userId = exports.editUserSchema = exports.userSchema = void 0;
+exports.verifyEmailSchema = exports.loginSchema = exports.editUserSchemaTrpc = exports.userId = exports.editUserSchema = exports.userSchema = void 0;
 const zod_1 = require("zod");
 const UserRoles = zod_1.z.enum(["Admin", "Employee", "Manager", "Other"]);
 const userSchema = zod_1.z.object({
@@ -76,3 +76,9 @@ const loginSchema = zod_1.z.object({
         .max(30, "Maximum length 30 reached"),
 });
 exports.loginSchema = loginSchema;
+const verifyEmailSchema = zod_1.z.object({
+    verification_token: zod_1.z.string({
+        message: "Enter valid verification token ",
+    }),
+});
+exports.verifyEmailSchema = verifyEmailSchema;

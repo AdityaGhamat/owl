@@ -27,7 +27,7 @@ class MailServices {
       console.log(`email send successfully, ${response.messageId}`);
       return true;
     } catch (error) {
-      throw new Error("Failed to send mail for verification");
+      throw new Error("Failed to send mail for verification" + error);
     }
   }
 

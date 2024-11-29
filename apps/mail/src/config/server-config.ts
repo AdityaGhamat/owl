@@ -1,5 +1,5 @@
-import { config } from "dotenv";
-config();
+import dotenv from "dotenv";
+dotenv.config();
 export default {
   NODEMAILER_USER: process.env.NODEMAILER_USER,
   NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,

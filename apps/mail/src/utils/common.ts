@@ -4,7 +4,7 @@ export const nodemailerOptions = {
   port: 587,
   secure: false,
   auth: {
-    user: serverConfig.NODEMAILER_USER!,
-    pass: serverConfig.NODEMAILER_PASSWORD!,
+    user: serverConfig.NODEMAILER_USER,
+    pass: serverConfig.NODEMAILER_PASSWORD,
   },
 };

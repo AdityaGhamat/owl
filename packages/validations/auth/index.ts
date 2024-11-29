@@ -75,4 +75,17 @@ const loginSchema = z.object({
     .max(30, "Maximum length 30 reached"),
 });
 
-export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema };
+const verifyEmailSchema = z.object({
+  verification_token: z.string({
+    message: "Enter valid verification token ",
+  }),
+});
+
+export {
+  userSchema,
+  editUserSchema,
+  userId,
+  editUserSchemaTrpc,
+  loginSchema,
+  verifyEmailSchema,
+};

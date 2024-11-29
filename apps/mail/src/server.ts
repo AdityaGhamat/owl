@@ -1,6 +1,8 @@
 import Fastify from "fastify";
 import MailLifeCycle from "./service/mail-lifecycle.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 class Server {
   private fastify;
   private mailLifeCycle: MailLifeCycle;
@@ -48,7 +50,6 @@ class Server {
   public async start() {
     this.registerHook();
     this.registerRoutes();
-
     try {
       await this.fastify.listen({ port: 3004 });
       this.fastify.log.info(`Server listening at http://localhost:3004`);
