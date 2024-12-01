@@ -36,9 +36,30 @@ const geofenceSchema = new Schema<IGeofence>(
         this.type = "Circle";
       },
     },
+    lat: {
+      type: Number,
+      required: function () {
+        return this.type === "Circle";
+      },
+    },
+    lng: {
+      type: Number,
+      required: function () {
+        return this.type === "Circle";
+      },
+    },
+
     properties: {
       type: Map,
       of: Schema.Types.Mixed,
+    },
+    organizationID: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
+    officeID: {
+      type: Schema.Types.ObjectId,
+      required: true,
     },
   },
   {

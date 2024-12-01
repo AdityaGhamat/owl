@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 export interface IGeofence extends Document {
   name: string;
@@ -8,6 +8,10 @@ export interface IGeofence extends Document {
   center?: { type: "Point"; coordinates: [number, number] };
   radius?: number;
   properties: Record<string, any>;
+  organizationID: ObjectId;
+  lat?: Number;
+  lng?: Number;
+  officeID: Object;
   createdAt: Date;
   updatedAt: Date;
 }

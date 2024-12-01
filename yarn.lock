@@ -486,6 +486,7 @@
   version "1.0.0"
   resolved "file:packages/validations"
   dependencies:
+    mongoose "^8.8.3"
     zod "^3.23.8"
 
 "@rtsao/scc@^1.1.0":
@@ -2973,6 +2974,7 @@ gensync@^1.0.0-beta.2:
   resolved "file:apps/geolocation"
   dependencies:
     "@hono/node-server" "^1.13.7"
+    "@hono/zod-validator" "^0.4.1"
     dotenv "^16.4.5"
     hono "^4.6.12"
     http-status-codes "^2.3.0"
@@ -4304,6 +4306,14 @@ ora@4.1.1:
     mute-stream "0.0.8"
     strip-ansi "^6.0.0"
     wcwidth "^1.0.1"
+
+"organization@file:/Users/adityaghamat/Desktop/ongoing/projec/owl/apps/organization":
+  version "1.0.0"
+  resolved "file:apps/organization"
+  dependencies:
+    dotenv "^16.4.5"
+    hono "^4.6.12"
+    mongoose "^8.8.3"
 
 os-tmpdir@~1.0.2:
   version "1.0.2"

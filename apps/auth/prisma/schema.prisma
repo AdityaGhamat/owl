@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -33,6 +29,11 @@ model User {
   phoneNumber String?
   oldPassword Json?
   isDeleted Boolean @default(false)
+  //other services comes in picture from here
+  org_id String? @db.ObjectId //organization reference
+  geofence_id String? @db.ObjectId //geofence reference
+  lat Float? //office's lat 
+  lng Float? //office's lng
 }
 
 enum UserRoles {

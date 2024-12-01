@@ -1,5 +1,5 @@
 import { z } from "zod";
-
+import mongoose, { mongo } from "mongoose";
 const GeofenceType = z.enum(["Polygon", "Circle"]);
 
 const GeofenceCenter = z.object({
@@ -16,6 +16,24 @@ export const GeofenceSchema = z
     center: GeofenceCenter.optional(),
     radius: z.number().positive("Radius must be a positive number").optional(),
     properties: z.record(z.string(), z.any()).optional(),
+    lat: z.number().int().optional(),
+    lng: z.number().int().optional(),
+    organizationID: z.string().refine((val) => {
+      return (
+        mongoose.Types.ObjectId.isValid(val),
+        {
+          message: "Invalid Organization ID",
+        }
+      );
+    }),
+    officeID: z.string().refine((val) => {
+      return (
+        mongoose.Types.ObjectId.isValid(val),
+        {
+          message: "Invalid Office Id",
+        }
+      );
+    }),
   })
   .superRefine((data, ctx) => {
     if (data.type === "Polygon" && !data.coordinates) {
@@ -25,7 +43,6 @@ export const GeofenceSchema = z
         message: "Coordinates are required when type is Polygon",
       });
     }
-
     if (data.type === "Circle") {
       if (!data.center) {
         ctx.addIssue({
@@ -53,6 +70,14 @@ export const GeofenceSchemaEdit = z
     center: GeofenceCenter.optional(),
     radius: z.number().positive("Radius must be a positive number").optional(),
     properties: z.record(z.string(), z.any()).optional(),
+    lat: z.number().int().optional(),
+    lng: z.number().int().optional(),
+    organizationID: z.string().refine((val) => {
+      return mongoose.Types.ObjectId.isValid(val);
+    }),
+    officeID: z.string().refine((val) => {
+      return mongoose.Types.ObjectId.isValid(val);
+    }),
   })
   .superRefine((data, ctx) => {
     if (data.type === "Polygon" && !data.coordinates) {
