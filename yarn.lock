@@ -4311,9 +4311,12 @@ ora@4.1.1:
   version "1.0.0"
   resolved "file:apps/organization"
   dependencies:
+    "@hono/node-server" "^1.13.7"
     dotenv "^16.4.5"
     hono "^4.6.12"
+    http-status-codes "^2.3.0"
     mongoose "^8.8.3"
+    zod "^3.23.8"
 
 os-tmpdir@~1.0.2:
   version "1.0.2"

@@ -1,6 +1,6 @@
 import { HTTPException } from "hono/http-exception";
 import mongoose from "mongoose";
-import serverConfig from "./server-config";
+import serverConfig from "./server-config.js";
 import { StatusCodes } from "http-status-codes";
 export async function databaseConnection() {
   if (!serverConfig.DATABASE_URL) {

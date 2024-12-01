@@ -1,12 +1,14 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { HTTPException } from "hono/http-exception";
-import { databaseConnection } from "./config/database-config";
+import { databaseConnection } from "./config/database-config.js";
+import apiRoutes from "./routers/index.js";
 class Server {
   private app: Hono;
   constructor() {
     this.app = new Hono();
     this.errorConfig();
+    this.routerConfig();
   }
   private errorConfig() {
     this.app.onError((err, c) => {
@@ -17,6 +19,9 @@ class Server {
         status: 500,
       });
     });
+  }
+  private routerConfig() {
+    this.app.route("/api", apiRoutes);
   }
   public async start() {
     await databaseConnection();

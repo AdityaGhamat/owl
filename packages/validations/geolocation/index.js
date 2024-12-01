@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuerySchema = exports.GeofenceSchemaEdit = exports.GeofenceSchema = void 0;
 const zod_1 = require("zod");
+const mongoose_1 = __importDefault(require("mongoose"));
 const GeofenceType = zod_1.z.enum(["Polygon", "Circle"]);
 const GeofenceCenter = zod_1.z.object({
     type: zod_1.z.literal("Point"),
@@ -16,6 +20,20 @@ exports.GeofenceSchema = zod_1.z
     center: GeofenceCenter.optional(),
     radius: zod_1.z.number().positive("Radius must be a positive number").optional(),
     properties: zod_1.z.record(zod_1.z.string(), zod_1.z.any()).optional(),
+    lat: zod_1.z.number().int().optional(),
+    lng: zod_1.z.number().int().optional(),
+    organizationID: zod_1.z.string().refine((val) => {
+        return (mongoose_1.default.Types.ObjectId.isValid(val),
+            {
+                message: "Invalid Organization ID",
+            });
+    }),
+    officeID: zod_1.z.string().refine((val) => {
+        return (mongoose_1.default.Types.ObjectId.isValid(val),
+            {
+                message: "Invalid Office Id",
+            });
+    }),
 })
     .superRefine((data, ctx) => {
     if (data.type === "Polygon" && !data.coordinates) {
@@ -51,6 +69,14 @@ exports.GeofenceSchemaEdit = zod_1.z
     center: GeofenceCenter.optional(),
     radius: zod_1.z.number().positive("Radius must be a positive number").optional(),
     properties: zod_1.z.record(zod_1.z.string(), zod_1.z.any()).optional(),
+    lat: zod_1.z.number().int().optional(),
+    lng: zod_1.z.number().int().optional(),
+    organizationID: zod_1.z.string().refine((val) => {
+        return mongoose_1.default.Types.ObjectId.isValid(val);
+    }),
+    officeID: zod_1.z.string().refine((val) => {
+        return mongoose_1.default.Types.ObjectId.isValid(val);
+    }),
 })
     .superRefine((data, ctx) => {
     if (data.type === "Polygon" && !data.coordinates) {

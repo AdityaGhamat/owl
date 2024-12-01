@@ -32,3 +32,20 @@ export interface ICrudRepositoryGeolocation<T, K = any> {
     maxDistance: number
   ): Promise<T[] | null>;
 }
+
+export interface ICrudRepositoryOrganization<T, K = any> {
+  //for mongoose
+  create(data: Partial<T>): Promise<T>;
+  find(args: Partial<K>, options?: Record<string, unknown>): Promise<T[]>;
+  findOne(
+    args: Partial<K>,
+    options?: Record<string, unknown>
+  ): Promise<T | null>;
+  findById(id: string, fields?: string[], options?: {}): Promise<T | null>;
+  findByIdAndUpdate(
+    id: string,
+    data: Partial<T>,
+    options: Record<string, unknown>
+  ): Promise<T | null>;
+  findByIdAndDelete(id: string): Promise<boolean>;
+}

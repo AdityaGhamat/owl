@@ -8,10 +8,10 @@ export interface IGeofence extends Document {
   center?: { type: "Point"; coordinates: [number, number] };
   radius?: number;
   properties: Record<string, any>;
-  organizationID: ObjectId;
+  organizationID: string;
   lat?: Number;
   lng?: Number;
-  officeID: Object;
+  officeID: string;
   createdAt: Date;
   updatedAt: Date;
 }
