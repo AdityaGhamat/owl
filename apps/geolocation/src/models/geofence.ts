@@ -54,11 +54,11 @@ const geofenceSchema = new Schema<IGeofence>(
       of: Schema.Types.Mixed,
     },
     organizationID: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
     },
     officeID: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
     },
   },

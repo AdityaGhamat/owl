@@ -31,7 +31,11 @@ const organizationController = new Hono()
   })
   .post("/create", zValidator("json", OrganizationSchema), async (c) => {
     const data = c.req.valid("json");
-    const org = await organizationService.createOrganization(data);
+    const id = c.req.query("id");
+    const org = await organizationService.createOrganization({
+      ...data,
+      createdBy: id,
+    });
     if (!org) {
       return ErrorResponse(
         StatusCodes.BAD_REQUEST,
@@ -57,7 +61,7 @@ const organizationController = new Hono()
       );
     }
     return SuccessResponse(StatusCodes.OK, "Successfully edited organization", {
-      id: org.id,
+      id: org._id,
       name: org.name,
     });
   });

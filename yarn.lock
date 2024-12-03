@@ -4233,6 +4233,16 @@ object.values@^1.1.6, object.values@^1.2.0:
     define-properties "^1.2.1"
     es-object-atoms "^1.0.0"
 
+"office-services@file:/Users/adityaghamat/Desktop/ongoing/projec/owl/apps/office":
+  version "1.0.0"
+  resolved "file:apps/office"
+  dependencies:
+    "@hono/node-server" "^1.13.7"
+    dotenv "^16.4.5"
+    hono "^4.6.12"
+    http-status-codes "^2.3.0"
+    mongoose "^8.8.3"
+
 on-exit-leak-free@^2.1.0:
   version "2.1.2"
   resolved "https://registry.npmjs.org/on-exit-leak-free/-/on-exit-leak-free-2.1.2.tgz"
@@ -4312,6 +4322,7 @@ ora@4.1.1:
   resolved "file:apps/organization"
   dependencies:
     "@hono/node-server" "^1.13.7"
+    "@hono/zod-validator" "^0.4.1"
     dotenv "^16.4.5"
     hono "^4.6.12"
     http-status-codes "^2.3.0"

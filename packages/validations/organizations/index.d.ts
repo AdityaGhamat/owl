@@ -33,14 +33,14 @@ export declare const OrganizationSchema: z.ZodObject<{
     updatedAt?: Date | undefined;
     createdBy?: string | undefined;
     status?: "active" | "inactive" | "pending" | undefined;
-    sector?: string | undefined;
-    offices?: string[] | undefined;
     contactDetails?: {
         email?: string | undefined;
         phone?: string | undefined;
         website?: string | undefined;
     } | undefined;
     address?: string | undefined;
+    sector?: string | undefined;
+    offices?: string[] | undefined;
     registrationNumber?: string | undefined;
     logo?: string | undefined;
     parentOrganizationId?: string | undefined;
@@ -52,14 +52,14 @@ export declare const OrganizationSchema: z.ZodObject<{
     updatedAt?: Date | undefined;
     createdBy?: string | undefined;
     status?: "active" | "inactive" | "pending" | undefined;
-    sector?: string | undefined;
-    offices?: string[] | undefined;
     contactDetails?: {
         email?: string | undefined;
         phone?: string | undefined;
         website?: string | undefined;
     } | undefined;
     address?: string | undefined;
+    sector?: string | undefined;
+    offices?: string[] | undefined;
     registrationNumber?: string | undefined;
     logo?: string | undefined;
     parentOrganizationId?: string | undefined;
@@ -99,14 +99,14 @@ export declare const editOrganizationSchema: z.ZodObject<{
     createdBy?: string | undefined;
     status?: "active" | "inactive" | "pending" | undefined;
     description?: string | undefined;
-    sector?: string | undefined;
-    offices?: string[] | undefined;
     contactDetails?: {
         email?: string | undefined;
         phone?: string | undefined;
         website?: string | undefined;
     } | undefined;
     address?: string | undefined;
+    sector?: string | undefined;
+    offices?: string[] | undefined;
     registrationNumber?: string | undefined;
     logo?: string | undefined;
     parentOrganizationId?: string | undefined;
@@ -118,14 +118,14 @@ export declare const editOrganizationSchema: z.ZodObject<{
     createdBy?: string | undefined;
     status?: "active" | "inactive" | "pending" | undefined;
     description?: string | undefined;
-    sector?: string | undefined;
-    offices?: string[] | undefined;
     contactDetails?: {
         email?: string | undefined;
         phone?: string | undefined;
         website?: string | undefined;
     } | undefined;
     address?: string | undefined;
+    sector?: string | undefined;
+    offices?: string[] | undefined;
     registrationNumber?: string | undefined;
     logo?: string | undefined;
     parentOrganizationId?: string | undefined;

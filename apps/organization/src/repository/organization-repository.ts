@@ -51,10 +51,11 @@ class OrganizationRepository
     data: Partial<IOrganization>,
     options: Record<string, unknown> = { new: true }
   ): Promise<IOrganization | null> {
-    return this.model
-      .findByIdAndUpdate(id, data, options)
+    const org = await this.model
+      .findByIdAndUpdate({ _id: id }, data, options)
       .lean<IOrganization>()
       .exec();
+    return org;
   }
 
   async findByIdAndDelete(id: string): Promise<boolean> {
