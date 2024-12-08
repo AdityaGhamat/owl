@@ -1,5 +1,5 @@
 import logger from "../config/logger-config.js";
-import userRepository from "../repository/user-repository.js";
+import authRepository from "../repository/auth-repository.js"; // Import authRepository
 import { userCreation } from "../types/auth.js";
 import PasswordLib from "../lib/password.js";
 import BadRequestException from "../errors/badRequestException.js";
@@ -15,35 +15,35 @@ class UserServices {
   constructor() {
     this.passwordLib = new PasswordLib();
   }
+
   async createUser(data: userCreation) {
     try {
-      const userCheck = await userRepository.findFirst(data.email);
+      const userCheck = await authRepository.findOne({ email: data.email });
       if (userCheck) {
-        throw new ConflictException("User is already exists");
+        throw new ConflictException("User already exists");
       }
       const new_password = await this.passwordLib.encryptPassword(
         data.encryptedPassword
       );
-      const user = await userRepository.create({
+      const user = await authRepository.create({
         ...data,
         encryptedPassword: new_password,
       });
       if (!user) {
-        throw new BadRequestException("User is not created");
+        throw new BadRequestException("User was not created");
       }
-      return { user_id: user?.user_id, email: user.email };
+      return { user_id: user._id, email: user.email };
     } catch (error: any) {
-      logger.error(error + "in services");
+      logger.error(error + " in services");
       throw error;
     }
   }
 
   async login(email: string, password: string) {
     try {
-      const userCheck = await userRepository.findFirst(email);
-
+      const userCheck = await authRepository.findOne({ email });
       if (!userCheck) {
-        throw new NotFoundException("user not found", {});
+        throw new NotFoundException("User not found", {});
       }
 
       const passCheck = await this.passwordLib.verifyPassword(
@@ -55,7 +55,7 @@ class UserServices {
         throw new BadRequestException("Password is incorrect", {});
       }
 
-      return { user_id: userCheck.user_id };
+      return { user_id: userCheck._id };
     } catch (error) {
       logger.error(error + " in services");
       throw error;
@@ -64,21 +64,20 @@ class UserServices {
 
   async getUser(id: string) {
     try {
-      const user = await userRepository.findUnique(id);
+      const user = await authRepository.findById(id);
       if (!user) {
         throw new NotFoundException("User not found");
       }
       return user;
     } catch (error: any) {
-      logger.error(error + "in services");
+      logger.error(error + " in services");
       throw error;
     }
   }
 
   async verifyEmail(id: string, verification_token: string) {
     try {
-      const user_id = id;
-      const userCheck = await userRepository.findUnique(user_id);
+      const userCheck = await authRepository.findById(id);
       if (!userCheck) {
         throw new NotFoundException("User not found");
       }
@@ -100,36 +99,45 @@ class UserServices {
       ) {
         throw new BadRequestException("Verification token is expired");
       }
-      const new_user = await userRepository.update(id, { isVerified: true });
-      return { email: new_user.email };
+      const new_user = await authRepository.findByIdAndUpdate(
+        id,
+        {
+          isVerified: true,
+        },
+        { new: true }
+      );
+      return { email: new_user?.email };
     } catch (error: any) {
-      logger.error(error + "in services");
+      logger.error(error + " in services");
       throw error;
     }
   }
 
   async resendVerificationEmail(user_id: string) {
     try {
-      const user = await userRepository.findUnique(user_id);
-      const email = user?.email;
-      await sendVerificationMail(user_id, email!);
+      const user = await authRepository.findById(user_id);
+      if (!user) {
+        throw new NotFoundException("User not found");
+      }
+      const email = user.email;
+      await sendVerificationMail(user_id, email);
       return true;
     } catch (error) {
-      logger.error(error + "in services resend verification");
+      logger.error(error + " in services resend verification");
       throw error;
     }
   }
 
   async forgotPassword(email: string) {
     try {
-      const user = await userRepository.findFirst(email);
+      const user = await authRepository.findOne({ email });
       if (!user) {
         throw new NotFoundException("Email not found");
       }
       await sendPasswordResetMail(email);
       return true;
     } catch (error) {
-      logger.error(error + "in services forgot password");
+      logger.error(error + " in services forgot password");
       throw error;
     }
   }
@@ -137,28 +145,33 @@ class UserServices {
   async resetPassword(password: string, reset_token: string) {
     try {
       const user_check =
-        await userRepository.checkPasswordResetToken(reset_token);
+        await authRepository.checkPasswordResetToken(reset_token);
       if (!user_check) {
         throw new NotFoundException("Reset token is not correct");
       }
       const current_time = new Date();
-      const { reset_password_expires_on, user_id } = user_check;
+      const { reset_password_expires_on, _id } = user_check;
       if (
         !reset_password_expires_on ||
         (reset_password_expires_on as Date) < current_time
       ) {
-        throw new BadRequestException("reset password session is expired");
+        throw new BadRequestException("Reset password session is expired");
       }
       const encryptedPassword =
         await this.passwordLib.encryptPassword(password);
-      const new_user = await userRepository.update(user_id!, {
-        encryptedPassword: encryptedPassword,
-      });
-      return { email: new_user.email, user_id: new_user.email };
+      const new_user = await authRepository.findByIdAndUpdate(
+        _id!,
+        {
+          encryptedPassword: encryptedPassword,
+        },
+        { new: true }
+      );
+      return { email: new_user?.email, user_id: new_user?._id };
     } catch (error) {
       logger.error(error);
       throw error;
     }
   }
 }
+
 export default new UserServices();

@@ -7,6 +7,7 @@ import * as trpcExpress from "@trpc/server/adapters/express";
 import appRouter from "./trpc/router/index.js";
 import ErrorMiddleware from "./middlewares/errorMiddleware.js";
 import BadRequestException from "./errors/badRequestException.js";
+import databaseConnection from "./config/mongoose-config.js";
 class Server {
   private app = express();
   constructor() {
@@ -44,7 +45,8 @@ class Server {
     );
     this.app.use(ErrorMiddleware);
   }
-  public start() {
+  public async start() {
+    await databaseConnection();
     this.app.listen(Env.PORT, () => {
       console.log(`server is running on http://localhost:${Env.PORT}`);
     });

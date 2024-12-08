@@ -3,7 +3,7 @@ import { z } from "zod";
 const UserRoles = z.enum(["Admin", "Employee", "Manager", "Other"]);
 
 const userSchema = z.object({
-  user_id: z.string().optional(),
+  _id: z.string().optional(),
   name: z
     .string()
     .min(1, "Name is required")

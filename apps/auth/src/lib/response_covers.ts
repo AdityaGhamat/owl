@@ -1,6 +1,6 @@
-import type { userCreation } from "../types/auth.js";
+import IAuth from "../types/database/index.js";
 
-function userCover(user: userCreation) {
+function userCover(user: IAuth) {
   const { name, email, role, twoFactorEnabled, isDeleted } = user;
   const response = { name, email, role, twoFactorEnabled, isDeleted };
   return response;

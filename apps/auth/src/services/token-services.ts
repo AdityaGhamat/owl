@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import userRepository from "../repository/user-repository.js";
+import authRepository from "../repository/auth-repository.js";
 class TokenServices {
   private user_id: string;
   private expiryDate: number;
@@ -12,15 +12,19 @@ class TokenServices {
   }
   async generateVerificationCode() {
     const code = crypto.randomInt(100000, 999999).toString();
-    await userRepository.update(this.user_id, {
-      verification_token: code,
-      verification_token_expires_at: this.getExpiryDate(),
-    });
+    await authRepository.findByIdAndUpdate(
+      this.user_id,
+      {
+        verification_token: code,
+        verification_token_expires_at: this.getExpiryDate(),
+      },
+      { new: true }
+    );
     return code;
   }
   async generateRestToken(email: string) {
     const resetToken = crypto.randomBytes(32).toString("hex");
-    await userRepository.updateByEmail(email, {
+    await authRepository.updateByEmail(email, {
       reset_password_token: resetToken,
       reset_password_expires_on: this.getExpiryDate(),
     });

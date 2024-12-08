@@ -34,7 +34,7 @@ export interface ICrudRepositoryGeolocation<T, K = any> {
 }
 
 export interface ICrudRepositoryOrganization<T, K = any> {
-  //for mongoose
+  //for mongoose universal
   create(data: Partial<T>): Promise<T>;
   find(args: Partial<K>, options?: Record<string, unknown>): Promise<T[]>;
   findOne(
