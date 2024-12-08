@@ -42,6 +42,19 @@ class OrganizationServices {
     }
     return true;
   }
+  async addOffice(organizationId: string, officeId: any) {
+    console.log("organization id", organizationId);
+    console.log("officeId", officeId);
+    const organization = await organizationRepository.findByIdAndUpdate(
+      organizationId,
+      {
+        $push: { offices: officeId },
+      },
+      { new: true }
+    );
+    console.log(organization);
+    return organization;
+  }
 }
 
 export default new OrganizationServices();

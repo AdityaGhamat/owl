@@ -48,7 +48,7 @@ class OrganizationRepository
 
   async findByIdAndUpdate(
     id: string,
-    data: Partial<IOrganization>,
+    data: Partial<IOrganization> | Record<string, any>,
     options: Record<string, unknown> = { new: true }
   ): Promise<IOrganization | null> {
     const org = await this.model

@@ -27,9 +27,9 @@ class Server {
     await databaseConnection();
     serve({
       fetch: this.app.fetch,
-      port: 3006,
+      port: 3007,
     });
-    console.log(`server is started on http://localhost:3006`);
+    console.log(`server is started on http://localhost:3007`);
   }
 }
 

@@ -1,4 +1,7 @@
+import { ObjectId } from "mongoose";
+
 export interface IOffice {
+  _id: string;
   name: string;
   organizationId: string;
   location: {

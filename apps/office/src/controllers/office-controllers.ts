@@ -75,6 +75,19 @@ const officeControllers = new Hono()
     return SuccessResponse(StatusCodes.OK, "Office updated successfully", {
       name: updatedOffice?.name,
     });
+  })
+  .delete("/:id", async (c) => {
+    const id = c.req.param("id");
+    console.log(id);
+    const response = await officeServices.findByIdAndDeleteOffice(id);
+    if (!response) {
+      return ErrorResponse(
+        StatusCodes.BAD_REQUEST,
+        {},
+        "Failed to edit office"
+      );
+    }
+    return SuccessResponse(StatusCodes.OK, "Office updated successfully", {});
   });
 
 export default officeControllers;

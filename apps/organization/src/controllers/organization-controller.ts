@@ -8,6 +8,7 @@ import {
   OrganizationSchema,
   editOrganizationSchema,
 } from "@repo/validations/organizations";
+import mongoose, { Schema } from "mongoose";
 
 const organizationController = new Hono()
   .get("/:id", async (c) => {
@@ -63,6 +64,25 @@ const organizationController = new Hono()
     return SuccessResponse(StatusCodes.OK, "Successfully edited organization", {
       id: org._id,
       name: org.name,
+    });
+  })
+  .put("/office", async (c) => {
+    const { organizationId, offId } = c.req.query();
+    const officeId = new mongoose.Types.ObjectId(offId);
+    const newOffice = await organizationService.addOffice(
+      organizationId!,
+      officeId
+    );
+    if (!newOffice) {
+      return ErrorResponse(
+        StatusCodes.BAD_REQUEST,
+        {},
+        "Failed to add office organization"
+      );
+    }
+    return SuccessResponse(StatusCodes.OK, "Successfully edited organization", {
+      id: newOffice._id,
+      name: newOffice.name,
     });
   });
 
