@@ -20,11 +20,12 @@ class OfficeRepository implements ICrudRepositoryOrganization<IOffice> {
     return office;
   }
   async findById(
-    id: string,
+    id: any,
     fields?: string[] | undefined,
     options?: {} | undefined
   ): Promise<IOffice | null> {
-    const office = await this.model.findById(id, fields, options);
+    const projection = fields ? fields.join(" ") : undefined;
+    const office = await this.model.findById(id, projection, options);
     return office;
   }
   async findOne(

@@ -88,6 +88,24 @@ const officeControllers = new Hono()
       );
     }
     return SuccessResponse(StatusCodes.OK, "Office updated successfully", {});
+  })
+  .get("/", async (c) => {
+    const { id } = c.req.query();
+
+    const response = await officeServices.co_ordinatesById(id!);
+    console.log(response, "in controller");
+    if (!response) {
+      return ErrorResponse(
+        StatusCodes.BAD_REQUEST,
+        {},
+        "Failed to find office"
+      );
+    }
+    return SuccessResponse(
+      StatusCodes.OK,
+      "Office found successfully",
+      response
+    );
   });
 
 export default officeControllers;

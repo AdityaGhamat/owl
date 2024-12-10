@@ -10,7 +10,8 @@
   "license": "ISC",
   "description": "",
   "extends": {
-    "./common": "./src/common.ts"
+    "./common": "./src/common.ts",
+    "./database": "./src/database.ts"
   },
   "dependencies": {
     "zod": "^3.23.8"

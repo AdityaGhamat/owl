@@ -39,9 +39,7 @@ function ErrorMiddleware(
     return ResponseUtil.errorResponse(res, status, message, errorDetails);
   }
 
-  return ResponseUtil.errorResponse(res, 500, "Internal Server Error", {
-    detail: "inside unknown",
-  });
+  return ResponseUtil.errorResponse(res, 500, "Internal Server Error", error);
 }
 
 export default ErrorMiddleware;

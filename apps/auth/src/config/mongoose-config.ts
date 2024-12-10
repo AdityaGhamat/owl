@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import serverConfig from "./server-config.js";
 import HttpException from "../errors/Exception.js";
 import { StatusCodes } from "http-status-codes";
+import User from "../models/auth.js";
 
 async function databaseConnection() {
   try {

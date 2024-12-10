@@ -6,8 +6,10 @@ import { StatusCodes } from "http-status-codes";
 
 class GeofenceServices {
   async createFence(data: geofenceCreation) {
+    let fence;
     try {
-      const fence = await geofenceRepository.create(data);
+      fence = await geofenceRepository.create(data);
+
       if (!fence) {
         throw new HTTPException(StatusCodes.NOT_FOUND, {
           message: "Error occured while creating fence",

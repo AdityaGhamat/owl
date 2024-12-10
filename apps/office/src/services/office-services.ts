@@ -4,6 +4,8 @@ import axios from "axios";
 import serverConfig from "../config/server-config.js";
 import { HTTPException } from "hono/http-exception";
 import { StatusCodes } from "http-status-codes";
+import { ObjectId } from "bson";
+import mongoose from "mongoose";
 class OfficeServices {
   async createOffice(data: Partial<IOffice>) {
     let office;
@@ -44,12 +46,23 @@ class OfficeServices {
     });
     return office;
   }
-  async findByIdAndDeleteOffice(id: string) {
+  async findByIdAndDeleteOffice(id: any) {
     const office = await officeRepository.findByIdAndDelete(id);
     if (!office) {
       return false;
     }
     return true;
+  }
+  async co_ordinatesById(id: string) {
+    console.log(id, "before findbyId in services");
+    const location = await officeRepository.findById(id, ["location"]);
+    console.log(location, "after findbyId in services");
+    if (!location) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "location not found",
+      });
+    }
+    return location;
   }
 }
 

@@ -7,12 +7,11 @@ import session from "../lib/session.js";
 import { userCover } from "../lib/response_covers.js";
 import { sendVerificationMail } from "../lib/mail-producer.js";
 import { StatusCodes } from "http-status-codes";
-import type { emailType, passwordType, resetTokenType } from "../types/auth.js";
+import type { emailType, passwordType } from "../types/auth.js";
 
 class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
     const { name, email, encryptedPassword, role, phoneNumber } = req.body;
-
     try {
       const user = await userServices.createUser({
         name,

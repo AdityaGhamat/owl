@@ -9,8 +9,6 @@ const GeofenceCenter = z.object({
 
 export const GeofenceSchema = z
   .object({
-    name: z.string().nonempty("Name is required"),
-    description: z.string().optional(),
     type: GeofenceType,
     coordinates: z.array(z.array(z.number())).optional(),
     center: GeofenceCenter.optional(),
