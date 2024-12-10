@@ -7,11 +7,12 @@ import session from "../lib/session.js";
 import { userCover } from "../lib/response_covers.js";
 import { sendVerificationMail } from "../lib/mail-producer.js";
 import { StatusCodes } from "http-status-codes";
-import type { emailType, passwordType } from "../types/auth.js";
+import type { emailType, passwordType, officeIdType } from "../types/auth.js";
 
 class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
-    const { name, email, encryptedPassword, role, phoneNumber } = req.body;
+    const { name, email, encryptedPassword, role, phoneNumber, location } =
+      req.body;
     try {
       const user = await userServices.createUser({
         name,
@@ -20,13 +21,13 @@ class UserController {
         role,
         phoneNumber,
         createdAt: new Date(),
+        location,
       });
-
       if (!user) {
         return ResponseUtil.errorResponse(res, 400, "User creation failed");
       }
       await session.createSession(user.user_id!, res);
-      await sendVerificationMail(user.user_id!, user.email);
+      // await sendVerificationMail(user.user_id!, user.email);
       ResponseUtil.successResponse(res, 201, "User created successfully", user);
     } catch (error: any) {
       logger.error(error.message);
@@ -133,7 +134,7 @@ class UserController {
   }
   async resetPassword(req: Request, res: Response, next: NextFunction) {
     try {
-      const { encryptedPassword }: passwordType = req.body; // change the type to validation of it.
+      const { encryptedPassword }: passwordType = req.body;
       const { reset_token } = req.params;
       const user = await userServices.resetPassword(
         encryptedPassword,
@@ -155,6 +156,39 @@ class UserController {
       next(error);
     }
   }
+
+  async getDistanceFromOffice(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const id = req.user_id;
+      const { officeId } = req.query;
+      console.log(officeId, "inside controller");
+      const distance = await userServices.showDistanceFromOffice(
+        officeId as string,
+        id!
+      );
+      if (!distance) {
+        return ResponseUtil.errorResponse(
+          res,
+          StatusCodes.NOT_FOUND,
+          "Distance not found"
+        );
+      }
+      return ResponseUtil.successResponse(
+        res,
+        StatusCodes.OK,
+        "distance has been fetched",
+        distance
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new UserController();
+
+//sendmail is currently commented in createuser

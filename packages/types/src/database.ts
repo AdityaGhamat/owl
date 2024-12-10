@@ -88,3 +88,8 @@ export interface IOrganization extends Document {
   parentOrganizationId?: string;
   tags?: string[];
 }
+
+export type location = {
+  type: "Point";
+  coordinates: [number, number];
+};

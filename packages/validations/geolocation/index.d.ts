@@ -1,7 +1,5 @@
 import { z } from "zod";
 export declare const GeofenceSchema: z.ZodEffects<z.ZodObject<{
-    name: z.ZodString;
-    description: z.ZodOptional<z.ZodString>;
     type: z.ZodEnum<["Polygon", "Circle"]>;
     coordinates: z.ZodOptional<z.ZodArray<z.ZodArray<z.ZodNumber, "many">, "many">>;
     center: z.ZodOptional<z.ZodObject<{
@@ -21,65 +19,57 @@ export declare const GeofenceSchema: z.ZodEffects<z.ZodObject<{
     organizationID: z.ZodEffects<z.ZodString, string, string>;
     officeID: z.ZodEffects<z.ZodString, string, string>;
 }, "strip", z.ZodTypeAny, {
-    name: string;
     type: "Polygon" | "Circle";
     organizationID: string;
     officeID: string;
+    lat?: number | undefined;
+    lng?: number | undefined;
     coordinates?: number[][] | undefined;
-    description?: string | undefined;
     center?: {
         type: "Point";
         coordinates: [number, number];
     } | undefined;
     radius?: number | undefined;
     properties?: Record<string, any> | undefined;
-    lat?: number | undefined;
-    lng?: number | undefined;
 }, {
-    name: string;
     type: "Polygon" | "Circle";
     organizationID: string;
     officeID: string;
+    lat?: number | undefined;
+    lng?: number | undefined;
     coordinates?: number[][] | undefined;
-    description?: string | undefined;
     center?: {
         type: "Point";
         coordinates: [number, number];
     } | undefined;
     radius?: number | undefined;
     properties?: Record<string, any> | undefined;
-    lat?: number | undefined;
-    lng?: number | undefined;
 }>, {
-    name: string;
     type: "Polygon" | "Circle";
     organizationID: string;
     officeID: string;
+    lat?: number | undefined;
+    lng?: number | undefined;
     coordinates?: number[][] | undefined;
-    description?: string | undefined;
     center?: {
         type: "Point";
         coordinates: [number, number];
     } | undefined;
     radius?: number | undefined;
     properties?: Record<string, any> | undefined;
-    lat?: number | undefined;
-    lng?: number | undefined;
 }, {
-    name: string;
     type: "Polygon" | "Circle";
     organizationID: string;
     officeID: string;
+    lat?: number | undefined;
+    lng?: number | undefined;
     coordinates?: number[][] | undefined;
-    description?: string | undefined;
     center?: {
         type: "Point";
         coordinates: [number, number];
     } | undefined;
     radius?: number | undefined;
     properties?: Record<string, any> | undefined;
-    lat?: number | undefined;
-    lng?: number | undefined;
 }>;
 export declare const GeofenceSchemaEdit: z.ZodEffects<z.ZodObject<{
     name: z.ZodOptional<z.ZodString>;
@@ -107,61 +97,61 @@ export declare const GeofenceSchemaEdit: z.ZodEffects<z.ZodObject<{
     officeID: string;
     name?: string | undefined;
     type?: "Polygon" | "Circle" | undefined;
+    lat?: number | undefined;
+    lng?: number | undefined;
     coordinates?: number[][] | undefined;
-    description?: string | undefined;
     center?: {
         type: "Point";
         coordinates: [number, number];
     } | undefined;
     radius?: number | undefined;
     properties?: Record<string, any> | undefined;
-    lat?: number | undefined;
-    lng?: number | undefined;
+    description?: string | undefined;
 }, {
     organizationID: string;
     officeID: string;
     name?: string | undefined;
     type?: "Polygon" | "Circle" | undefined;
+    lat?: number | undefined;
+    lng?: number | undefined;
     coordinates?: number[][] | undefined;
-    description?: string | undefined;
     center?: {
         type: "Point";
         coordinates: [number, number];
     } | undefined;
     radius?: number | undefined;
     properties?: Record<string, any> | undefined;
-    lat?: number | undefined;
-    lng?: number | undefined;
+    description?: string | undefined;
 }>, {
     organizationID: string;
     officeID: string;
     name?: string | undefined;
     type?: "Polygon" | "Circle" | undefined;
+    lat?: number | undefined;
+    lng?: number | undefined;
     coordinates?: number[][] | undefined;
-    description?: string | undefined;
     center?: {
         type: "Point";
         coordinates: [number, number];
     } | undefined;
     radius?: number | undefined;
     properties?: Record<string, any> | undefined;
-    lat?: number | undefined;
-    lng?: number | undefined;
+    description?: string | undefined;
 }, {
     organizationID: string;
     officeID: string;
     name?: string | undefined;
     type?: "Polygon" | "Circle" | undefined;
+    lat?: number | undefined;
+    lng?: number | undefined;
     coordinates?: number[][] | undefined;
-    description?: string | undefined;
     center?: {
         type: "Point";
         coordinates: [number, number];
     } | undefined;
     radius?: number | undefined;
     properties?: Record<string, any> | undefined;
-    lat?: number | undefined;
-    lng?: number | undefined;
+    description?: string | undefined;
 }>;
 export declare const QuerySchema: z.ZodObject<{
     lat: z.ZodEffects<z.ZodEffects<z.ZodString, number, string>, number, string>;

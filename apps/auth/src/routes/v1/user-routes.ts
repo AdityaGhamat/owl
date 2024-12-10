@@ -8,6 +8,7 @@ import {
   resetTokenSchema,
   passwordSchema,
   emailSchema,
+  officeIdSchema,
 } from "@repo/validations";
 import zValidator from "../../middlewares/zValidator.js";
 
@@ -37,4 +38,7 @@ app.put(
   zValidator(passwordSchema, "body"),
   userController.resetPassword
 );
+app.get("/distance", authValidator, userController.getDistanceFromOffice);
 export default app;
+
+//add zvalidator schema for validating params in getdistance and validate it

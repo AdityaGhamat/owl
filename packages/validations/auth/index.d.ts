@@ -1,10 +1,10 @@
 import { z } from "zod";
 declare const userSchema: z.ZodObject<{
-    user_id: z.ZodOptional<z.ZodString>;
+    _id: z.ZodOptional<z.ZodString>;
     name: z.ZodString;
     email: z.ZodString;
     encryptedPassword: z.ZodString;
-    role: z.ZodDefault<z.ZodEnum<["Admin", "Employee", "Manager", "Other"]>>;
+    role: z.ZodDefault<z.ZodEnum<["Employee", "Manager", "Admin"]>>;
     reset_password_token: z.ZodOptional<z.ZodString>;
     reset_password_expires_on: z.ZodOptional<z.ZodDate>;
     verification_token: z.ZodOptional<z.ZodString>;
@@ -19,12 +19,26 @@ declare const userSchema: z.ZodObject<{
     phoneNumber: z.ZodOptional<z.ZodString>;
     oldPassword: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     isDeleted: z.ZodOptional<z.ZodDefault<z.ZodBoolean>>;
+    org_id: z.ZodOptional<z.ZodString>;
+    geofence_id: z.ZodOptional<z.ZodString>;
+    lat: z.ZodOptional<z.ZodNumber>;
+    lng: z.ZodOptional<z.ZodNumber>;
+    location: z.ZodOptional<z.ZodObject<{
+        type: z.ZodLiteral<"Point">;
+        coordinates: z.ZodTuple<[z.ZodNumber, z.ZodNumber], null>;
+    }, "strip", z.ZodTypeAny, {
+        type: "Point";
+        coordinates: [number, number];
+    }, {
+        type: "Point";
+        coordinates: [number, number];
+    }>>;
 }, "strip", z.ZodTypeAny, {
     name: string;
     email: string;
     encryptedPassword: string;
-    role: "Admin" | "Employee" | "Manager" | "Other";
-    user_id?: string | undefined;
+    role: "Admin" | "Employee" | "Manager";
+    _id?: string | undefined;
     reset_password_token?: string | undefined;
     reset_password_expires_on?: Date | undefined;
     verification_token?: string | undefined;
@@ -39,12 +53,20 @@ declare const userSchema: z.ZodObject<{
     phoneNumber?: string | undefined;
     oldPassword?: string[] | undefined;
     isDeleted?: boolean | undefined;
+    org_id?: string | undefined;
+    geofence_id?: string | undefined;
+    lat?: number | undefined;
+    lng?: number | undefined;
+    location?: {
+        type: "Point";
+        coordinates: [number, number];
+    } | undefined;
 }, {
     name: string;
     email: string;
     encryptedPassword: string;
-    user_id?: string | undefined;
-    role?: "Admin" | "Employee" | "Manager" | "Other" | undefined;
+    _id?: string | undefined;
+    role?: "Admin" | "Employee" | "Manager" | undefined;
     reset_password_token?: string | undefined;
     reset_password_expires_on?: Date | undefined;
     verification_token?: string | undefined;
@@ -59,6 +81,14 @@ declare const userSchema: z.ZodObject<{
     phoneNumber?: string | undefined;
     oldPassword?: string[] | undefined;
     isDeleted?: boolean | undefined;
+    org_id?: string | undefined;
+    geofence_id?: string | undefined;
+    lat?: number | undefined;
+    lng?: number | undefined;
+    location?: {
+        type: "Point";
+        coordinates: [number, number];
+    } | undefined;
 }>;
 declare const editUserSchema: z.ZodObject<{
     name: z.ZodOptional<z.ZodString>;
@@ -254,5 +284,12 @@ declare const resetTokenSchema: z.ZodObject<{
 }, {
     reset_token: string;
 }>;
-export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema, verifyEmailSchema, emailSchema, passwordSchema, resetTokenSchema, };
+declare const officeIdSchema: z.ZodObject<{
+    office_id: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    office_id: string;
+}, {
+    office_id: string;
+}>;
+export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema, verifyEmailSchema, emailSchema, passwordSchema, resetTokenSchema, officeIdSchema, };
 //# sourceMappingURL=index.d.ts.map

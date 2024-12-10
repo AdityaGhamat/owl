@@ -7,7 +7,7 @@ const userSchema = z.object({
   name: z
     .string()
     .min(1, "Name is required")
-    .max(50, "Maxmimum length is reached"),
+    .max(50, "Maximum length is reached"),
   email: z
     .string()
     .email("Invalid email format")
@@ -15,9 +15,9 @@ const userSchema = z.object({
     .max(70, "Maximum length 70 reached"),
   encryptedPassword: z
     .string()
-    .min(5, "Mininum length is 5 required")
+    .min(5, "Minimum length is 5 required")
     .max(30, "Maximum length 30 reached"),
-  role: UserRoles.default("Employee"),
+  role: z.enum(["Employee", "Manager", "Admin"]).default("Employee"),
   reset_password_token: z.string().optional(),
   reset_password_expires_on: z.date().optional(),
   verification_token: z.string().optional(),
@@ -35,6 +35,16 @@ const userSchema = z.object({
     .optional(),
   oldPassword: z.array(z.string()).optional(),
   isDeleted: z.boolean().default(false).optional(),
+  org_id: z.string().optional(),
+  geofence_id: z.string().optional(),
+  lat: z.number().optional(),
+  lng: z.number().optional(),
+  location: z
+    .object({
+      type: z.literal("Point"),
+      coordinates: z.tuple([z.number(), z.number()]), // [longitude, latitude]
+    })
+    .optional(),
 });
 
 const editUserSchema = z.object({
@@ -103,6 +113,9 @@ const resetTokenSchema = z.object({
     message: "Enter valid reset token",
   }),
 });
+const officeIdSchema = z.object({
+  office_id: z.string({ message: "Office id should be valid string" }),
+});
 export {
   userSchema,
   editUserSchema,
@@ -113,4 +126,5 @@ export {
   emailSchema,
   passwordSchema,
   resetTokenSchema,
+  officeIdSchema,
 };

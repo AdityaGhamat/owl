@@ -19,6 +19,7 @@ interface IAuth extends Document {
   oldPassword?: any;
   isDeleted: boolean;
   org_id?: string;
+  office_id?: string;
   geofence_id?: string;
   lat?: number;
   lng?: number;

@@ -9,6 +9,9 @@ import {
   sendPasswordResetMail,
   sendVerificationMail,
 } from "../lib/mail-producer.js";
+import officeServices from "./office-services.js";
+import type { IAuth, location } from "@repo/types/src/database.js";
+import geolib from "geolib";
 
 class UserServices {
   private passwordLib: PasswordLib;
@@ -167,6 +170,24 @@ class UserServices {
         { new: true }
       );
       return { email: new_user?.email, user_id: new_user?._id };
+    } catch (error) {
+      logger.error(error);
+      throw error;
+    }
+  }
+
+  async showDistanceFromOffice(office_id: string, id: string) {
+    try {
+      const office: [number, number] =
+        await officeServices.co_ordinatesOfOffice(office_id);
+      console.log(office, "inside service");
+      const user: IAuth = await this.getUser(id);
+      console.log(user);
+      const user_coordinates = user?.location?.coordinates;
+      console.log(user_coordinates);
+      const distance = geolib.getDistance(office, user_coordinates);
+      console.log(distance);
+      return distance;
     } catch (error) {
       logger.error(error);
       throw error;

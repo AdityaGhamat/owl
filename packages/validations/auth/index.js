@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetTokenSchema = exports.passwordSchema = exports.emailSchema = exports.verifyEmailSchema = exports.loginSchema = exports.editUserSchemaTrpc = exports.userId = exports.editUserSchema = exports.userSchema = void 0;
+exports.officeIdSchema = exports.resetTokenSchema = exports.passwordSchema = exports.emailSchema = exports.verifyEmailSchema = exports.loginSchema = exports.editUserSchemaTrpc = exports.userId = exports.editUserSchema = exports.userSchema = void 0;
 const zod_1 = require("zod");
 const UserRoles = zod_1.z.enum(["Admin", "Employee", "Manager", "Other"]);
 const userSchema = zod_1.z.object({
-    user_id: zod_1.z.string().optional(),
+    _id: zod_1.z.string().optional(),
     name: zod_1.z
         .string()
         .min(1, "Name is required")
-        .max(50, "Maxmimum length is reached"),
+        .max(50, "Maximum length is reached"),
     email: zod_1.z
         .string()
         .email("Invalid email format")
@@ -16,9 +16,9 @@ const userSchema = zod_1.z.object({
         .max(70, "Maximum length 70 reached"),
     encryptedPassword: zod_1.z
         .string()
-        .min(5, "Mininum length is 5 required")
+        .min(5, "Minimum length is 5 required")
         .max(30, "Maximum length 30 reached"),
-    role: UserRoles.default("Employee"),
+    role: zod_1.z.enum(["Employee", "Manager", "Admin"]).default("Employee"),
     reset_password_token: zod_1.z.string().optional(),
     reset_password_expires_on: zod_1.z.date().optional(),
     verification_token: zod_1.z.string().optional(),
@@ -36,6 +36,16 @@ const userSchema = zod_1.z.object({
         .optional(),
     oldPassword: zod_1.z.array(zod_1.z.string()).optional(),
     isDeleted: zod_1.z.boolean().default(false).optional(),
+    org_id: zod_1.z.string().optional(),
+    geofence_id: zod_1.z.string().optional(),
+    lat: zod_1.z.number().optional(),
+    lng: zod_1.z.number().optional(),
+    location: zod_1.z
+        .object({
+        type: zod_1.z.literal("Point"),
+        coordinates: zod_1.z.tuple([zod_1.z.number(), zod_1.z.number()]), // [longitude, latitude]
+    })
+        .optional(),
 });
 exports.userSchema = userSchema;
 const editUserSchema = zod_1.z.object({
@@ -107,3 +117,7 @@ const resetTokenSchema = zod_1.z.object({
     }),
 });
 exports.resetTokenSchema = resetTokenSchema;
+const officeIdSchema = zod_1.z.object({
+    office_id: zod_1.z.string({ message: "Office id should be valid string" }),
+});
+exports.officeIdSchema = officeIdSchema;

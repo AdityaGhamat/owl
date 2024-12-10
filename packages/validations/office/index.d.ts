@@ -45,11 +45,11 @@ export declare const officeBaseSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     name: string;
     status: "active" | "inactive" | "pending";
-    organizationId: string;
     location: {
         type: "Point";
         coordinates: [number, number];
     };
+    organizationId: string;
     contactDetails: {
         email: string;
         phone: string;
@@ -63,11 +63,11 @@ export declare const officeBaseSchema: z.ZodObject<{
     };
 }, {
     name: string;
-    organizationId: string;
     location: {
         type: "Point";
         coordinates: [number, number];
     };
+    organizationId: string;
     contactDetails: {
         email: string;
         phone: string;
@@ -126,11 +126,11 @@ export declare const createOfficeSchema: z.ZodObject<Omit<{
     status: z.ZodDefault<z.ZodEnum<["active", "inactive", "pending"]>>;
 }, "status">, "strip", z.ZodTypeAny, {
     name: string;
-    organizationId: string;
     location: {
         type: "Point";
         coordinates: [number, number];
     };
+    organizationId: string;
     contactDetails: {
         email: string;
         phone: string;
@@ -144,11 +144,11 @@ export declare const createOfficeSchema: z.ZodObject<Omit<{
     };
 }, {
     name: string;
-    organizationId: string;
     location: {
         type: "Point";
         coordinates: [number, number];
     };
+    organizationId: string;
     contactDetails: {
         email: string;
         phone: string;
@@ -207,11 +207,11 @@ export declare const updateOfficeSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     name?: string | undefined;
     status?: "active" | "inactive" | "pending" | undefined;
-    organizationId?: string | undefined;
     location?: {
         type: "Point";
         coordinates: [number, number];
     } | undefined;
+    organizationId?: string | undefined;
     contactDetails?: {
         email: string;
         phone: string;
@@ -226,11 +226,11 @@ export declare const updateOfficeSchema: z.ZodObject<{
 }, {
     name?: string | undefined;
     status?: "active" | "inactive" | "pending" | undefined;
-    organizationId?: string | undefined;
     location?: {
         type: "Point";
         coordinates: [number, number];
     } | undefined;
+    organizationId?: string | undefined;
     contactDetails?: {
         email: string;
         phone: string;

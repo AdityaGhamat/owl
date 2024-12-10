@@ -13,8 +13,6 @@ const GeofenceCenter = zod_1.z.object({
 });
 exports.GeofenceSchema = zod_1.z
     .object({
-    name: zod_1.z.string().nonempty("Name is required"),
-    description: zod_1.z.string().optional(),
     type: GeofenceType,
     coordinates: zod_1.z.array(zod_1.z.array(zod_1.z.number())).optional(),
     center: GeofenceCenter.optional(),

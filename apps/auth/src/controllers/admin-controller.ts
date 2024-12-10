@@ -2,8 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import adminServices from "../services/admin-services.js";
 import logger from "../config/logger-config.js";
 import { StatusCodes } from "http-status-codes";
-import authRepository from "../repository/auth-repository.js";
-import { Error_Message } from "../utils/constant.js";
 import ResponseUtil from "../lib/response.js";
 
 class AdminController {

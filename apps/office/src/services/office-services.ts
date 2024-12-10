@@ -4,8 +4,7 @@ import axios from "axios";
 import serverConfig from "../config/server-config.js";
 import { HTTPException } from "hono/http-exception";
 import { StatusCodes } from "http-status-codes";
-import { ObjectId } from "bson";
-import mongoose from "mongoose";
+
 class OfficeServices {
   async createOffice(data: Partial<IOffice>) {
     let office;
