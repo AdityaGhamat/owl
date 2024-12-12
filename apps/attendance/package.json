@@ -1,0 +1,22 @@
+{
+  "name": "attendance-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "watch": "tsc --watch",
+    "dev": "tsc -b && nodemon dist/index.js"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@prisma/client": "^6.0.1",
+    "dotenv": "^16.4.7",
+    "hono": "^4.6.13"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "nodemon": "^3.1.7",
+    "prisma": "^6.0.1"
+  }
+}
