@@ -100,26 +100,30 @@ const geofenceController = new Hono()
       return ErrorResponse(StatusCodes.BAD_REQUEST, error, error.message);
     }
   })
-  .get(
-    "/distance",
-    async (c) => {},
-    async (c) => {
-      try {
-        const officeId = c.req.query("officeId");
-        const distance = await geofenceServices.distanceBetUserAndOffice(
-          officeId as string
+  .get("/distance", async (c) => {
+    const { user_lat, user_lng, office_lat, office_lng } = c.req.query();
+    try {
+      const office: [number, number] = [Number(office_lat), Number(office_lng)];
+      const user: [number, number] = [Number(user_lat), Number(user_lng)];
+      const distance = await geofenceServices.distanceBetUserAndOffice(
+        office,
+        user
+      );
+      if (!distance) {
+        return ErrorResponse(
+          StatusCodes.BAD_REQUEST,
+          {},
+          "Failed to find the distance"
         );
-        if (!distance) {
-          return ErrorResponse(
-            StatusCodes.BAD_REQUEST,
-            {},
-            "Failed to find distance"
-          );
-        }
-      } catch (error: any) {
-        return ErrorResponse(StatusCodes.BAD_REQUEST, error, error.message);
       }
+      return SuccessResponse(
+        StatusCodes.OK,
+        "Successfully found the distance",
+        distance
+      );
+    } catch (error: any) {
+      return ErrorResponse(StatusCodes.BAD_REQUEST, error, error.message);
     }
-  );
+  });
 
 export default geofenceController;

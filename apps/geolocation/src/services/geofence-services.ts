@@ -144,20 +144,11 @@ class GeofenceServices {
     return this.coverMembers(members);
   }
 
-  async distanceBetUserAndOffice(office_id: string) {
-    const request = await axios.get<{ data: [number, number] }>(
-      `${serverConfig.AUTH_SERVICE}/api/v1/user/location`
-    );
-    if (request.status !== 200) {
-      throw new HTTPException(StatusCodes.BAD_REQUEST, {
-        message: "Failed request to auth service",
-      });
-    }
-    const user_coordinates = request.data.data;
-    console.log(user_coordinates, "inside services");
-    const office_co_ordinates: [number, number] =
-      await officeServices.co_ordinatesOfOffice(office_id);
-    const distance = geolib.getDistance(office_co_ordinates, user_coordinates);
+  async distanceBetUserAndOffice(
+    office: [number, number],
+    user: [number, number]
+  ) {
+    const distance = geolib.getDistance(office, user);
     return distance;
   }
 }

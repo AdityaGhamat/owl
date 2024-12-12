@@ -11,7 +11,9 @@ import {
 } from "../lib/mail-producer.js";
 import officeServices from "./office-services.js";
 import type { IAuth, location } from "@repo/types/src/database.js";
-import geolib from "geolib";
+import axios from "axios";
+import serverConfig from "../config/server-config.js";
+import server from "../server.js";
 
 class UserServices {
   private passwordLib: PasswordLib;
@@ -182,7 +184,11 @@ class UserServices {
         await officeServices.co_ordinatesOfOffice(office_id);
       const user: IAuth = await this.getUser(id);
       const user_coordinates = user?.location?.coordinates;
-      const distance = geolib.getDistance(office, user_coordinates);
+      const response = await axios.get<{ data: number }>(
+        `${serverConfig.GEOFENCE_SERVICE}/api/v1/geofence/distance?user_lat=${user_coordinates[0]}&user_lng=${user_coordinates[1]}&office_lat=${office[0]}&office_lng=${office[1]}`
+      );
+      const distance = response?.data?.data;
+      console.log(distance);
       return distance;
     } catch (error) {
       logger.error(error);
