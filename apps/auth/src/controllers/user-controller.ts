@@ -187,6 +187,27 @@ class UserController {
       next(error);
     }
   }
+  async getUserLocation(req: CustomRequest, res: Response, next: NextFunction) {
+    try {
+      const id = req.user_id;
+      const coordinates = await userServices.getUserLocation(id as string);
+      if (!coordinates) {
+        return ResponseUtil.errorResponse(
+          res,
+          StatusCodes.NOT_FOUND,
+          "Failed to find coordinates of user"
+        );
+      }
+      return ResponseUtil.successResponse(
+        res,
+        StatusCodes.OK,
+        "Successfully found the users's coordinates.",
+        coordinates
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new UserController();

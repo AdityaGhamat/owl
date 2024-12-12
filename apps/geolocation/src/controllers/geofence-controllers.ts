@@ -84,67 +84,42 @@ const geofenceController = new Hono()
       return ErrorResponse(StatusCodes.BAD_REQUEST, error, error.message);
     }
   })
-  .get("/fence/members/polygon", async (c) => {
+  .get("/users/:officeId", async (c) => {
     try {
-      const { lat, lng } = c.req.query();
-      const latitude = Number(lat);
-      const longitude = Number(lng);
-
-      if (!latitude || !longitude || isNaN(latitude) || isNaN(longitude)) {
-        return ErrorResponse(
-          StatusCodes.BAD_REQUEST,
-          {},
-          "Both 'lat' and 'lng' query parameters must be valid numbers."
-        );
-      }
-      const members = await geofenceServices.findMembersWithPolygon([
-        latitude,
-        longitude,
-      ]);
-      return SuccessResponse(
-        StatusCodes.OK,
-        "Members found successfully",
-        members!
+      const { officeId } = c.req.param();
+      const radius = Number(c.req.query("radius"));
+      const members = await geofenceServices.getMembersWithinRadius(
+        officeId as string,
+        radius
       );
+      if (!members || members.length === 0) {
+        return ErrorResponse(StatusCodes.NOT_FOUND, {}, "Members not found");
+      }
+      return SuccessResponse(StatusCodes.OK, "Members are found", members);
     } catch (error: any) {
       return ErrorResponse(StatusCodes.BAD_REQUEST, error, error.message);
     }
   })
-  .get("/fence/members/circle", async (c) => {
-    try {
-      const { lat, lng, distance } = QuerySchema.parse(c.req.query());
-      const latitude = Number(lat);
-      const longitude = Number(lng);
-      const maxDistance = Number(distance);
-      if (
-        isNaN(latitude) ||
-        isNaN(longitude) ||
-        (maxDistance !== undefined && isNaN(maxDistance))
-      ) {
-        return ErrorResponse(
-          StatusCodes.BAD_REQUEST,
-          {},
-          "'lat', 'lng', and 'distance' must be valid numbers."
+  .get(
+    "/distance",
+    async (c) => {},
+    async (c) => {
+      try {
+        const officeId = c.req.query("officeId");
+        const distance = await geofenceServices.distanceBetUserAndOffice(
+          officeId as string
         );
+        if (!distance) {
+          return ErrorResponse(
+            StatusCodes.BAD_REQUEST,
+            {},
+            "Failed to find distance"
+          );
+        }
+      } catch (error: any) {
+        return ErrorResponse(StatusCodes.BAD_REQUEST, error, error.message);
       }
-      const members = await geofenceServices.findMembersWithCircle(
-        [latitude, longitude],
-        maxDistance
-      );
-      return SuccessResponse(
-        StatusCodes.OK,
-        "Members found successfully",
-        members!
-      );
-    } catch (error: any) {
-      if (error instanceof ZodError) {
-        return ErrorResponse(
-          StatusCodes.BAD_REQUEST,
-          error.errors,
-          "Invalid query parameters."
-        );
-      }
-      return ErrorResponse(StatusCodes.BAD_REQUEST, error, error.message);
     }
-  });
+  );
+
 export default geofenceController;

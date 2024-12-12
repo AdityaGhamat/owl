@@ -27,6 +27,23 @@ class AdminServices {
     }
     return this.coverMembers(members);
   }
+  async findUsersWithinRadius(
+    center: [number, number],
+    radiusInMeters: number
+  ) {
+    const radiusInRadians = radiusInMeters / 6371000;
+    const users = await authRepository.find({
+      location: {
+        $geoWithin: {
+          $centerSphere: [center, radiusInRadians],
+        },
+      },
+    });
+    if (!users || users.length === 0) {
+      throw new NotFoundException("No users found within the radius");
+    }
+    return users;
+  }
 }
 
 export default new AdminServices();

@@ -1,4 +1,4 @@
-import { Response, NextFunction, response } from "express";
+import { Response, NextFunction } from "express";
 import session from "../lib/session.js";
 import type { CustomRequest } from "../types/system.js";
 import ResponseUtil from "../lib/response.js";

@@ -180,16 +180,28 @@ class UserServices {
     try {
       const office: [number, number] =
         await officeServices.co_ordinatesOfOffice(office_id);
-      console.log(office, "inside service");
       const user: IAuth = await this.getUser(id);
-      console.log(user);
       const user_coordinates = user?.location?.coordinates;
-      console.log(user_coordinates);
       const distance = geolib.getDistance(office, user_coordinates);
-      console.log(distance);
       return distance;
     } catch (error) {
       logger.error(error);
+      throw error;
+    }
+  }
+
+  async getUserLocation(id: string) {
+    try {
+      const user: IAuth = await this.getUser(id);
+      if (!user) {
+        throw new NotFoundException("User not found");
+      }
+      const user_coordinates = user?.location?.coordinates;
+      if (!user_coordinates) {
+        throw new NotFoundException("User coordinates not found");
+      }
+      return user_coordinates;
+    } catch (error) {
       throw error;
     }
   }

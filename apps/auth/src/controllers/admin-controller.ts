@@ -29,6 +29,42 @@ class AdminController {
       next(error);
     }
   }
+  async findUsersWithinRadius(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { lat, lng, rd } = req.query;
+      console.log(lat, lng, rd, "in controller");
+      const latitude = Number(lat);
+      const longitude = Number(lng);
+      const radius = Number(rd);
+      console.log(
+        latitude,
+        longitude,
+        radius,
+        "in controller but converted in number"
+      );
+      const center: [number, number] = [latitude, longitude];
+      const response = await adminServices.findUsersWithinRadius(
+        center,
+        radius
+      );
+      if (!response) {
+        return ResponseUtil.errorResponse(
+          res,
+          StatusCodes.NOT_FOUND,
+          "Users not found"
+        );
+      }
+      return ResponseUtil.successResponse(
+        res,
+        StatusCodes.OK,
+        "Users found successfully",
+        response
+      );
+    } catch (error) {
+      logger.error(error);
+      next(error);
+    }
+  }
 }
 
 export default new AdminController();
