@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { HTTPException } from "hono/http-exception";
 import { cors } from "hono/cors";
-
+import apiRoutes from "./routers/index.js";
 class Server {
   private app: Hono;
   constructor() {
@@ -24,13 +24,15 @@ class Server {
   private serverconfig() {
     this.app.use("/api/*", cors());
   }
-  private routes() {}
+  private routes() {
+    this.app.route("/api", apiRoutes);
+  }
   public start() {
     serve({
       fetch: this.app.fetch,
-      port: 3007,
+      port: 3008,
     });
-    console.log(`server is started at http://localhost:3007`);
+    console.log(`server is started at http://localhost:3008`);
   }
 }
 

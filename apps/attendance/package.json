@@ -6,10 +6,13 @@
   "license": "MIT",
   "scripts": {
     "watch": "tsc --watch",
-    "dev": "tsc -b && nodemon dist/index.js"
+    "dev": "tsc -b && nodemon dist/index.js",
+    "build": "tsc -b",
+    "start": "tsc -b && node dist/index.js"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
+    "@hono/zod-validator": "^0.4.2",
     "@prisma/client": "^6.0.1",
     "dotenv": "^16.4.7",
     "hono": "^4.6.13"

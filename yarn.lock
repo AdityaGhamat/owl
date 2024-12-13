@@ -261,10 +261,10 @@
   resolved "https://registry.npmjs.org/@hono/node-server/-/node-server-1.13.7.tgz"
   integrity sha512-kTfUMsoloVKtRA2fLiGSd9qBddmru9KadNyhJCwgKBxTiNkaAJEwkVN9KV/rS4HtmmNRtUh6P+YpmjRMl0d9vQ==
 
-"@hono/zod-validator@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.npmjs.org/@hono/zod-validator/-/zod-validator-0.4.1.tgz"
-  integrity sha512-I8LyfeJfvVmC5hPjZ2Iij7RjexlgSBT7QJudZ4JvNPLxn0JQ3sqclz2zydlwISAnw21D2n4LQ0nfZdoiv9fQQA==
+"@hono/zod-validator@^0.4.1", "@hono/zod-validator@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.npmjs.org/@hono/zod-validator/-/zod-validator-0.4.2.tgz"
+  integrity sha512-1rrlBg+EpDPhzOV4hT9pxr5+xDVmKuz6YJl+la7VCwK6ass5ldyKm5fD+umJdV2zhHD6jROoCCv8NbTwyfhT0g==
 
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
@@ -531,6 +531,7 @@
   version "1.0.0"
   resolved "file:packages/validations"
   dependencies:
+    http-status-codes "^2.3.0"
     mongoose "^8.8.3"
     zod "^3.23.8"
 
@@ -1493,6 +1494,7 @@ atomic-sleep@^1.0.0:
   version "1.0.0"
   resolved "file:apps/attendance"
   dependencies:
+    "@hono/node-server" "^1.13.7"
     "@prisma/client" "^6.0.1"
     dotenv "^16.4.7"
     hono "^4.6.13"

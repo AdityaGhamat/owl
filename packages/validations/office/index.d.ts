@@ -43,8 +43,8 @@ export declare const officeBaseSchema: z.ZodObject<{
     }>;
     status: z.ZodDefault<z.ZodEnum<["active", "inactive", "pending"]>>;
 }, "strip", z.ZodTypeAny, {
-    name: string;
     status: "active" | "inactive" | "pending";
+    name: string;
     location: {
         type: "Point";
         coordinates: [number, number];
@@ -205,8 +205,8 @@ export declare const updateOfficeSchema: z.ZodObject<{
     }>>;
     status: z.ZodOptional<z.ZodDefault<z.ZodEnum<["active", "inactive", "pending"]>>>;
 }, "strip", z.ZodTypeAny, {
-    name?: string | undefined;
     status?: "active" | "inactive" | "pending" | undefined;
+    name?: string | undefined;
     location?: {
         type: "Point";
         coordinates: [number, number];
@@ -224,8 +224,8 @@ export declare const updateOfficeSchema: z.ZodObject<{
         country: string;
     } | undefined;
 }, {
-    name?: string | undefined;
     status?: "active" | "inactive" | "pending" | undefined;
+    name?: string | undefined;
     location?: {
         type: "Point";
         coordinates: [number, number];
