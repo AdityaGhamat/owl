@@ -1,15 +1,10 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import {
-  GeofenceSchema,
-  GeofenceSchemaEdit,
-  QuerySchema,
-} from "@repo/validations/geofence";
+import { GeofenceSchema, GeofenceSchemaEdit } from "@repo/validations/geofence";
 import geofenceServices from "../services/geofence-services.js";
 import { SuccessResponse } from "../lib/success/success-response.js";
 import { StatusCodes } from "http-status-codes";
 import { ErrorResponse } from "../errors/error-response.js";
-import { ZodError } from "zod";
 
 const geofenceController = new Hono()
   .post("/create", zValidator("json", GeofenceSchema), async (c) => {

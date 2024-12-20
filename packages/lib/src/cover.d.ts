@@ -1,5 +1,6 @@
 import { IAuth } from "@repo/types/src/database";
 export declare function userCover(user: IAuth): {
+    id: string;
     name: string | undefined;
     email: string;
     role: "Employee" | "Manager" | "Admin" | "Other" | undefined;

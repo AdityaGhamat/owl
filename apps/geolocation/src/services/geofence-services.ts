@@ -129,6 +129,7 @@ class GeofenceServices {
     const coveredMembers = members.map((member) => userCover(member));
     return coveredMembers;
   }
+  private markAttendance(members: IAuth[]) {}
   async getMembersWithinRadius(office_id: string, radius: number) {
     const co_ordinates: [number, number] =
       await officeServices.co_ordinatesOfOffice(office_id);
