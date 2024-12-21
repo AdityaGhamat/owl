@@ -24,3 +24,46 @@ const members = z.array(membersSchema);
 const updateAttendanceSchema = AttendanceSchema.partial();
 
 export { AttendanceSchema, updateAttendanceSchema, members, membersSchema };
+
+/////////////////////////////////////////////////////
+
+const AttendanceStatusEnum = z.enum([
+  "PRESENT",
+  "ABSENT",
+  "ON_LEAVE",
+  "EXCUSED",
+]);
+const CheckInModeEnum = z.enum(["MANUAL", "AUTOMATIC"]);
+
+const AttendanceRecordSchema = z.object({
+  checkInTime: z.date({
+    required_error: "Check-in time is required",
+  }),
+  checkOutTime: z.date({
+    required_error: "Check-out time is required",
+  }),
+  status: AttendanceStatusEnum,
+  checkInMode: CheckInModeEnum,
+  isLate: z.boolean().default(false),
+});
+
+const HistoricalAttendanceSchema = z.object({
+  employeeId: z
+    .string({
+      required_error: "Employee ID is required",
+    })
+    .nonempty("Employee ID cannot be empty"),
+  date: z.date({
+    required_error: "Date is required",
+  }),
+  attendance: z.array(AttendanceRecordSchema).nonempty({
+    message: "Attendance records cannot be empty",
+  }),
+});
+
+export {
+  AttendanceStatusEnum,
+  CheckInModeEnum,
+  AttendanceRecordSchema,
+  HistoricalAttendanceSchema,
+};
