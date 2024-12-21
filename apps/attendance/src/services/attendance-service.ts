@@ -1,7 +1,12 @@
 import { HTTPException } from "hono/http-exception";
 import attendanceRepository from "../repository/attendance-repository.js";
-import { AttendanceCreation, updateAttendanceType } from "../types/servcies.js";
+import {
+  AttendanceCreation,
+  members,
+  updateAttendanceType,
+} from "../types/servcies.js";
 import { StatusCodes } from "http-status-codes";
+import { IAuth } from "@repo/types/src/database.js";
 
 class AttedanceService {
   async createAttendance(data: AttendanceCreation) {
@@ -52,6 +57,18 @@ class AttedanceService {
       });
     }
     return response;
+  }
+  async markAttendance(members: members) {
+    for (const member of members) {
+      const new_date = Date.now();
+      this.createAttendance({
+        employeeId: member.id,
+        date: new_date.toString(),
+        status: "PRESENT",
+        checkInMode: "AUTOMATIC",
+      });
+    }
+    return true;
   }
 }
 

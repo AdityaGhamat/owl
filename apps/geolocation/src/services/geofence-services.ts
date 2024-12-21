@@ -1,7 +1,7 @@
 import { HTTPException } from "hono/http-exception";
 import geofenceRepository from "../repository/geofence-repository.js";
 import { IGeofence } from "../types/database/geofence.js";
-import { geofenceCreation } from "../types/services/index.js";
+import { geofenceCreation, members } from "../types/services/index.js";
 import { StatusCodes } from "http-status-codes";
 import { userCover } from "@repo/lib/cover";
 import { IAuth } from "@repo/types/src/database.js";
@@ -124,12 +124,24 @@ class GeofenceServices {
       });
     }
   }
-
+  private async markAttendance(members: any) {
+    try {
+      const response = await axios.post<{ data: members }>(
+        `${serverConfig.ATTENDANCE_SERVICE}/api/v1/attendance/mark-attendance`,
+        members
+      );
+      const result = response?.data?.data;
+      return result;
+    } catch (error: any) {
+      throw new HTTPException(StatusCodes.BAD_REQUEST, {
+        message: "Failed to mark attendance with attendance service",
+      });
+    }
+  }
   private coverMembers(members: IAuth[]) {
     const coveredMembers = members.map((member) => userCover(member));
     return coveredMembers;
   }
-  private markAttendance(members: IAuth[]) {}
   async getMembersWithinRadius(office_id: string, radius: number) {
     const co_ordinates: [number, number] =
       await officeServices.co_ordinatesOfOffice(office_id);
@@ -141,8 +153,9 @@ class GeofenceServices {
         message: "Members not found",
       });
     }
-    const members = response.data?.data;
-    return this.coverMembers(members);
+    const members = this.coverMembers(response.data?.data);
+    await this.markAttendance(members);
+    return members;
   }
 
   async distanceBetUserAndOffice(

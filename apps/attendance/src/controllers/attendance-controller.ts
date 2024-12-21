@@ -5,9 +5,11 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import {
   AttendanceSchema,
+  members,
   updateAttendanceSchema,
 } from "@repo/validations/attendance";
 import { StatusCodes } from "http-status-codes";
+
 const app = new Hono()
   .post("/", zValidator("json", AttendanceSchema), async (c) => {
     const attendanceData = c.req.valid("json");
@@ -123,6 +125,24 @@ const app = new Hono()
       StatusCodes.OK,
       "Record found successfully",
       attendanceRecord
+    );
+  })
+  .post("/mark-attendance", zValidator("json", members), async (c) => {
+    console.log(c.req.json);
+    const membersList = c.req.valid("json");
+    console.log(membersList);
+    const response = await attendanceService.markAttendance(membersList);
+    if (!response) {
+      return ErrorResponse(
+        StatusCodes.BAD_REQUEST,
+        {},
+        "Failed to mark attendance"
+      );
+    }
+    return SuccessResponse(
+      StatusCodes.CREATED,
+      "Successfully marked attendance",
+      {}
     );
   });
 

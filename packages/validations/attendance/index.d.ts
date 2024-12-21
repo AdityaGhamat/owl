@@ -18,6 +18,50 @@ declare const AttendanceSchema: z.ZodObject<{
     checkInMode: "MANUAL" | "AUTOMATIC";
     id?: string | undefined;
 }>;
+declare const membersSchema: z.ZodObject<{
+    id: z.ZodString;
+    name: z.ZodString;
+    email: z.ZodString;
+    role: z.ZodEnum<["Employee", "Manager", "Admin"]>;
+    twoFactorEnabled: z.ZodBoolean;
+    isDeleted: z.ZodBoolean;
+}, "strip", z.ZodTypeAny, {
+    id: string;
+    name: string;
+    email: string;
+    role: "Employee" | "Manager" | "Admin";
+    twoFactorEnabled: boolean;
+    isDeleted: boolean;
+}, {
+    id: string;
+    name: string;
+    email: string;
+    role: "Employee" | "Manager" | "Admin";
+    twoFactorEnabled: boolean;
+    isDeleted: boolean;
+}>;
+declare const members: z.ZodArray<z.ZodObject<{
+    id: z.ZodString;
+    name: z.ZodString;
+    email: z.ZodString;
+    role: z.ZodEnum<["Employee", "Manager", "Admin"]>;
+    twoFactorEnabled: z.ZodBoolean;
+    isDeleted: z.ZodBoolean;
+}, "strip", z.ZodTypeAny, {
+    id: string;
+    name: string;
+    email: string;
+    role: "Employee" | "Manager" | "Admin";
+    twoFactorEnabled: boolean;
+    isDeleted: boolean;
+}, {
+    id: string;
+    name: string;
+    email: string;
+    role: "Employee" | "Manager" | "Admin";
+    twoFactorEnabled: boolean;
+    isDeleted: boolean;
+}>, "many">;
 declare const updateAttendanceSchema: z.ZodObject<{
     id: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     employeeId: z.ZodOptional<z.ZodString>;
@@ -37,5 +81,5 @@ declare const updateAttendanceSchema: z.ZodObject<{
     status?: "PRESENT" | "ABSENT" | "ON_LEAVE" | "EXCUSED" | undefined;
     checkInMode?: "MANUAL" | "AUTOMATIC" | undefined;
 }>;
-export { AttendanceSchema, updateAttendanceSchema };
+export { AttendanceSchema, updateAttendanceSchema, members, membersSchema };
 //# sourceMappingURL=index.d.ts.map
