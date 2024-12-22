@@ -1,4 +1,5 @@
 export type mailType = "verification_mail" | "reset_password_mail";
+
 export type verificationMailType = {
   email: string;
   verification_token: string;

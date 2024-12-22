@@ -26,6 +26,15 @@ class AttedanceService {
     }
     return response;
   }
+  async getAllAttendance() {
+    const response = await attendanceRepository.getAllAttendance();
+    if (!response) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "Attendance not found",
+      });
+    }
+    return response;
+  }
   async getAttendanceOfEmployee(employeeId: string) {
     const response =
       await attendanceRepository.getAttendanceByEmployeeId(employeeId);
@@ -57,17 +66,35 @@ class AttedanceService {
     }
     return response;
   }
-  async markAttendance(members: members) {
-    for (const member of members) {
-      const new_date = Date.now();
-      this.createAttendance({
-        employeeId: member.id,
-        date: new_date.toString(),
-        status: "PRESENT",
-        checkInMode: "AUTOMATIC",
+  async markAttendance(members: members, officeId: string) {
+    const new_date = Date.now();
+    const responses = await Promise.all(
+      members.map((member) =>
+        this.createAttendance({
+          officeId: officeId,
+          employeeId: member.id,
+          date: new_date.toString(),
+          status: "PRESENT",
+          checkInMode: "AUTOMATIC",
+        })
+      )
+    );
+    if (!responses) {
+      throw new HTTPException(StatusCodes.BAD_REQUEST, {
+        message: "Failed to mark attendance",
       });
     }
     return true;
+  }
+  async deleteAttendance(attendanceId: string) {
+    const response =
+      await attendanceRepository.deleteAttendnaceByAttendanceId(attendanceId);
+    if (!response) {
+      throw new HTTPException(StatusCodes.BAD_REQUEST, {
+        message: "Failed to delete attendance",
+      });
+    }
+    return response;
   }
 }
 

@@ -20,6 +20,7 @@ export interface IAttendanceRecord {
 }
 
 export interface IHistoricalAttendance {
+  officeId?: string;
   employeeId: string;
   date: Date;
   attendance: IAttendanceRecord[];

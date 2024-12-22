@@ -3,6 +3,8 @@ import {
   CreateAttendanceData,
   UpdateAttendanceData,
 } from "../types/repository.js";
+import { HTTPException } from "hono/http-exception";
+import { StatusCodes } from "http-status-codes";
 
 const prisma = new PrismaClient();
 
@@ -12,6 +14,7 @@ class AttendanceRepository {
       const newAttendance = await prisma.attendance.create({
         data: {
           employeeId: data.employeeId,
+          officeId: data.officeId,
           date: new Date(),
           checkInTime: data.checkInTime || new Date(),
           status: data.status,
@@ -42,6 +45,14 @@ class AttendanceRepository {
     }
   }
 
+  async getAllAttendance(): Promise<Attendance[]> {
+    try {
+      const response = await prisma.attendance.findMany();
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
   async getAttendanceByEmployeeId(employeeId: string): Promise<Attendance[]> {
     try {
       const attendanceRecords = await prisma.attendance.findMany({
@@ -70,7 +81,19 @@ class AttendanceRepository {
       throw error;
     }
   }
-
+  async getAttendanceByAttendanceId(attendanceId: string): Promise<any> {
+    const attendance = await prisma.attendance.findFirst({
+      where: {
+        id: attendanceId,
+      },
+    });
+    if (!attendance) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "Attendance not found",
+      });
+    }
+    return attendance;
+  }
   async getAttendanceByEmployeeAndDate(
     employeeId: string,
     date: Date
@@ -84,6 +107,18 @@ class AttendanceRepository {
       });
       return attendanceRecord;
     } catch (error: any) {
+      throw error;
+    }
+  }
+  async deleteAttendnaceByAttendanceId(attendanceId: string): Promise<boolean> {
+    try {
+      await prisma.attendance.delete({
+        where: {
+          id: attendanceId,
+        },
+      });
+      return true;
+    } catch (error) {
       throw error;
     }
   }

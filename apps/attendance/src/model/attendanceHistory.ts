@@ -6,6 +6,9 @@ import {
 } from "../types/database.js";
 
 const attendanceHistorySchema = new Schema<IHistoricalAttendance>({
+  officeId: {
+    type: String,
+  },
   employeeId: {
     type: String,
     required: true,

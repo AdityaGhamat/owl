@@ -3,10 +3,10 @@ import { z } from "zod";
 const AttendanceSchema = z.object({
   id: z.string().uuid().optional(),
   employeeId: z.string(),
+  officeId: z.string(),
   date: z.string().datetime({
     offset: true,
   }),
-
   status: z.enum(["PRESENT", "ABSENT", "ON_LEAVE", "EXCUSED"]),
   checkInMode: z.enum(["MANUAL", "AUTOMATIC"]),
 });
@@ -53,6 +53,7 @@ const AttendanceRecordSchema = z.object({
 });
 
 const HistoricalAttendanceSchema = z.object({
+  officeId: z.string(),
   employeeId: z
     .string({
       required_error: "Employee ID is required",

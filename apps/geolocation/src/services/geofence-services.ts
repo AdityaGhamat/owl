@@ -124,10 +124,10 @@ class GeofenceServices {
       });
     }
   }
-  private async markAttendance(members: any) {
+  private async markAttendance(members: any, officeId: string) {
     try {
       const response = await axios.post<{ data: members }>(
-        `${serverConfig.ATTENDANCE_SERVICE}/api/v1/attendance/mark-attendance`,
+        `${serverConfig.ATTENDANCE_SERVICE}/api/v1/attendance/mark-attendance?officeId=${officeId}`,
         members
       );
       const result = response?.data?.data;
@@ -154,7 +154,7 @@ class GeofenceServices {
       });
     }
     const members = this.coverMembers(response.data?.data);
-    await this.markAttendance(members);
+    await this.markAttendance(members, office_id);
     return members;
   }
 

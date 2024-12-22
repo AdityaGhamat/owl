@@ -130,8 +130,12 @@ const app = new Hono()
   .post("/mark-attendance", zValidator("json", members), async (c) => {
     console.log(c.req.json);
     const membersList = c.req.valid("json");
+    const officeId = c.req.query("officeId");
     console.log(membersList);
-    const response = await attendanceService.markAttendance(membersList);
+    const response = await attendanceService.markAttendance(
+      membersList,
+      officeId as string
+    );
     if (!response) {
       return ErrorResponse(
         StatusCodes.BAD_REQUEST,
