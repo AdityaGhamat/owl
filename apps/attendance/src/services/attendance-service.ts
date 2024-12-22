@@ -6,7 +6,6 @@ import {
   updateAttendanceType,
 } from "../types/servcies.js";
 import { StatusCodes } from "http-status-codes";
-import { IAuth } from "@repo/types/src/database.js";
 
 class AttedanceService {
   async createAttendance(data: AttendanceCreation) {

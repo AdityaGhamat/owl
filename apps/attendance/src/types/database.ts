@@ -19,8 +19,7 @@ export interface IAttendanceRecord {
   isLate: boolean;
 }
 
-export interface IHistoricalAttendance extends Document {
-  _id: string;
+export interface IHistoricalAttendance {
   employeeId: string;
   date: Date;
   attendance: IAttendanceRecord[];

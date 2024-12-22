@@ -3,6 +3,7 @@ import { serve } from "@hono/node-server";
 import { HTTPException } from "hono/http-exception";
 import { cors } from "hono/cors";
 import apiRoutes from "./routers/index.js";
+import connectionDb from "./config/mongoose-config.js";
 class Server {
   private app: Hono;
   constructor() {
@@ -27,7 +28,8 @@ class Server {
   private routes() {
     this.app.route("/api", apiRoutes);
   }
-  public start() {
+  public async start() {
+    await connectionDb();
     serve({
       fetch: this.app.fetch,
       port: 3008,

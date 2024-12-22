@@ -4,8 +4,8 @@ export interface CreateAttendanceData {
   employeeId: string;
   status: AttendanceStatus;
   checkInMode: CheckInMode;
-  checkInTime?: Date;
-  checkOutTime?: Date;
+  checkInTime?: string;
+  checkOutTime?: string;
   isLate?: boolean;
 }
 

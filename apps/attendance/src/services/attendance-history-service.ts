@@ -1,10 +1,9 @@
 import { HTTPException } from "hono/http-exception";
 import attendanceHistoryRepository from "../repository/attendance-history-repository.js";
-import { IHistoricalAttendance } from "../types/database.js";
 import { StatusCodes } from "http-status-codes";
-
+import { AttendanceHistoryCreation } from "../types/servcies.js";
 class AttendanceHistoryService {
-  public async create(data: IHistoricalAttendance) {
+  public async create(data: AttendanceHistoryCreation) {
     const response = await attendanceHistoryRepository.create(data);
     if (!response) {
       throw new HTTPException(StatusCodes.BAD_REQUEST, {

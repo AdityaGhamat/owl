@@ -26,14 +26,19 @@ const updateAttendanceSchema = AttendanceSchema.partial();
 export { AttendanceSchema, updateAttendanceSchema, members, membersSchema };
 
 /////////////////////////////////////////////////////
+export enum AttendanceStatus {
+  PRESENT = "PRESENT",
+  ABSENT = "ABSENT",
+  ON_LEAVE = "ON_LEAVE",
+  EXCUSED = "EXCUSED",
+}
 
-const AttendanceStatusEnum = z.enum([
-  "PRESENT",
-  "ABSENT",
-  "ON_LEAVE",
-  "EXCUSED",
-]);
-const CheckInModeEnum = z.enum(["MANUAL", "AUTOMATIC"]);
+export enum CheckInMode {
+  MANUAL = "MANUAL",
+  AUTOMATIC = "AUTOMATIC",
+}
+const AttendanceStatusEnum = z.nativeEnum(AttendanceStatus);
+const CheckInModeEnum = z.nativeEnum(CheckInMode);
 
 const AttendanceRecordSchema = z.object({
   checkInTime: z.date({
