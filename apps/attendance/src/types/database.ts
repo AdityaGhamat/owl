@@ -1,4 +1,5 @@
 import { Document } from "mongoose";
+
 export enum AttendanceStatus {
   PRESENT = "PRESENT",
   ABSENT = "ABSENT",
@@ -12,21 +13,25 @@ export enum CheckInMode {
 }
 
 export interface IAttendanceRecord {
-  checkInTime: Date;
-  checkOutTime: Date;
-  status: AttendanceStatus;
-  checkInMode: CheckInMode;
-  isLate: boolean;
+  officeId: string; // Required office ID in each attendance record
+  employeeId: string; // Required employee ID in each attendance record
+  checkInTime: Date | null; // Check-in time (nullable)
+  checkOutTime: Date | null; // Check-out time (nullable)
+  status: AttendanceStatus; // Attendance status
+  checkInMode: CheckInMode; // Mode of check-in
+  isLate: boolean; // Whether the employee was late
 }
 
 export interface IHistoricalAttendance {
-  officeId?: string;
-  employeeId: string;
-  date: Date;
-  attendance: IAttendanceRecord[];
+  date: Date; // The date for the historical attendance record
+  attendance: IAttendanceRecord[]; // Array of attendance records for that day
 }
 
 export type IHistoricalAttendanceRepositoryType = Omit<
   IHistoricalAttendance,
   "_id"
 >;
+
+export interface IHistoricalAttendanceDocument
+  extends IHistoricalAttendance,
+    Document {}

@@ -4,6 +4,7 @@ import { HTTPException } from "hono/http-exception";
 import { cors } from "hono/cors";
 import apiRoutes from "./routers/index.js";
 import connectionDb from "./config/mongoose-config.js";
+import startJob from "./jobs/index.js";
 class Server {
   private app: Hono;
   constructor() {
@@ -30,6 +31,7 @@ class Server {
   }
   public async start() {
     await connectionDb();
+    startJob();
     serve({
       fetch: this.app.fetch,
       port: 3008,

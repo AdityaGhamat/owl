@@ -50,15 +50,15 @@ const AttendanceRecordSchema = z.object({
   status: AttendanceStatusEnum,
   checkInMode: CheckInModeEnum,
   isLate: z.boolean().default(false),
-});
-
-const HistoricalAttendanceSchema = z.object({
   officeId: z.string(),
   employeeId: z
     .string({
       required_error: "Employee ID is required",
     })
     .nonempty("Employee ID cannot be empty"),
+});
+
+const HistoricalAttendanceSchema = z.object({
   date: z.date({
     required_error: "Date is required",
   }),

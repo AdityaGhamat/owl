@@ -6,21 +6,16 @@ import {
 } from "../types/database.js";
 
 const attendanceHistorySchema = new Schema<IHistoricalAttendance>({
-  officeId: {
-    type: String,
-  },
-  employeeId: {
-    type: String,
-    required: true,
-  },
   date: {
     type: Date,
     required: true,
   },
   attendance: [
     {
-      checkInTime: { type: Date, required: true },
-      checkOutTime: { type: Date, required: true },
+      officeId: { type: String, required: true }, // Added officeId in attendance array
+      employeeId: { type: String, required: true }, // Added employeeId in attendance array
+      checkInTime: { type: Date, default: null },
+      checkOutTime: { type: Date, default: null },
       status: {
         type: String,
         enum: Object.values(AttendanceStatus),
@@ -35,8 +30,10 @@ const attendanceHistorySchema = new Schema<IHistoricalAttendance>({
     },
   ],
 });
+
 const HistoricalAttendance = model<IHistoricalAttendance>(
   "HistoricalAttendance",
   attendanceHistorySchema
 );
+
 export default HistoricalAttendance;
