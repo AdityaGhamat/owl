@@ -40,6 +40,7 @@ app.put(
 );
 app.get("/distance", authValidator, userController.getDistanceFromOffice);
 app.get("/location", authValidator, userController.getUserLocation);
+app.put("/location", authValidator, userController.updateLocation);
 export default app;
 
 //add zvalidator schema for validating params in getdistance and validate it

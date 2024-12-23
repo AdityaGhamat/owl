@@ -5,9 +5,8 @@ import ResponseUtil from "../lib/response.js";
 import { CustomRequest } from "../types/system.js";
 import session from "../lib/session.js";
 import { userCover } from "../lib/response_covers.js";
-import { sendVerificationMail } from "../lib/mail-producer.js";
 import { StatusCodes } from "http-status-codes";
-import type { emailType, passwordType, officeIdType } from "../types/auth.js";
+import type { emailType, passwordType } from "../types/auth.js";
 
 class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
@@ -203,6 +202,31 @@ class UserController {
         StatusCodes.OK,
         "Successfully found the users's coordinates.",
         coordinates
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateLocation(req: CustomRequest, res: Response, next: NextFunction) {
+    try {
+      const id = req.user_id;
+      const { location } = req.body;
+      const updatedLocation = await userServices.updateLocation(
+        id as string,
+        location
+      );
+      if (!updatedLocation.id) {
+        return ResponseUtil.errorResponse(
+          res,
+          StatusCodes.BAD_REQUEST,
+          "Failed to update location"
+        );
+      }
+      return ResponseUtil.successResponse(
+        res,
+        StatusCodes.OK,
+        "Location updated successfully"
       );
     } catch (error) {
       next(error);

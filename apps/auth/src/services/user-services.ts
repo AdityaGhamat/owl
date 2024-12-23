@@ -211,6 +211,28 @@ class UserServices {
       throw error;
     }
   }
+
+  async updateLocation(id: string, data: IAuth["location"]) {
+    try {
+      const user: IAuth = await this.getUser(id);
+      if (!user) {
+        throw new NotFoundException("User not found");
+      }
+      const new_user = await authRepository.findByIdAndUpdate(
+        id,
+        {
+          location: data,
+        },
+        { new: true }
+      );
+      if (!new_user) {
+        throw new BadRequestException("Failed to update location");
+      }
+      return { id: user._id };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new UserServices();
