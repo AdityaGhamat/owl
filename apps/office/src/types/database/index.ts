@@ -19,6 +19,8 @@ export interface IOffice {
     zipCode: string;
     country: string;
   };
+  startTime?: string;
+  endTime?: string;
   status: "active" | "inactive" | "pending";
   createdAt?: Date;
   updatedAt?: Date;

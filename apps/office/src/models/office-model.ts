@@ -50,6 +50,12 @@ const officeSchema = new Schema<IOffice>(
         required: true,
       },
     },
+    startTime: {
+      type: String,
+    },
+    endTime: {
+      type: String,
+    },
     status: {
       type: String,
       enum: ["active", "inactive", "pending"],

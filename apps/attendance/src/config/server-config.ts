@@ -3,4 +3,5 @@ config();
 export default {
   DATABASE_URL: process.env.DATABASE_URL,
   DATABASE_URL_ATTENDANCE_HISTORY: process.env.DATABASE_URL_ATTENDANCE_HISTORY,
+  OFFICE_SERVICE: process.env.OFFICE_SERVICE,
 };

@@ -24,6 +24,8 @@ export const officeBaseSchema = z.object({
   location: locationSchema,
   contactDetails: contactDetailsSchema,
   address: addressSchema,
+  startTime: z.string().optional(),
+  endTime: z.string().optional(),
   status: z.enum(["active", "inactive", "pending"]).default("active"),
 });
 

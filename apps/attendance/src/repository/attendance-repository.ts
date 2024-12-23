@@ -122,6 +122,27 @@ class AttendanceRepository {
       throw error;
     }
   }
+  async lateAttendanceByEmployeeId(employeeId: string): Promise<number> {
+    try {
+      const response = await prisma.attendance.updateMany({
+        where: {
+          employeeId: employeeId,
+        },
+        data: {
+          isLate: true,
+        },
+      });
+      if (response.count == 0) {
+        throw new HTTPException(StatusCodes.BAD_REQUEST, {
+          message: "Failed to update isLate status",
+        });
+      }
+      const count = response.count;
+      return count;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new AttendanceRepository();
