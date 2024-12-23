@@ -8,9 +8,7 @@ class AdminController {
   async findMembers(req: Request, res: Response, next: NextFunction) {
     try {
       const { officeId } = req.query;
-      console.log(officeId, "inside admincontroller");
       const response = await adminServices.findMembers(officeId as string);
-      console.log(response);
       if (!response || response.length === 0) {
         return ResponseUtil.errorResponse(
           res,
@@ -32,16 +30,10 @@ class AdminController {
   async findUsersWithinRadius(req: Request, res: Response, next: NextFunction) {
     try {
       const { lat, lng, rd } = req.query;
-      console.log(lat, lng, rd, "in controller");
       const latitude = Number(lat);
       const longitude = Number(lng);
       const radius = Number(rd);
-      console.log(
-        latitude,
-        longitude,
-        radius,
-        "in controller but converted in number"
-      );
+
       const center: [number, number] = [latitude, longitude];
       const response = await adminServices.findUsersWithinRadius(
         center,
