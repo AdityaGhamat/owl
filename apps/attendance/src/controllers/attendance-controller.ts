@@ -9,6 +9,7 @@ import {
   updateAttendanceSchema,
 } from "@repo/validations/attendance";
 import { StatusCodes } from "http-status-codes";
+import AttendanceOfficeServices from "../services/attendance-office-services.js";
 
 const app = new Hono()
   .post("/", zValidator("json", AttendanceSchema), async (c) => {
@@ -128,10 +129,8 @@ const app = new Hono()
     );
   })
   .post("/mark-attendance", zValidator("json", members), async (c) => {
-    console.log(c.req.json);
     const membersList = c.req.valid("json");
     const officeId = c.req.query("officeId");
-    console.log(membersList);
     const response = await attendanceService.markAttendance(
       membersList,
       officeId as string
@@ -147,6 +146,31 @@ const app = new Hono()
       StatusCodes.CREATED,
       "Successfully marked attendance",
       {}
+    );
+  })
+  .post("/present-members", zValidator("json", members), async (c) => {
+    const members = c.req.valid("json");
+    const { office_id } = c.req.query();
+    if (!office_id) {
+      return ErrorResponse(
+        StatusCodes.BAD_REQUEST,
+        {},
+        "office_id in query is required"
+      );
+    }
+    const officeService = new AttendanceOfficeServices(office_id);
+    const presentEmployees = await officeService.isOfficeUserPresent(members);
+    if (!presentEmployees) {
+      return ErrorResponse(
+        StatusCodes.NOT_FOUND,
+        {},
+        "Present members not found"
+      );
+    }
+    return SuccessResponse(
+      StatusCodes.OK,
+      "Present members are found",
+      presentEmployees
     );
   });
 

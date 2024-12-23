@@ -39,11 +39,11 @@ class OfficeRepository implements ICrudRepositoryOrganization<IOffice> {
   }
 
   async findByIdAndUpdate(
-    id: string,
+    _id: any,
     data: Partial<IOffice>,
     options: Record<string, unknown>
   ): Promise<IOffice | null> {
-    const office = await this.model.findByIdAndUpdate(id, data, options);
+    const office = await this.model.findByIdAndUpdate(_id, data, options);
     return office;
   }
   async findByIdAndDelete(id: string): Promise<boolean> {

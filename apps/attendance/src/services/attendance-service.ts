@@ -6,6 +6,7 @@ import {
   updateAttendanceType,
 } from "../types/servcies.js";
 import { StatusCodes } from "http-status-codes";
+import AttendanceOfficeServices from "./attendance-office-services.js";
 
 class AttedanceService {
   async createAttendance(data: AttendanceCreation) {
@@ -65,6 +66,11 @@ class AttedanceService {
       });
     }
     return response;
+  }
+  async presentEmployees(members: members, officeId: string) {
+    const officeServices = new AttendanceOfficeServices(officeId);
+    const presentEmployees = await officeServices.isOfficeUserPresent(members);
+    return presentEmployees;
   }
   async markAttendance(members: members, officeId: string) {
     const new_date = Date.now();

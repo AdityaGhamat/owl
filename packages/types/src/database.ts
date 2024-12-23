@@ -63,6 +63,7 @@ export interface IOffice {
     zipCode: string;
     country: string;
   };
+  employees?: [string];
   startTime?: string;
   endTime?: string;
   status: "active" | "inactive" | "pending";

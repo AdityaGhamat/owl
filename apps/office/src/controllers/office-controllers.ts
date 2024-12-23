@@ -117,6 +117,18 @@ const officeControllers = new Hono()
     return SuccessResponse(StatusCodes.ACCEPTED, "Joined office successfully", {
       employees,
     });
+  })
+  .get("/employees", async (c) => {
+    const { office_id } = c.req.query();
+    const response = await officeServices.getEmployees(office_id as string);
+    if (!response) {
+      return ErrorResponse(StatusCodes.NOT_FOUND, {}, "Employee not found");
+    }
+    return SuccessResponse(
+      StatusCodes.OK,
+      "Employee found successfully",
+      response
+    );
   });
 
 export default officeControllers;

@@ -64,7 +64,7 @@ class OfficeServices {
   async joinOffice(office_id: string, user_id: string) {
     const new_employee = await officeRepository.findByIdAndUpdate(
       office_id,
-      { $push: { employees: user_id } } as UpdateQuery<IOffice>,
+      { $addToSet: { employees: user_id } } as UpdateQuery<IOffice>,
       { new: true }
     );
     if (!new_employee) {
@@ -73,6 +73,16 @@ class OfficeServices {
       });
     }
     return { employees: new_employee.employees };
+  }
+  async getEmployees(office_id: string) {
+    const office = await this.findOfficeById(office_id);
+    if (!office || !office.employees) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "Employees not found",
+      });
+    }
+    const employees = office.employees;
+    return employees;
   }
 }
 
