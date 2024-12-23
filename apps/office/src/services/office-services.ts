@@ -4,7 +4,7 @@ import axios from "axios";
 import serverConfig from "../config/server-config.js";
 import { HTTPException } from "hono/http-exception";
 import { StatusCodes } from "http-status-codes";
-
+import { UpdateQuery } from "mongoose";
 class OfficeServices {
   async createOffice(data: Partial<IOffice>) {
     let office;
@@ -53,15 +53,26 @@ class OfficeServices {
     return true;
   }
   async co_ordinatesById(id: string) {
-    console.log(id, "before findbyId in services");
     const location = await officeRepository.findById(id, ["location"]);
-    console.log(location, "after findbyId in services");
     if (!location) {
       throw new HTTPException(StatusCodes.NOT_FOUND, {
         message: "location not found",
       });
     }
     return location;
+  }
+  async joinOffice(office_id: string, user_id: string) {
+    const new_employee = await officeRepository.findByIdAndUpdate(
+      office_id,
+      { $push: { employees: user_id } } as UpdateQuery<IOffice>,
+      { new: true }
+    );
+    if (!new_employee) {
+      throw new HTTPException(StatusCodes.BAD_REQUEST, {
+        message: "Failed to join office",
+      });
+    }
+    return { employees: new_employee.employees };
   }
 }
 

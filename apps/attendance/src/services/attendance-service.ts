@@ -86,6 +86,7 @@ class AttedanceService {
     }
     return true;
   }
+
   async deleteAttendance(attendanceId: string) {
     const response =
       await attendanceRepository.deleteAttendnaceByAttendanceId(attendanceId);

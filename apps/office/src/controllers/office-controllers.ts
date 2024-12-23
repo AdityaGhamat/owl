@@ -106,6 +106,17 @@ const officeControllers = new Hono()
       "Office found successfully",
       response
     );
+  })
+  .put("/join-office", async (c) => {
+    const { user_id, office_id } = c.req.query();
+    const response = await officeServices.joinOffice(
+      office_id as string,
+      user_id as string
+    );
+    const { employees } = response;
+    return SuccessResponse(StatusCodes.ACCEPTED, "Joined office successfully", {
+      employees,
+    });
   });
 
 export default officeControllers;
