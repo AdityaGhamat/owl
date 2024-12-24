@@ -27,7 +27,7 @@ class UserController {
         return ResponseUtil.errorResponse(res, 400, "User creation failed");
       }
       await session.createSession(user.user_id!, res);
-      await sendVerificationMail(user.user_id!, user.email);
+      // await sendVerificationMail(user.user_id!, user.email);
       ResponseUtil.successResponse(res, 201, "User created successfully", user);
     } catch (error: any) {
       logger.error(error.message);

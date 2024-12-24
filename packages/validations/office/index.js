@@ -23,6 +23,8 @@ exports.officeBaseSchema = zod_1.z.object({
     location: locationSchema,
     contactDetails: contactDetailsSchema,
     address: addressSchema,
+    startTime: zod_1.z.string().optional(),
+    endTime: zod_1.z.string().optional(),
     status: zod_1.z.enum(["active", "inactive", "pending"]).default("active"),
 });
 exports.createOfficeSchema = exports.officeBaseSchema.omit({

@@ -9,6 +9,7 @@ import officeServices from "./office-services.js";
 import serverConfig from "../config/server-config.js";
 import axios from "axios";
 import geolib from "geolib";
+import MessageProducer from "../lib/queue/producer.js";
 class GeofenceServices {
   async createFence(data: geofenceCreation) {
     let fence;
@@ -139,6 +140,19 @@ class GeofenceServices {
       });
     }
   }
+  private async markAttendanceByQueue(members: any, officeId: string) {
+    try {
+      const message = { members, officeId };
+      const messageProducer = new MessageProducer("attendance_queue", message);
+      await messageProducer.markAttendance();
+    } catch (error: any) {
+      throw new HTTPException(StatusCodes.BAD_REQUEST, {
+        message:
+          "Failed to mark attendance with attendance service,error: " +
+          error.message,
+      });
+    }
+  }
   private coverMembers(members: IAuth[]) {
     const coveredMembers = members.map((member) => userCover(member));
     return coveredMembers;
@@ -155,7 +169,8 @@ class GeofenceServices {
       });
     }
     const members = this.coverMembers(response.data?.data);
-    await this.markAttendance(members, office_id);
+    // await this.markAttendance(members, office_id);
+    await this.markAttendanceByQueue(members, office_id);
     return members;
   }
 

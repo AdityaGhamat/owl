@@ -1,11 +1,12 @@
 import { connect } from "amqplib";
 import type { Channel, Connection } from "amqplib";
 import type { mailType } from "@repo/types/src/mail.js";
+import type { attendance_queue } from "@repo/types/src/attendance.js";
 class MessageQueue {
   private channel: Channel | null = null;
   private connection: Connection | null = null;
   private readonly url: string;
-  private readonly queueName: mailType;
+  private readonly queueName: mailType | attendance_queue;
 
   constructor(
     queueName: mailType,
