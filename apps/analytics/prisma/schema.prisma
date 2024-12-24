@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model AttendanceAnalytics {
+  id               String         @id @default(uuid()) @db.Uuid
+  attendanceDate   DateTime
+  officeId         String
+  totalEmployees   Int
+  employeeCountByStatus Json
+  avgCheckInTime   Float
+  avgCheckOutTime  Float
+  avgLatePercentage Float
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model EmployeeAnalytics {
+  id               String         @id @default(uuid()) @db.Uuid
+  employeeId       String
+  officeId         String
+  totalDaysPresent Int
+  totalDaysAbsent  Int
+  totalDaysOnLeave Int
+  lateCount        Int
+  avgCheckInTime   Float
+  avgCheckOutTime  Float
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model OfficeAnalytics {
+  id                      String         @id @default(uuid()) @db.Uuid
+  officeId                String
+  attendanceDate          DateTime
+  totalEmployeesPresent   Int
+  totalEmployeesAbsent    Int
+  totalEmployeesOnLeave   Int
+  avgEmployeesLate        Float
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+}

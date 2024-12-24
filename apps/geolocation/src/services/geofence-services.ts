@@ -169,7 +169,7 @@ class GeofenceServices {
       });
     }
     const members = this.coverMembers(response.data?.data);
-    // await this.markAttendance(members, office_id);
+    // await this.markAttendance(members, office_id); apply this only in direct sync calls
     await this.markAttendanceByQueue(members, office_id);
     return members;
   }

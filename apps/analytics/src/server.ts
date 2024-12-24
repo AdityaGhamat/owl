@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
+import messageConsume from "./lib/queue/consumer.js";
 class Server {
   private app: Hono;
   constructor() {
@@ -12,6 +13,7 @@ class Server {
   private errorConfig() {}
   private routes() {}
   public async start() {
+    await messageConsume.consume();
     serve({
       fetch: this.app.fetch,
       port: 3009,
