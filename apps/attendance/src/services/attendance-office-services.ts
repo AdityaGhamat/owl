@@ -3,7 +3,7 @@ import serverConfig from "../config/server-config.js";
 import { IOffice } from "@repo/types/src/database.js";
 import { HTTPException } from "hono/http-exception";
 import { StatusCodes } from "http-status-codes";
-import { members } from "../types/servcies.js";
+import { members } from "../types/services.js";
 class AttendanceOfficeServices {
   private office_id: string;
   constructor(office_id: string) {

@@ -7,6 +7,7 @@ import session from "../lib/session.js";
 import { userCover } from "../lib/response_covers.js";
 import { StatusCodes } from "http-status-codes";
 import type { emailType, passwordType } from "../types/auth.js";
+import { sendVerificationMail } from "../lib/mail-producer.js";
 
 class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
@@ -26,7 +27,7 @@ class UserController {
         return ResponseUtil.errorResponse(res, 400, "User creation failed");
       }
       await session.createSession(user.user_id!, res);
-      // await sendVerificationMail(user.user_id!, user.email);
+      await sendVerificationMail(user.user_id!, user.email);
       ResponseUtil.successResponse(res, 201, "User created successfully", user);
     } catch (error: any) {
       logger.error(error.message);

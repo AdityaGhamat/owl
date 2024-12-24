@@ -4,7 +4,7 @@ import {
   AttendanceCreation,
   members,
   updateAttendanceType,
-} from "../types/servcies.js";
+} from "../types/services.js";
 import { StatusCodes } from "http-status-codes";
 import AttendanceOfficeServices from "./attendance-office-services.js";
 

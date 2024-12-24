@@ -1,7 +1,7 @@
 import { HTTPException } from "hono/http-exception";
 import attendanceHistoryRepository from "../repository/attendance-history-repository.js";
 import { StatusCodes } from "http-status-codes";
-import { AttendanceHistoryCreation } from "../types/servcies.js";
+import { AttendanceHistoryCreation } from "../types/services.js";
 class AttendanceHistoryService {
   public async create(data: AttendanceHistoryCreation) {
     const response = await attendanceHistoryRepository.create(data);

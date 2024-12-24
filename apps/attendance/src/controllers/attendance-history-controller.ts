@@ -5,7 +5,7 @@ import attendanceHistoryService from "../services/attendance-history-service.js"
 import { ErrorResponse } from "../lib/error-response.js";
 import { StatusCodes } from "http-status-codes";
 import { SuccessResponse } from "../lib/success-response.js";
-import { AttendanceQueryArgs } from "../types/servcies.js";
+import { AttendanceQueryArgs } from "../types/services.js";
 
 const app = new Hono()
   .post(

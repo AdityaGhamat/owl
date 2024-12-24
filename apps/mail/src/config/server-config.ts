@@ -5,4 +5,5 @@ export default {
   NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
   CLIENT_URL: process.env.CLIENT_URL,
   SENDER: process.env.SENDER,
+  QUEUE_URL_EMAIL: process.env.QUEUE_URL_EMAIL,
 };

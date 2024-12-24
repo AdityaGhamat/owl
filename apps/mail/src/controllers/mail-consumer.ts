@@ -15,7 +15,10 @@ class MailConsumer {
     mailServices: MailServices
   ) {
     this.mailServices = mailServices;
-    this.messageQueue = new MessageQueue(queueName);
+    this.messageQueue = new MessageQueue(
+      queueName,
+      serverConfig.QUEUE_URL_EMAIL
+    );
   }
   async initialize() {
     await this.messageQueue.initConnection();

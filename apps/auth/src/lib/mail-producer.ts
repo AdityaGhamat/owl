@@ -6,10 +6,14 @@ import type {
 } from "@repo/types/src/mail.js";
 import TokenServices from "../services/token-services.js";
 import logger from "../config/logger-config.js";
+import serverConfig from "../config/server-config.js";
 
 async function verification_Mail(message: verificationMailType) {
   const queueName: mailType = "verification_mail";
-  const messageQueue = new MessageQueue(queueName);
+  const messageQueue = new MessageQueue(
+    queueName,
+    serverConfig.QUEUE_URL_EMAIL
+  ); //keep it empty if not have clould queue instance
   await messageQueue.initConnection();
   await messageQueue.sendMessage(message);
   console.log("Verification email task added to the queue.");
@@ -17,7 +21,10 @@ async function verification_Mail(message: verificationMailType) {
 }
 async function reset_Password_Mail(message: resetPasswordMailType) {
   const queueName: mailType = "reset_password_mail";
-  const messageQueue = new MessageQueue(queueName);
+  const messageQueue = new MessageQueue(
+    queueName,
+    serverConfig.QUEUE_URL_EMAIL
+  ); //keep it empty if not have clould queue instance
   await messageQueue.initConnection();
   await messageQueue.sendMessage(message);
   console.log("ResetPassoword email task added to queue");

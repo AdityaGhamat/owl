@@ -130,6 +130,7 @@ class GeofenceServices {
         `${serverConfig.ATTENDANCE_SERVICE}/api/v1/attendance/mark-attendance?officeId=${officeId}`,
         members
       );
+      //call here analytics service to check weather employee is present or not
       const result = response?.data?.data;
       return result;
     } catch (error: any) {
