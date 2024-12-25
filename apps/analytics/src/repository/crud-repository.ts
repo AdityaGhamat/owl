@@ -3,7 +3,7 @@ import { ICrudRepository } from "@repo/types/src/common.js";
 
 export class CrudRepository<T, K> implements ICrudRepository<T, K> {
   constructor(
-    private prisma: PrismaClient,
+    protected prisma: PrismaClient,
     protected model: any
   ) {
     this.prisma = prisma;
@@ -26,15 +26,15 @@ export class CrudRepository<T, K> implements ICrudRepository<T, K> {
     return this.model.findMany(args);
   }
 
-  async findUnique(user_id: K): Promise<T | null> {
+  async findUnique(id: K): Promise<T | null> {
     return this.model.findUnique({
-      where: { user_id: user_id },
+      where: { id },
     });
   }
 
-  async update(user_id: K, data: Partial<T>): Promise<T> {
+  async update(id: K, data: Partial<T>): Promise<T> {
     return this.model.update({
-      where: { user_id },
+      where: { id },
       data,
     });
   }
