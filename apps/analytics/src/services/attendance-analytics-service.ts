@@ -43,9 +43,9 @@ class AttendanceAnalyticsService {
     let avgCheckOutTimeNumber: number = 0;
     let avgLatePercentageNumber: number = 0;
     for (const record of records) {
-      avgCheckInTimeNumber += record.avgCheckInTime as number;
-      avgCheckOutTimeNumber += record.avgCheckOutTime as number;
-      avgLatePercentageNumber += record.avgLatePercentage as number;
+      avgCheckInTimeNumber += (record.avgCheckInTime ?? 0) as number;
+      avgCheckOutTimeNumber += (record.avgCheckOutTime ?? 0) as number;
+      avgLatePercentageNumber += (record.avgLatePercentage ?? 0) as number;
     }
     const overallAvgCheckInTime = avgCheckInTimeNumber / length;
     const overallAvgCheckOutTime = avgCheckOutTimeNumber / length;
@@ -60,11 +60,17 @@ class AttendanceAnalyticsService {
   public async updateAvgWithOfficeId(officeId: string) {
     const records =
       await this.attendance.findAllAttendanceWithOfficeId(officeId);
+    const formattedRecords = records.map((record) => ({
+      ...record,
+      avgCheckInTime: record.avgCheckInTime ?? undefined,
+      avgCheckOutTime: record.avgCheckOutTime ?? undefined,
+      avgLatePercentage: record.avgLatePercentage ?? undefined,
+    }));
     const {
       overallAvgCheckInTime,
       overallAvgCheckOutTime,
       overallAvgLatePercentage,
-    } = this.findAverage(records);
+    } = this.findAverage(formattedRecords);
     const response = await this.attendance.avgTimesOfOfficeWithOfficeId(
       officeId,
       overallAvgCheckInTime,
@@ -76,11 +82,17 @@ class AttendanceAnalyticsService {
 
   public async updateAvgWithId(id: string) {
     const records = await this.attendance.findAllAttendanceWithId(id);
+    const formattedRecords = records.map((record) => ({
+      ...record,
+      avgCheckInTime: record.avgCheckInTime ?? undefined,
+      avgCheckOutTime: record.avgCheckOutTime ?? undefined,
+      avgLatePercentage: record.avgLatePercentage ?? undefined,
+    }));
     const {
       overallAvgCheckInTime,
       overallAvgCheckOutTime,
       overallAvgLatePercentage,
-    } = this.findAverage(records);
+    } = this.findAverage(formattedRecords);
     const response = await this.attendance.avgTimesOfOfficeWithId(
       id,
       overallAvgCheckInTime,

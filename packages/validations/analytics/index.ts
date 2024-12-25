@@ -2,7 +2,12 @@ import { z } from "zod";
 
 const AttendanceAnalyticsCreation = z.object({
   id: z.string().uuid().optional(),
-  attendanceDate: z.date(),
+  attendanceDate: z
+    .string()
+    .refine((value) => !isNaN(Date.parse(value)), {
+      message: "Invalid date string",
+    })
+    .transform((value) => new Date(value)),
   officeId: z.string(),
   totalEmployees: z.number().int(),
   employeeCountByStatus: z.any(),
@@ -29,7 +34,7 @@ const EmployeeAnalyticsCreation = z.object({
 const OfficeAnalyticsCreation = z.object({
   id: z.string().uuid().optional(),
   officeId: z.string(),
-  attendanceDate: z.date(),
+  attendanceDate: z.date().transform((str) => new Date(str)),
   totalEmployeesPresent: z.number().int(),
   totalEmployeesAbsent: z.number().int(),
   totalEmployeesOnLeave: z.number().int(),

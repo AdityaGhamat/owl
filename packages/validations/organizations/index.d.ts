@@ -29,9 +29,9 @@ export declare const OrganizationSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     name: string;
     description: string;
+    status?: "active" | "inactive" | "pending" | undefined;
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
-    status?: "active" | "inactive" | "pending" | undefined;
     createdBy?: string | undefined;
     contactDetails?: {
         email?: string | undefined;
@@ -48,9 +48,9 @@ export declare const OrganizationSchema: z.ZodObject<{
 }, {
     name: string;
     description: string;
+    status?: "active" | "inactive" | "pending" | undefined;
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
-    status?: "active" | "inactive" | "pending" | undefined;
     createdBy?: string | undefined;
     contactDetails?: {
         email?: string | undefined;
@@ -93,9 +93,9 @@ export declare const editOrganizationSchema: z.ZodObject<{
     parentOrganizationId: z.ZodOptional<z.ZodString>;
     tags: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
 }, "strip", z.ZodTypeAny, {
+    status?: "active" | "inactive" | "pending" | undefined;
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
-    status?: "active" | "inactive" | "pending" | undefined;
     name?: string | undefined;
     createdBy?: string | undefined;
     description?: string | undefined;
@@ -112,9 +112,9 @@ export declare const editOrganizationSchema: z.ZodObject<{
     parentOrganizationId?: string | undefined;
     tags?: string[] | undefined;
 }, {
+    status?: "active" | "inactive" | "pending" | undefined;
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
-    status?: "active" | "inactive" | "pending" | undefined;
     name?: string | undefined;
     createdBy?: string | undefined;
     description?: string | undefined;

@@ -4,7 +4,12 @@ exports.OfficeAnalyticsCreation = exports.EmployeeAnalyticsCreation = exports.At
 const zod_1 = require("zod");
 const AttendanceAnalyticsCreation = zod_1.z.object({
     id: zod_1.z.string().uuid().optional(),
-    attendanceDate: zod_1.z.date(),
+    attendanceDate: zod_1.z
+        .string()
+        .refine((value) => !isNaN(Date.parse(value)), {
+        message: "Invalid date string",
+    })
+        .transform((value) => new Date(value)),
     officeId: zod_1.z.string(),
     totalEmployees: zod_1.z.number().int(),
     employeeCountByStatus: zod_1.z.any(),
@@ -31,7 +36,7 @@ exports.EmployeeAnalyticsCreation = EmployeeAnalyticsCreation;
 const OfficeAnalyticsCreation = zod_1.z.object({
     id: zod_1.z.string().uuid().optional(),
     officeId: zod_1.z.string(),
-    attendanceDate: zod_1.z.date(),
+    attendanceDate: zod_1.z.date().transform((str) => new Date(str)),
     totalEmployeesPresent: zod_1.z.number().int(),
     totalEmployeesAbsent: zod_1.z.number().int(),
     totalEmployeesOnLeave: zod_1.z.number().int(),

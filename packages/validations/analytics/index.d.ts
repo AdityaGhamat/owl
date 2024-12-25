@@ -1,7 +1,7 @@
 import { z } from "zod";
 declare const AttendanceAnalyticsCreation: z.ZodObject<{
     id: z.ZodOptional<z.ZodString>;
-    attendanceDate: z.ZodDate;
+    attendanceDate: z.ZodEffects<z.ZodEffects<z.ZodString, string, string>, Date, string>;
     officeId: z.ZodString;
     totalEmployees: z.ZodNumber;
     employeeCountByStatus: z.ZodAny;
@@ -22,7 +22,7 @@ declare const AttendanceAnalyticsCreation: z.ZodObject<{
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
 }, {
-    attendanceDate: Date;
+    attendanceDate: string;
     officeId: string;
     totalEmployees: number;
     id?: string | undefined;
@@ -70,7 +70,7 @@ declare const EmployeeAnalyticsCreation: z.ZodObject<{
 declare const OfficeAnalyticsCreation: z.ZodObject<{
     id: z.ZodOptional<z.ZodString>;
     officeId: z.ZodString;
-    attendanceDate: z.ZodDate;
+    attendanceDate: z.ZodEffects<z.ZodDate, Date, Date>;
     totalEmployeesPresent: z.ZodNumber;
     totalEmployeesAbsent: z.ZodNumber;
     totalEmployeesOnLeave: z.ZodNumber;

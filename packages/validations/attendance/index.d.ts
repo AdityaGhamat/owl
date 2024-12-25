@@ -7,17 +7,17 @@ declare const AttendanceSchema: z.ZodObject<{
     status: z.ZodEnum<["PRESENT", "ABSENT", "ON_LEAVE", "EXCUSED"]>;
     checkInMode: z.ZodEnum<["MANUAL", "AUTOMATIC"]>;
 }, "strip", z.ZodTypeAny, {
-    officeId: string;
     status: "PRESENT" | "ABSENT" | "ON_LEAVE" | "EXCUSED";
-    employeeId: string;
     date: string;
+    officeId: string;
+    employeeId: string;
     checkInMode: "MANUAL" | "AUTOMATIC";
     id?: string | undefined;
 }, {
-    officeId: string;
     status: "PRESENT" | "ABSENT" | "ON_LEAVE" | "EXCUSED";
-    employeeId: string;
     date: string;
+    officeId: string;
+    employeeId: string;
     checkInMode: "MANUAL" | "AUTOMATIC";
     id?: string | undefined;
 }>;
@@ -74,17 +74,17 @@ declare const updateAttendanceSchema: z.ZodObject<{
     checkInMode: z.ZodOptional<z.ZodEnum<["MANUAL", "AUTOMATIC"]>>;
 }, "strip", z.ZodTypeAny, {
     id?: string | undefined;
-    officeId?: string | undefined;
     status?: "PRESENT" | "ABSENT" | "ON_LEAVE" | "EXCUSED" | undefined;
-    employeeId?: string | undefined;
     date?: string | undefined;
+    officeId?: string | undefined;
+    employeeId?: string | undefined;
     checkInMode?: "MANUAL" | "AUTOMATIC" | undefined;
 }, {
     id?: string | undefined;
-    officeId?: string | undefined;
     status?: "PRESENT" | "ABSENT" | "ON_LEAVE" | "EXCUSED" | undefined;
-    employeeId?: string | undefined;
     date?: string | undefined;
+    officeId?: string | undefined;
+    employeeId?: string | undefined;
     checkInMode?: "MANUAL" | "AUTOMATIC" | undefined;
 }>;
 export { AttendanceSchema, updateAttendanceSchema, members, membersSchema };
@@ -109,16 +109,16 @@ declare const AttendanceRecordSchema: z.ZodObject<{
     officeId: z.ZodString;
     employeeId: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    officeId: string;
     status: AttendanceStatus;
+    officeId: string;
     employeeId: string;
     checkInMode: CheckInMode;
     checkInTime: Date;
     checkOutTime: Date;
     isLate: boolean;
 }, {
-    officeId: string;
     status: AttendanceStatus;
+    officeId: string;
     employeeId: string;
     checkInMode: CheckInMode;
     checkInTime: Date;
@@ -136,16 +136,16 @@ declare const HistoricalAttendanceSchema: z.ZodObject<{
         officeId: z.ZodString;
         employeeId: z.ZodString;
     }, "strip", z.ZodTypeAny, {
-        officeId: string;
         status: AttendanceStatus;
+        officeId: string;
         employeeId: string;
         checkInMode: CheckInMode;
         checkInTime: Date;
         checkOutTime: Date;
         isLate: boolean;
     }, {
-        officeId: string;
         status: AttendanceStatus;
+        officeId: string;
         employeeId: string;
         checkInMode: CheckInMode;
         checkInTime: Date;
@@ -155,16 +155,16 @@ declare const HistoricalAttendanceSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     date: Date;
     attendance: [{
-        officeId: string;
         status: AttendanceStatus;
+        officeId: string;
         employeeId: string;
         checkInMode: CheckInMode;
         checkInTime: Date;
         checkOutTime: Date;
         isLate: boolean;
     }, ...{
-        officeId: string;
         status: AttendanceStatus;
+        officeId: string;
         employeeId: string;
         checkInMode: CheckInMode;
         checkInTime: Date;
@@ -174,16 +174,16 @@ declare const HistoricalAttendanceSchema: z.ZodObject<{
 }, {
     date: Date;
     attendance: [{
-        officeId: string;
         status: AttendanceStatus;
+        officeId: string;
         employeeId: string;
         checkInMode: CheckInMode;
         checkInTime: Date;
         checkOutTime: Date;
         isLate?: boolean | undefined;
     }, ...{
-        officeId: string;
         status: AttendanceStatus;
+        officeId: string;
         employeeId: string;
         checkInMode: CheckInMode;
         checkInTime: Date;

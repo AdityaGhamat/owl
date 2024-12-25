@@ -20,9 +20,9 @@ model AttendanceAnalytics {
   officeId         String
   totalEmployees   Int
   employeeCountByStatus Json
-  avgCheckInTime   Float
-  avgCheckOutTime  Float
-  avgLatePercentage Float
+  avgCheckInTime   Float?
+  avgCheckOutTime  Float?
+  avgLatePercentage Float?
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 }
@@ -35,8 +35,8 @@ model EmployeeAnalytics {
   totalDaysAbsent  Int
   totalDaysOnLeave Int
   lateCount        Int
-  avgCheckInTime   Float
-  avgCheckOutTime  Float
+  avgCheckInTime   Float?
+  avgCheckOutTime  Float?
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 }
@@ -48,7 +48,7 @@ model OfficeAnalytics {
   totalEmployeesPresent   Int
   totalEmployeesAbsent    Int
   totalEmployeesOnLeave   Int
-  avgEmployeesLate        Float
+  avgEmployeesLate        Float?
   createdAt               DateTime       @default(now())
   updatedAt               DateTime       @updatedAt
 }
