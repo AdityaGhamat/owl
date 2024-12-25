@@ -38,6 +38,8 @@ declare const userSchema: z.ZodObject<{
     email: string;
     role: "Employee" | "Manager" | "Admin";
     encryptedPassword: string;
+    createdAt?: Date | undefined;
+    updatedAt?: Date | undefined;
     twoFactorEnabled?: boolean | undefined;
     isDeleted?: boolean | undefined;
     _id?: string | undefined;
@@ -46,8 +48,6 @@ declare const userSchema: z.ZodObject<{
     verification_token?: string | undefined;
     verification_token_expires_at?: Date | undefined;
     isVerified?: boolean | undefined;
-    createdAt?: Date | undefined;
-    updatedAt?: Date | undefined;
     createdBy?: string | undefined;
     updatedBy?: string | undefined;
     twoFactorSecret?: string | undefined;
@@ -65,6 +65,8 @@ declare const userSchema: z.ZodObject<{
     name: string;
     email: string;
     encryptedPassword: string;
+    createdAt?: Date | undefined;
+    updatedAt?: Date | undefined;
     role?: "Employee" | "Manager" | "Admin" | undefined;
     twoFactorEnabled?: boolean | undefined;
     isDeleted?: boolean | undefined;
@@ -74,8 +76,6 @@ declare const userSchema: z.ZodObject<{
     verification_token?: string | undefined;
     verification_token_expires_at?: Date | undefined;
     isVerified?: boolean | undefined;
-    createdAt?: Date | undefined;
-    updatedAt?: Date | undefined;
     createdBy?: string | undefined;
     updatedBy?: string | undefined;
     twoFactorSecret?: string | undefined;
@@ -109,6 +109,8 @@ declare const editUserSchema: z.ZodObject<{
     oldPassword: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     isDeleted: z.ZodOptional<z.ZodDefault<z.ZodBoolean>>;
 }, "strip", z.ZodTypeAny, {
+    createdAt?: Date | undefined;
+    updatedAt?: Date | undefined;
     name?: string | undefined;
     email?: string | undefined;
     role?: "Employee" | "Manager" | "Admin" | "Other" | undefined;
@@ -119,14 +121,14 @@ declare const editUserSchema: z.ZodObject<{
     verification_token?: string | undefined;
     verification_token_expires_at?: Date | undefined;
     isVerified?: boolean | undefined;
-    createdAt?: Date | undefined;
-    updatedAt?: Date | undefined;
     createdBy?: string | undefined;
     updatedBy?: string | undefined;
     twoFactorSecret?: string | undefined;
     phoneNumber?: string | undefined;
     oldPassword?: string[] | undefined;
 }, {
+    createdAt?: Date | undefined;
+    updatedAt?: Date | undefined;
     name?: string | undefined;
     email?: string | undefined;
     role?: "Employee" | "Manager" | "Admin" | "Other" | undefined;
@@ -137,8 +139,6 @@ declare const editUserSchema: z.ZodObject<{
     verification_token?: string | undefined;
     verification_token_expires_at?: Date | undefined;
     isVerified?: boolean | undefined;
-    createdAt?: Date | undefined;
-    updatedAt?: Date | undefined;
     createdBy?: string | undefined;
     updatedBy?: string | undefined;
     twoFactorSecret?: string | undefined;
@@ -167,6 +167,8 @@ declare const editUserSchemaTrpc: z.ZodObject<{
         oldPassword: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
         isDeleted: z.ZodOptional<z.ZodDefault<z.ZodBoolean>>;
     }, "strip", z.ZodTypeAny, {
+        createdAt?: Date | undefined;
+        updatedAt?: Date | undefined;
         name?: string | undefined;
         email?: string | undefined;
         role?: "Employee" | "Manager" | "Admin" | "Other" | undefined;
@@ -177,14 +179,14 @@ declare const editUserSchemaTrpc: z.ZodObject<{
         verification_token?: string | undefined;
         verification_token_expires_at?: Date | undefined;
         isVerified?: boolean | undefined;
-        createdAt?: Date | undefined;
-        updatedAt?: Date | undefined;
         createdBy?: string | undefined;
         updatedBy?: string | undefined;
         twoFactorSecret?: string | undefined;
         phoneNumber?: string | undefined;
         oldPassword?: string[] | undefined;
     }, {
+        createdAt?: Date | undefined;
+        updatedAt?: Date | undefined;
         name?: string | undefined;
         email?: string | undefined;
         role?: "Employee" | "Manager" | "Admin" | "Other" | undefined;
@@ -195,8 +197,6 @@ declare const editUserSchemaTrpc: z.ZodObject<{
         verification_token?: string | undefined;
         verification_token_expires_at?: Date | undefined;
         isVerified?: boolean | undefined;
-        createdAt?: Date | undefined;
-        updatedAt?: Date | undefined;
         createdBy?: string | undefined;
         updatedBy?: string | undefined;
         twoFactorSecret?: string | undefined;
@@ -206,6 +206,8 @@ declare const editUserSchemaTrpc: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     userId: string;
     data: {
+        createdAt?: Date | undefined;
+        updatedAt?: Date | undefined;
         name?: string | undefined;
         email?: string | undefined;
         role?: "Employee" | "Manager" | "Admin" | "Other" | undefined;
@@ -216,8 +218,6 @@ declare const editUserSchemaTrpc: z.ZodObject<{
         verification_token?: string | undefined;
         verification_token_expires_at?: Date | undefined;
         isVerified?: boolean | undefined;
-        createdAt?: Date | undefined;
-        updatedAt?: Date | undefined;
         createdBy?: string | undefined;
         updatedBy?: string | undefined;
         twoFactorSecret?: string | undefined;
@@ -227,6 +227,8 @@ declare const editUserSchemaTrpc: z.ZodObject<{
 }, {
     userId: string;
     data: {
+        createdAt?: Date | undefined;
+        updatedAt?: Date | undefined;
         name?: string | undefined;
         email?: string | undefined;
         role?: "Employee" | "Manager" | "Admin" | "Other" | undefined;
@@ -237,8 +239,6 @@ declare const editUserSchemaTrpc: z.ZodObject<{
         verification_token?: string | undefined;
         verification_token_expires_at?: Date | undefined;
         isVerified?: boolean | undefined;
-        createdAt?: Date | undefined;
-        updatedAt?: Date | undefined;
         createdBy?: string | undefined;
         updatedBy?: string | undefined;
         twoFactorSecret?: string | undefined;

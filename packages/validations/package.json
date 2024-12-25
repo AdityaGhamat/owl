@@ -10,7 +10,8 @@
     "./geofence": "./geolocation/index.js",
     "./organizations": "./organizations/index.js",
     "./office": "./office/index.js",
-    "./attendance": "./attendance/index.js"
+    "./attendance": "./attendance/index.js",
+    "./analytics": "./analytics/index.js"
   },
   "keywords": [],
   "author": "",
