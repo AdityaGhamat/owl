@@ -16,8 +16,8 @@ export class CrudRepository<T, K> implements ICrudRepository<T, K> {
 
   async findFirst(args: any): Promise<T | null> {
     return this.model.findFirst({
-      where: {
-        email: args,
+      select: {
+        args,
       },
     });
   }

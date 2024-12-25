@@ -7,7 +7,7 @@ class OfficeAnalyticsRepository extends CrudRepository<
   string
 > {
   constructor() {
-    super(prisma, prisma.OfficeAnalytics);
+    super(prisma, prisma.officeAnalytics);
   }
 }
 

@@ -7,7 +7,7 @@ class EmployeeAnalyticsRepository extends CrudRepository<
   string
 > {
   constructor() {
-    super(prisma, prisma.EmployeeAnalytics);
+    super(prisma, prisma.employeeAnalytics);
   }
 }
 
