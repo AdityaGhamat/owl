@@ -59,3 +59,5 @@ const app = new Hono()
       response
     );
   });
+
+export default app;

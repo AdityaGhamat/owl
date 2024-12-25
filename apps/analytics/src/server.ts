@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import messageConsume from "./lib/queue/consumer.js";
 import { HTTPException } from "hono/http-exception";
+import apiRoutes from "./routers/index.js";
 class Server {
   private app: Hono;
   constructor() {
@@ -21,7 +22,9 @@ class Server {
       });
     });
   }
-  private routes() {}
+  private routes() {
+    this.app.route("/api", apiRoutes);
+  }
   public async start() {
     await messageConsume.consume();
     serve({
