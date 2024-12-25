@@ -3,7 +3,6 @@ import attendanceAnalyticsRepository from "../repository/attendance-analytics-re
 import { AttendanceAnalyticsCreationType } from "../types/database.js";
 import { StatusCodes } from "http-status-codes";
 import { attendanceDate, avgType } from "../types/services.js";
-import { handle } from "hono/cloudflare-pages";
 
 class AttendanceAnalyticsService {
   private attendance;
@@ -112,19 +111,20 @@ class AttendanceAnalyticsService {
     }
     return avg;
   }
-  public async getAllAverages(
-    data: { officeId: string; id: string },
-    date: Date
-  ) {
-    const { officeId, id } = data;
-    if (!(officeId && id)) {
+  public async getAverageByOfficeId(officeId: string, date: Date) {
+    if (!officeId) {
       throw new HTTPException(StatusCodes.BAD_REQUEST, {
-        message: "Office Id or Analytics Id is required",
+        message: "Office Id is required",
       });
     }
-    if (officeId) {
-      const avg = await this.getAvgAnalyticsByOfficeId(officeId, date);
-      return avg;
+    const avg = await this.getAvgAnalyticsByOfficeId(officeId, date);
+    return avg;
+  }
+  public async getAverageById(id: string, date: Date) {
+    if (!(id && date)) {
+      throw new HTTPException(StatusCodes.BAD_REQUEST, {
+        message: "Analytics Id is required",
+      });
     }
     const avg = await this.getAvgAnalyticsWithId(id, date);
     return avg;

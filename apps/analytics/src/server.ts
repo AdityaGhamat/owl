@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import messageConsume from "./lib/queue/consumer.js";
+import { HTTPException } from "hono/http-exception";
 class Server {
   private app: Hono;
   constructor() {
@@ -10,7 +11,16 @@ class Server {
     this.serverConfig();
   }
   private serverConfig() {}
-  private errorConfig() {}
+  private errorConfig() {
+    this.app.onError((err, c) => {
+      if (err instanceof HTTPException) {
+        return err.getResponse();
+      }
+      return new Response("Internal Server Error: " + err.message, {
+        status: 500,
+      });
+    });
+  }
   private routes() {}
   public async start() {
     await messageConsume.consume();
