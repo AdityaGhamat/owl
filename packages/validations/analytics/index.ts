@@ -19,15 +19,16 @@ const AttendanceAnalyticsCreation = z.object({
 });
 
 const EmployeeAnalyticsCreation = z.object({
-  id: z.string().uuid().optional(),
+  id: z.string().uuid(),
   employeeId: z.string(),
   officeId: z.string(),
-  totalDaysPresent: z.number().int().optional(),
-  totalDaysAbsent: z.number().int().optional(),
-  lateCount: z.number().int().optional(),
-  avgCheckInTime: z.number().optional(),
-  avgCheckOutTime: z.number().optional(),
-  createdAt: z.date().optional(),
+  totalDaysPresent: z.number().int().nonnegative(),
+  totalDaysAbsent: z.number().int().nonnegative(),
+  totalDaysOnLeave: z.number().int().nonnegative(),
+  lateCount: z.number().int().nonnegative(),
+  avgCheckInTime: z.number().optional().nullable(),
+  avgCheckOutTime: z.number().optional().nullable(),
+  createdAt: z.date().optional().default(new Date()),
   updatedAt: z.date().optional(),
 });
 

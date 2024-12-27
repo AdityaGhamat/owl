@@ -21,15 +21,16 @@ const AttendanceAnalyticsCreation = zod_1.z.object({
 });
 exports.AttendanceAnalyticsCreation = AttendanceAnalyticsCreation;
 const EmployeeAnalyticsCreation = zod_1.z.object({
-    id: zod_1.z.string().uuid().optional(),
+    id: zod_1.z.string().uuid(),
     employeeId: zod_1.z.string(),
     officeId: zod_1.z.string(),
-    totalDaysPresent: zod_1.z.number().int().optional(),
-    totalDaysAbsent: zod_1.z.number().int().optional(),
-    lateCount: zod_1.z.number().int().optional(),
-    avgCheckInTime: zod_1.z.number().optional(),
-    avgCheckOutTime: zod_1.z.number().optional(),
-    createdAt: zod_1.z.date().optional(),
+    totalDaysPresent: zod_1.z.number().int().nonnegative(),
+    totalDaysAbsent: zod_1.z.number().int().nonnegative(),
+    totalDaysOnLeave: zod_1.z.number().int().nonnegative(),
+    lateCount: zod_1.z.number().int().nonnegative(),
+    avgCheckInTime: zod_1.z.number().optional().nullable(),
+    avgCheckOutTime: zod_1.z.number().optional().nullable(),
+    createdAt: zod_1.z.date().optional().default(new Date()),
     updatedAt: zod_1.z.date().optional(),
 });
 exports.EmployeeAnalyticsCreation = EmployeeAnalyticsCreation;
