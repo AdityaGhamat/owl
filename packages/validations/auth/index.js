@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.officeIdSchema = exports.resetTokenSchema = exports.passwordSchema = exports.emailSchema = exports.verifyEmailSchema = exports.loginSchema = exports.editUserSchemaTrpc = exports.userId = exports.editUserSchema = exports.userSchema = void 0;
+exports.employeeIdSchema = exports.officeIdSchema = exports.resetTokenSchema = exports.passwordSchema = exports.emailSchema = exports.verifyEmailSchema = exports.loginSchema = exports.editUserSchemaTrpc = exports.userId = exports.editUserSchema = exports.userSchema = void 0;
 const zod_1 = require("zod");
 const UserRoles = zod_1.z.enum(["Admin", "Employee", "Manager", "Other"]);
 const userSchema = zod_1.z.object({
@@ -121,3 +121,7 @@ const officeIdSchema = zod_1.z.object({
     office_id: zod_1.z.string({ message: "Office id should be valid string" }),
 });
 exports.officeIdSchema = officeIdSchema;
+const employeeIdSchema = zod_1.z.object({
+    employee: zod_1.z.array(zod_1.z.string()),
+});
+exports.employeeIdSchema = employeeIdSchema;

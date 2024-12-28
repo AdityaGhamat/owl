@@ -8,7 +8,7 @@ import {
   resetTokenSchema,
   passwordSchema,
   emailSchema,
-  officeIdSchema,
+  employeeIdSchema,
 } from "@repo/validations";
 import zValidator from "../../middlewares/zValidator.js";
 
@@ -41,6 +41,11 @@ app.put(
 app.get("/distance", authValidator, userController.getDistanceFromOffice);
 app.get("/location", authValidator, userController.getUserLocation);
 app.put("/location", authValidator, userController.updateLocation);
+app.post(
+  "/employees",
+  // zValidator(employeeIdSchema, "body"),
+  userController.getAllEmployee
+);
 export default app;
 
 //add zvalidator schema for validating params in getdistance and validate it

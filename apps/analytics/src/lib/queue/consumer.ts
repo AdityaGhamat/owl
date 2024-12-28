@@ -3,7 +3,7 @@ import { attendance_queue_Type } from "@repo/types/src/attendance.js";
 import { HTTPException } from "hono/http-exception";
 import { StatusCodes } from "http-status-codes";
 import asyncServer from "../services/external-services.js";
-
+import serverConfig from "../../config/server-config.js";
 class MessageConsume {
   private messageQueue;
   constructor() {
@@ -18,6 +18,7 @@ class MessageConsume {
           message: "Marking of attendance has been failed ",
         });
       }
+      console.log(response);
     } catch (error: any) {
       console.error(`Failed to process attendance: ${error.message}`);
     }

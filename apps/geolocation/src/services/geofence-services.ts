@@ -143,7 +143,8 @@ class GeofenceServices {
   private async markAttendanceByQueue(members: any, officeId: string) {
     try {
       const message = { members, officeId };
-      const messageProducer = new MessageProducer("attendance_queue", message);
+      console.log(members, officeId, "inside markAttendanceByQueue");
+      const messageProducer = new MessageProducer(message);
       await messageProducer.markAttendance();
     } catch (error: any) {
       throw new HTTPException(StatusCodes.BAD_REQUEST, {

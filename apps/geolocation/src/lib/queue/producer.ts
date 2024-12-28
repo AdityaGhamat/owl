@@ -2,12 +2,14 @@ import { MessageQueue } from "@repo/queue";
 import serverConfig from "../../config/server-config.js";
 import { mailType } from "@repo/types/src/mail.js";
 import { attendance_queue_Type } from "@repo/types/src/attendance.js";
-import { members } from "../../types/services/index.js";
 class MessageProducer {
   private messageQueue;
   private message: attendance_queue_Type;
-  constructor(queueName: mailType, message: attendance_queue_Type) {
-    this.messageQueue = new MessageQueue(queueName);
+  constructor(message: attendance_queue_Type) {
+    this.messageQueue = new MessageQueue(
+      "attendance_queue",
+      serverConfig.QUEUE_URL
+    );
     this.message = message;
   }
   async withTimeOut<T>(promise: Promise<T>, timeout: number): Promise<T> {

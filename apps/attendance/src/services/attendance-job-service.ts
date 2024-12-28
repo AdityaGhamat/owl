@@ -5,7 +5,7 @@ import {
   AttendanceStatus,
   IHistoricalAttendanceRepositoryType,
 } from "../types/database.js";
-import attendanceHistoryRepository from "../repository/attendance-history-repository.js";
+// import attendanceHistoryRepository from "../repository/attendance-history-repository.js";
 
 class AttendanceJob {
   private attendance: typeof attendanceService;
@@ -28,26 +28,24 @@ class AttendanceJob {
           employeeId,
         } = record;
 
-        const dateKey = new Date(date).toISOString().split("T")[0]; // YYYY-MM-DD
+        // if (!groupedAttendance[dateKey as string]) {
+        //   groupedAttendance[dateKey as string] = [];
+        // }
 
-        if (!groupedAttendance[dateKey as string]) {
-          groupedAttendance[dateKey as string] = [];
-        }
+        // groupedAttendance[dateKey as string]?.push({
+        //   officeId: officeId as string,
+        //   employeeId: employeeId as string,
+        //   checkInTime: checkInTime ?? null,
+        //   checkOutTime: checkOutTime ?? null,
+        //   status: status as AttendanceStatus,
+        //   checkInMode: checkInMode as CheckInMode,
+        //   isLate,
+        // });
 
-        groupedAttendance[dateKey as string]?.push({
-          officeId: officeId as string,
-          employeeId: employeeId as string,
-          checkInTime: checkInTime ?? null,
-          checkOutTime: checkOutTime ?? null,
-          status: status as AttendanceStatus,
-          checkInMode: checkInMode as CheckInMode,
-          isLate,
-        });
-
-        console.log(
-          `Updated groupedAttendance[${dateKey}]:`,
-          groupedAttendance[dateKey as string]
-        );
+        // console.log(
+        //   `Updated groupedAttendance[${dateKey}]:`,
+        //   groupedAttendance[dateKey as string]
+        // );
       });
 
       for (const [dateKey, attendanceRecords] of Object.entries(
@@ -65,7 +63,7 @@ class AttendanceJob {
             employeeId: record.employeeId,
           })),
         };
-        await attendanceHistoryRepository.create(historicalAttendanceData);
+        // await attendanceHistoryRepository.create(historicalAttendanceData);
       }
     } catch (error) {
       console.error("Error transferring attendance:", error);

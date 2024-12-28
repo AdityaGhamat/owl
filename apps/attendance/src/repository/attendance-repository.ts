@@ -1,26 +1,16 @@
 import { PrismaClient, Attendance } from "@prisma/client";
-import {
-  CreateAttendanceData,
-  UpdateAttendanceData,
-} from "../types/repository.js";
+import { UpdateAttendanceData } from "../types/repository.js";
 import { HTTPException } from "hono/http-exception";
 import { StatusCodes } from "http-status-codes";
+import { AttendanceCreation } from "../types/database.js";
 
 const prisma = new PrismaClient();
 
 class AttendanceRepository {
-  async createAttendance(data: CreateAttendanceData): Promise<Attendance> {
+  async createAttendance(data: AttendanceCreation) {
     try {
       const newAttendance = await prisma.attendance.create({
-        data: {
-          employeeId: data.employeeId,
-          officeId: data.officeId,
-          date: new Date(),
-          checkInTime: data.checkInTime || new Date(),
-          status: data.status,
-          checkInMode: data.checkInMode,
-          isLate: data.isLate || false,
-        },
+        data: data,
       });
       return newAttendance;
     } catch (error: any) {
@@ -102,11 +92,27 @@ class AttendanceRepository {
       const attendanceRecord = await prisma.attendance.findFirst({
         where: {
           employeeId,
-          date,
+          date: {
+            equals: date,
+          },
         },
       });
       return attendanceRecord;
     } catch (error: any) {
+      throw error;
+    }
+  }
+  async getAttendanceByOfficeId(
+    officeId: string
+  ): Promise<Attendance[] | null> {
+    try {
+      const attendance = await prisma.attendance.findMany({
+        where: {
+          officeId: officeId,
+        },
+      });
+      return attendance;
+    } catch (error) {
       throw error;
     }
   }

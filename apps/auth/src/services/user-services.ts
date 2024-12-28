@@ -14,6 +14,7 @@ import type { IAuth, location } from "@repo/types/src/database.js";
 import axios from "axios";
 import serverConfig from "../config/server-config.js";
 import server from "../server.js";
+import { userCover } from "@repo/lib/cover";
 
 class UserServices {
   private passwordLib: PasswordLib;
@@ -229,6 +230,19 @@ class UserServices {
         throw new BadRequestException("Failed to update location");
       }
       return { id: user._id };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getEmployeesDetails(employee: [string]) {
+    try {
+      const all_employee = employee.map(async (id) => await this.getUser(id));
+      console.log(all_employee);
+      const userList = await Promise.all(all_employee);
+      const users = userList.map((user) => userCover(user));
+      console.log(users);
+      return users;
     } catch (error) {
       throw error;
     }

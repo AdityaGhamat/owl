@@ -1,5 +1,6 @@
 import { Document } from "mongoose";
-
+import { AttendanceSchema } from "@repo/validations/attendance";
+import { z } from "zod";
 export enum AttendanceStatus {
   PRESENT = "PRESENT",
   ABSENT = "ABSENT",
@@ -11,6 +12,7 @@ export enum CheckInMode {
   MANUAL = "MANUAL",
   AUTOMATIC = "AUTOMATIC",
 }
+export type AttendanceCreation = z.infer<typeof AttendanceSchema>;
 
 export interface IAttendanceRecord {
   officeId: string; // Required office ID in each attendance record

@@ -1,31 +1,6 @@
 import { z } from "zod";
 
-const AttendanceSchema = z.object({
-  id: z.string().uuid().optional(),
-  employeeId: z.string(),
-  officeId: z.string(),
-  date: z.string().datetime({
-    offset: true,
-  }),
-  status: z.enum(["PRESENT", "ABSENT", "ON_LEAVE", "EXCUSED"]),
-  checkInMode: z.enum(["MANUAL", "AUTOMATIC"]),
-});
-
-const membersSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  email: z.string().email(),
-  role: z.enum(["Employee", "Manager", "Admin"]),
-  twoFactorEnabled: z.boolean(),
-  isDeleted: z.boolean(),
-});
-const members = z.array(membersSchema);
-
-const updateAttendanceSchema = AttendanceSchema.partial();
-
-export { AttendanceSchema, updateAttendanceSchema, members, membersSchema };
-
-/////////////////////////////////////////////////////
+// Enums
 export enum AttendanceStatus {
   PRESENT = "PRESENT",
   ABSENT = "ABSENT",
@@ -37,9 +12,50 @@ export enum CheckInMode {
   MANUAL = "MANUAL",
   AUTOMATIC = "AUTOMATIC",
 }
+
+// Zod Enums
 const AttendanceStatusEnum = z.nativeEnum(AttendanceStatus);
 const CheckInModeEnum = z.nativeEnum(CheckInMode);
 
+// Attendance Schema
+const AttendanceSchema = z.object({
+  id: z.string().uuid().optional(),
+  employeeId: z
+    .string({
+      required_error: "Employee ID is required",
+    })
+    .nonempty("Employee ID cannot be empty"),
+  officeId: z.string({
+    required_error: "Office ID is required",
+  }),
+  date: z
+    .date({
+      required_error: "Date is required",
+    })
+    .optional(),
+  checkInTime: z.date().optional(),
+  checkOutTime: z.date().optional(),
+  status: AttendanceStatusEnum.optional(),
+  checkInMode: CheckInModeEnum.optional(),
+  isLate: z.boolean().default(false),
+});
+
+// Members Schema
+const membersSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
+  role: z.enum(["Employee", "Manager", "Admin"]),
+  twoFactorEnabled: z.boolean(),
+  isDeleted: z.boolean(),
+});
+
+const members = z.array(membersSchema);
+
+// Partial Attendance Schema for Updates
+const updateAttendanceSchema = AttendanceSchema.partial();
+
+// Attendance Record Schema
 const AttendanceRecordSchema = z.object({
   checkInTime: z.date({
     required_error: "Check-in time is required",
@@ -58,6 +74,7 @@ const AttendanceRecordSchema = z.object({
     .nonempty("Employee ID cannot be empty"),
 });
 
+// Historical Attendance Schema
 const HistoricalAttendanceSchema = z.object({
   date: z.date({
     required_error: "Date is required",
@@ -67,9 +84,12 @@ const HistoricalAttendanceSchema = z.object({
   }),
 });
 
+// Exporting Schemas
 export {
-  AttendanceStatusEnum,
-  CheckInModeEnum,
+  AttendanceSchema,
+  updateAttendanceSchema,
+  members,
+  membersSchema,
   AttendanceRecordSchema,
   HistoricalAttendanceSchema,
 };

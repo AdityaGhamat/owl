@@ -7,10 +7,17 @@ import {
 } from "../types/services.js";
 import { StatusCodes } from "http-status-codes";
 import AttendanceOfficeServices from "./attendance-office-services.js";
+import { AttendanceStatus, CheckInMode } from "@prisma/client";
 
 class AttedanceService {
   async createAttendance(data: AttendanceCreation) {
-    const response = await attendanceRepository.createAttendance(data);
+    const response = await attendanceRepository.createAttendance({
+      ...data,
+      date: data.date ? new Date(data.date) : undefined,
+      status: data.status,
+      checkInMode: data.checkInMode,
+    });
+
     if (!response) {
       throw new HTTPException(StatusCodes.BAD_REQUEST, {
         message: "Failed to create Attendance",
@@ -19,7 +26,17 @@ class AttedanceService {
     return response;
   }
   async updateAttendance(id: string, data: updateAttendanceType) {
-    const response = await attendanceRepository.updateAttendance(id, data);
+    const updateData = {
+      ...data,
+      date: data.date ? new Date(data.date) : undefined, // Handle date parsing
+      status: data.status as AttendanceStatus, // Ensure correct type
+      checkInMode: data.checkInMode as CheckInMode, // Ensure correct type
+    };
+
+    const response = await attendanceRepository.updateAttendance(
+      id,
+      updateData
+    );
     if (!response) {
       throw new HTTPException(StatusCodes.BAD_REQUEST, {
         message: "Failed to update the attendance",
@@ -27,6 +44,7 @@ class AttedanceService {
     }
     return response;
   }
+
   async getAllAttendance() {
     const response = await attendanceRepository.getAllAttendance();
     if (!response) {
@@ -73,15 +91,12 @@ class AttedanceService {
     return presentEmployees;
   }
   async markAttendance(members: members, officeId: string) {
-    const new_date = Date.now();
     const responses = await Promise.all(
       members.map((member) =>
         this.createAttendance({
           officeId: officeId,
           employeeId: member.id,
-          date: new_date.toString(),
-          status: "PRESENT",
-          checkInMode: "AUTOMATIC",
+          isLate: false,
         })
       )
     );
@@ -92,7 +107,6 @@ class AttedanceService {
     }
     return true;
   }
-
   async deleteAttendance(attendanceId: string) {
     const response =
       await attendanceRepository.deleteAttendnaceByAttendanceId(attendanceId);
@@ -102,6 +116,25 @@ class AttedanceService {
       });
     }
     return response;
+  }
+  async getAttendanceByOfficeId(officeId: string) {
+    const response =
+      await attendanceRepository.getAttendanceByOfficeId(officeId);
+    if (!response) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "Failed to find attendance",
+      });
+    }
+    return response;
+  }
+  private async calculationOfMembersBasedOnOfficeId(officeId: string) {
+    const office = await this.getAttendanceByOfficeId(officeId);
+    if (!office) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "Office not found",
+      });
+    }
+    return { office, length: office.length };
   }
 }
 

@@ -6,4 +6,5 @@ export default {
   AUTH_SERVICE: process.env.AUTH_SERVICE,
   SECRET_KEY: process.env.SECRET_KEY,
   ATTENDANCE_SERVICE: process.env.ATTENDANCE_SERVICE,
+  QUEUE_URL: process.env.QUEUE_URL,
 };

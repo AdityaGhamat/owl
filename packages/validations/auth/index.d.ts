@@ -291,5 +291,12 @@ declare const officeIdSchema: z.ZodObject<{
 }, {
     office_id: string;
 }>;
-export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema, verifyEmailSchema, emailSchema, passwordSchema, resetTokenSchema, officeIdSchema, };
+declare const employeeIdSchema: z.ZodObject<{
+    employee: z.ZodArray<z.ZodString, "many">;
+}, "strip", z.ZodTypeAny, {
+    employee: string[];
+}, {
+    employee: string[];
+}>;
+export { userSchema, editUserSchema, userId, editUserSchemaTrpc, loginSchema, verifyEmailSchema, emailSchema, passwordSchema, resetTokenSchema, officeIdSchema, employeeIdSchema, };
 //# sourceMappingURL=index.d.ts.map

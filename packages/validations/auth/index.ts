@@ -116,6 +116,9 @@ const resetTokenSchema = z.object({
 const officeIdSchema = z.object({
   office_id: z.string({ message: "Office id should be valid string" }),
 });
+const employeeIdSchema = z.object({
+  employee: z.array(z.string()),
+});
 export {
   userSchema,
   editUserSchema,
@@ -127,4 +130,5 @@ export {
   passwordSchema,
   resetTokenSchema,
   officeIdSchema,
+  employeeIdSchema,
 };

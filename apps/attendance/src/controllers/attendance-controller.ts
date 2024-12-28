@@ -10,6 +10,7 @@ import {
 } from "@repo/validations/attendance";
 import { StatusCodes } from "http-status-codes";
 import AttendanceOfficeServices from "../services/attendance-office-services.js";
+import { record } from "zod";
 
 const app = new Hono()
   .post("/", zValidator("json", AttendanceSchema), async (c) => {
@@ -126,6 +127,22 @@ const app = new Hono()
       StatusCodes.OK,
       "Record found successfully",
       attendanceRecord
+    );
+  })
+  .get("/employees-by-officeId/:officeId", async (c) => {
+    const { officeId } = c.req.param();
+    const response = await attendanceService.getAttendanceByOfficeId(officeId);
+    if (!response || record.length == 0) {
+      throw ErrorResponse(
+        StatusCodes.NOT_FOUND,
+        {},
+        "Attendance record not found."
+      );
+    }
+    return SuccessResponse(
+      StatusCodes.OK,
+      "Record found successfully",
+      response
     );
   })
   .post("/mark-attendance", zValidator("json", members), async (c) => {

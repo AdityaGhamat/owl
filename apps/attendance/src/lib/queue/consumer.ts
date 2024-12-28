@@ -3,10 +3,15 @@ import { attendance_queue_Type } from "@repo/types/src/attendance.js";
 import attendanceService from "../../services/attendance-service.js";
 import { HTTPException } from "hono/http-exception";
 import { StatusCodes } from "http-status-codes";
+import serverConfig from "../../config/server-config.js";
+
 class MessageConsume {
   private messageQueue;
   constructor() {
-    this.messageQueue = new MessageQueue("attendance_queue");
+    this.messageQueue = new MessageQueue(
+      "attendance_queue",
+      serverConfig.QUEUE_URL
+    );
   }
   private async messageHandler(message: attendance_queue_Type) {
     try {

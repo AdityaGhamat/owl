@@ -233,6 +233,29 @@ class UserController {
       next(error);
     }
   }
+  async getAllEmployee(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { employee } = req.body;
+      console.log(employee);
+      const response = await userServices.getEmployeesDetails(employee);
+      console.log(response);
+      if (!response) {
+        return ResponseUtil.errorResponse(
+          res,
+          StatusCodes.BAD_REQUEST,
+          "Failed to find employees"
+        );
+      }
+      return ResponseUtil.successResponse(
+        res,
+        StatusCodes.OK,
+        "employee found successfully",
+        response
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new UserController();
