@@ -118,15 +118,32 @@ const officeControllers = new Hono()
       employees,
     });
   })
-  .get("/employees", async (c) => {
-    const { office_id } = c.req.query();
-    const response = await officeServices.getEmployees(office_id as string);
+  .get("/employees/:office_id", async (c) => {
+    const { office_id } = c.req.param();
+    const response = await officeServices.getEmployees(office_id);
     if (!response) {
       return ErrorResponse(StatusCodes.NOT_FOUND, {}, "Employee not found");
     }
     return SuccessResponse(
       StatusCodes.OK,
       "Employee found successfully",
+      response
+    );
+  })
+  .get("/office-time/:office_id", async (c) => {
+    const { office_id } = c.req.param();
+    const response =
+      await officeServices.getStartAndEndTimeByOfficeId(office_id);
+    if (!response) {
+      return ErrorResponse(
+        StatusCodes.BAD_REQUEST,
+        {},
+        "Failed to find start and end time."
+      );
+    }
+    return SuccessResponse(
+      StatusCodes.OK,
+      "Succeessfully got start and end time",
       response
     );
   });

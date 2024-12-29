@@ -43,7 +43,7 @@ app.get("/location", authValidator, userController.getUserLocation);
 app.put("/location", authValidator, userController.updateLocation);
 app.post(
   "/employees",
-  // zValidator(employeeIdSchema, "body"),
+  zValidator(employeeIdSchema, "body"),
   userController.getAllEmployee
 );
 export default app;

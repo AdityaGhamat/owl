@@ -236,12 +236,13 @@ class UserServices {
   }
 
   async getEmployeesDetails(employee: [string]) {
+    console.log(employee);
     try {
       const all_employee = employee.map(async (id) => await this.getUser(id));
-      console.log(all_employee);
+
       const userList = await Promise.all(all_employee);
       const users = userList.map((user) => userCover(user));
-      console.log(users);
+
       return users;
     } catch (error) {
       throw error;

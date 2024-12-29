@@ -237,8 +237,9 @@ class UserController {
     try {
       const { employee } = req.body;
       console.log(employee);
+
       const response = await userServices.getEmployeesDetails(employee);
-      console.log(response);
+
       if (!response) {
         return ResponseUtil.errorResponse(
           res,

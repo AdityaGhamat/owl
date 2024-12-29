@@ -6,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { members } from "../types/services.js";
 class AttendanceOfficeServices {
   private office_id: string;
+  private office!: IOffice;
   constructor(office_id: string) {
     this.office_id = office_id;
   }
@@ -14,6 +15,7 @@ class AttendanceOfficeServices {
       `${serverConfig.OFFICE_SERVICE}/api/v1/office/${this.office_id}`
     );
     const data = response.data?.data;
+    this.office = data;
     return data;
   }
   private async getEmployeeId() {
@@ -41,6 +43,12 @@ class AttendanceOfficeServices {
       });
     }
     return presentMembers;
+  }
+  async time() {
+    const startTime = this.office.startTime;
+    const endTime = this.office.endTime;
+    const data = { startTime, endTime };
+    return data;
   }
 }
 

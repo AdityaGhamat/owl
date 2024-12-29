@@ -5,6 +5,7 @@ import serverConfig from "../config/server-config.js";
 import { HTTPException } from "hono/http-exception";
 import { StatusCodes } from "http-status-codes";
 import { UpdateQuery } from "mongoose";
+import userServices from "./user-services.js";
 class OfficeServices {
   async createOffice(data: Partial<IOffice>) {
     let office;
@@ -74,7 +75,7 @@ class OfficeServices {
     }
     return { employees: new_employee.employees };
   }
-  async getEmployees(office_id: string) {
+  private async getEmployeesByOfficeId(office_id: string) {
     const office = await this.findOfficeById(office_id);
     if (!office || !office.employees) {
       throw new HTTPException(StatusCodes.NOT_FOUND, {
@@ -83,6 +84,25 @@ class OfficeServices {
     }
     const employees = office.employees;
     return employees;
+  }
+  async getEmployees(office_id: string) {
+    const employees = await this.getEmployeesByOfficeId(office_id);
+
+    const employee = await userServices.exposeEmployee(employees);
+
+    return employee;
+  }
+  async getStartAndEndTimeByOfficeId(office_id: string) {
+    const office = await this.findOfficeById(office_id);
+    if (!office || !office.startTime || !office.endTime) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "start and end time not found",
+      });
+    }
+    const startTime = office.startTime;
+    const endTime = office.endTime;
+    const data = { startTime, endTime };
+    return data;
   }
 }
 

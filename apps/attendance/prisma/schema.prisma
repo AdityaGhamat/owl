@@ -32,10 +32,10 @@ model Attendance {
   employeeId   String
   officeId     String
   date         DateTime?       @default(now())
-  checkInTime  DateTime?      @db.Time
-  checkOutTime DateTime?      @db.Time
-  status       AttendanceStatus?
-  checkInMode  CheckInMode?
+  checkInTime  DateTime?       @db.Time
+  checkOutTime DateTime?       @db.Time
+  status       AttendanceStatus? @default(PRESENT)
+  checkInMode  CheckInMode?    @default(AUTOMATIC) 
   isLate       Boolean?        @default(false)
 
   @@index([employeeId], name: "employeeIdIndex")

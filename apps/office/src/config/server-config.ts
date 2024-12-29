@@ -3,4 +3,5 @@ dotenv.config();
 export default {
   DATABASE_URL: process.env.DATABASE_URL,
   ORG_SERVICE: process.env.ORG_SERVICE,
+  AUTH_SERVICE: process.env.AUTH_SERVICE,
 };

@@ -28,9 +28,9 @@ class AttedanceService {
   async updateAttendance(id: string, data: updateAttendanceType) {
     const updateData = {
       ...data,
-      date: data.date ? new Date(data.date) : undefined, // Handle date parsing
-      status: data.status as AttendanceStatus, // Ensure correct type
-      checkInMode: data.checkInMode as CheckInMode, // Ensure correct type
+      date: data.date ? new Date(data.date) : undefined,
+      status: data.status as AttendanceStatus,
+      checkInMode: data.checkInMode as CheckInMode,
     };
 
     const response = await attendanceRepository.updateAttendance(
@@ -107,6 +107,7 @@ class AttedanceService {
     }
     return true;
   }
+
   async deleteAttendance(attendanceId: string) {
     const response =
       await attendanceRepository.deleteAttendnaceByAttendanceId(attendanceId);
@@ -126,15 +127,6 @@ class AttedanceService {
       });
     }
     return response;
-  }
-  private async calculationOfMembersBasedOnOfficeId(officeId: string) {
-    const office = await this.getAttendanceByOfficeId(officeId);
-    if (!office) {
-      throw new HTTPException(StatusCodes.NOT_FOUND, {
-        message: "Office not found",
-      });
-    }
-    return { office, length: office.length };
   }
 }
 
