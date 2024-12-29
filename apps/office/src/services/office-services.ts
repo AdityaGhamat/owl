@@ -104,6 +104,16 @@ class OfficeServices {
     const data = { startTime, endTime };
     return data;
   }
+  async getLocation(office_id: string) {
+    const office = await this.findOfficeById(office_id);
+    if (!office || !office.location) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "office location not found",
+      });
+    }
+    const location = office.location;
+    return location;
+  }
 }
 
 export default new OfficeServices();

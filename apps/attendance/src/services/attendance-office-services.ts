@@ -50,6 +50,10 @@ class AttendanceOfficeServices {
     const data = { startTime, endTime };
     return data;
   }
+  async location() {
+    const location = this.office.location;
+    return location;
+  }
 }
 
 export default AttendanceOfficeServices;

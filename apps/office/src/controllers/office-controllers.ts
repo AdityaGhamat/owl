@@ -146,6 +146,22 @@ const officeControllers = new Hono()
       "Succeessfully got start and end time",
       response
     );
+  })
+  .get("/office-location/:office_id", async (c) => {
+    const { office_id } = c.req.param();
+    const response = await officeServices.getLocation(office_id);
+    if (!response) {
+      return ErrorResponse(
+        StatusCodes.BAD_REQUEST,
+        {},
+        "Failed to find location"
+      );
+    }
+    return SuccessResponse(
+      StatusCodes.OK,
+      "Successfully got location",
+      response
+    );
   });
 
 export default officeControllers;

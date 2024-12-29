@@ -189,7 +189,7 @@ class UserController {
   }
   async getUserLocation(req: CustomRequest, res: Response, next: NextFunction) {
     try {
-      const id = req.user_id;
+      const { id } = req.query;
       const coordinates = await userServices.getUserLocation(id as string);
       if (!coordinates) {
         return ResponseUtil.errorResponse(
