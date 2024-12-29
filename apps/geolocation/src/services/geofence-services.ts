@@ -15,7 +15,6 @@ class GeofenceServices {
     let fence;
     try {
       fence = await geofenceRepository.create(data);
-
       if (!fence) {
         throw new HTTPException(StatusCodes.NOT_FOUND, {
           message: "Error occured while creating fence",

@@ -38,7 +38,7 @@ app.put(
   zValidator(passwordSchema, "body"),
   userController.resetPassword
 );
-app.get("/distance", authValidator, userController.getDistanceFromOffice);
+app.get("/distance", userController.getDistanceFromOffice);
 app.get("/location", userController.getUserLocation);
 app.put("/location", authValidator, userController.updateLocation);
 app.post(

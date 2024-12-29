@@ -163,12 +163,12 @@ class UserController {
     next: NextFunction
   ) {
     try {
-      const id = req.user_id;
+      const id = req.query.id;
       const { officeId } = req.query;
       console.log(officeId, "inside controller");
       const distance = await userServices.showDistanceFromOffice(
         officeId as string,
-        id!
+        id as string
       );
       if (!distance) {
         return ResponseUtil.errorResponse(

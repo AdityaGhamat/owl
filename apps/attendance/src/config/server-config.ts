@@ -6,4 +6,5 @@ export default {
   OFFICE_SERVICE: process.env.OFFICE_SERVICE,
   QUEUE_URL: process.env.QUEUE_URL,
   AUTH_SERVICE: process.env.AUTH_SERVICE,
+  GEOFENCE_SERVICE: process.env.GEOFENCE_SERVICE,
 };

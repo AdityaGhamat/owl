@@ -8,6 +8,7 @@ import {
 import { StatusCodes } from "http-status-codes";
 import AttendanceOfficeServices from "./attendance-office-services.js";
 import { AttendanceStatus, CheckInMode } from "@prisma/client";
+import AuthService from "../lib/service/auth-lib-service.js";
 
 class AttedanceService {
   async createAttendance(data: AttendanceCreation) {
@@ -126,6 +127,14 @@ class AttedanceService {
       });
     }
     return response;
+  }
+  private async getDistanceBetweenOfficeAndUser(
+    office_id: string,
+    employeeId: string
+  ) {
+    const response = new AuthService(office_id, employeeId);
+    const distance = await response.calculateDistance();
+    return distance;
   }
 }
 
