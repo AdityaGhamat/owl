@@ -34,12 +34,39 @@ class AttendanceRepository {
       throw error;
     }
   }
-  async updateAttendanceForCheckIn(
-    employeeId: string,
-    attendanceId: string,
-    office_id: string,
-    updateData: UpdateAttendanceData
-  ) {}
+  async updateAttendanceForCheckIn(employeeId: string, officeId: string) {
+    try {
+      const currentDate = new Date();
+      const startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
+      const endOfDay = new Date(currentDate.setHours(23, 59, 59, 999));
+
+      console.log("Start of Day:", startOfDay, "End of Day:", endOfDay);
+
+      const updatedAttendance = await prisma.attendance.updateMany({
+        where: {
+          employeeId: employeeId,
+          officeId: officeId,
+          date: {
+            gte: startOfDay,
+            lte: endOfDay,
+          },
+        },
+        data: {
+          checkInTime: new Date(),
+          status: "PRESENT",
+          checkInMode: "AUTOMATIC",
+        },
+      });
+
+      if (updatedAttendance.count === 0) {
+        throw new Error("No attendance record found for the user today");
+      }
+
+      return { success: true, message: "Attendance updated successfully" };
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async getAllAttendance(): Promise<Attendance[]> {
     try {

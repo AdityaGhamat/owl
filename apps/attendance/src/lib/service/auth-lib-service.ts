@@ -24,15 +24,11 @@ class AuthService {
     return response.coordinates;
   }
   async calculateDistance() {
-    const [userLocation, officeLocation] = await Promise.all([
-      this.getUserLocation(),
-      this.getOfficeLocation(),
-    ]);
     const response = await axios.get<{ data: number }>(
-      `${serverConfig.GEOFENCE_SERVICE}/api/v1/geofence?user_lat=${userLocation[0]}&user_lng=${userLocation[1]}&office_lat=${officeLocation[0]}&office_lng=${officeLocation[1]}`
+      `${serverConfig.GEOFENCE_SERVICE}/api/v1/geofence/distance-user-office?office_id=${this.office_id}&employee_id=${this.employeeId}`
     );
     const distance = response.data?.data;
-    console.log(distance);
+    console.log(distance, "distance in auth service");
     return distance;
   }
 }

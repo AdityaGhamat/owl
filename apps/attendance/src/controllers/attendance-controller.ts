@@ -61,7 +61,7 @@ const app = new Hono()
       );
     }
   )
-  .post("/check-in-into-office/:office_id/:employee_id", async (c) => {
+  .put("/check-in-into-office/:office_id/:employee_id", async (c) => {
     const { office_id, employee_id } = c.req.param();
     const response = await attendanceService.checkInTime(
       office_id,

@@ -188,7 +188,7 @@ class GeofenceServices {
     ]);
     // console.log(office, "office");
     // console.log(user, "user");
-    const office_coordinates = office.coordinates;
+    // const office_coordinates = office.coordinates;
     const distance = await this.distanceBetUserAndOffice(
       office.coordinates,
       user

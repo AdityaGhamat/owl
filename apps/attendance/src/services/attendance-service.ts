@@ -9,6 +9,7 @@ import { StatusCodes } from "http-status-codes";
 import AttendanceOfficeServices from "./attendance-office-services.js";
 import { AttendanceStatus, CheckInMode } from "@prisma/client";
 import AuthService from "../lib/service/auth-lib-service.js";
+import { ErrorResponse } from "../lib/error-response.js";
 
 class AttedanceService {
   async createAttendance(data: AttendanceCreation) {
@@ -137,11 +138,26 @@ class AttedanceService {
     return distance;
   }
   async checkInTime(office_id: string, employee_id: string) {
-    const response = await this.getDistanceBetweenOfficeAndUser(
+    const distance = await this.getDistanceBetweenOfficeAndUser(
       office_id,
       employee_id
     );
-    return response;
+    const radius = 150;
+    if (radius < distance) {
+      throw new HTTPException(StatusCodes.BAD_REQUEST, {
+        message: "User is still outside of geofence",
+      });
+    }
+    const response = await attendanceRepository.updateAttendanceForCheckIn(
+      employee_id,
+      office_id
+    );
+    if (!response.success) {
+      throw new HTTPException(StatusCodes.BAD_REQUEST, {
+        message: "Failed to check in",
+      });
+    }
+    return true;
   }
 }
 
