@@ -14,11 +14,13 @@ class AuthService {
       `${serverConfig.AUTH_SERVICE}/api/v1/user/location?id=${this.employeeId}`
     );
     const location = response.data?.data;
+    console.log(location);
     return location.coordinates;
   }
   private async getOfficeLocation() {
     const request = new AttendanceOfficeServices(this.office_id);
     const response = await request.location();
+    console.log(response);
     return response.coordinates;
   }
   async calculateDistance() {
@@ -30,6 +32,7 @@ class AuthService {
       `${serverConfig.GEOFENCE_SERVICE}/api/v1/geofence?user_lat=${userLocation[0]}&user_lng=${userLocation[1]}&office_lat=${officeLocation[0]}&office_lng=${officeLocation[1]}`
     );
     const distance = response.data?.data;
+    console.log(distance);
     return distance;
   }
 }

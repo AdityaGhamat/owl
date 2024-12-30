@@ -15,6 +15,7 @@ export interface UpdateAttendanceData {
   checkOutTime?: Date;
   status?: AttendanceStatus;
   isLate?: boolean;
+  checkInTime?: Date;
 }
 
 export interface IAttendanceHistoryRepository

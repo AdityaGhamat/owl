@@ -11,6 +11,7 @@ import {
 import { StatusCodes } from "http-status-codes";
 import AttendanceOfficeServices from "../services/attendance-office-services.js";
 import { record } from "zod";
+import attendanceRepository from "../repository/attendance-repository.js";
 
 const app = new Hono()
   .post("/", zValidator("json", AttendanceSchema), async (c) => {
@@ -60,6 +61,14 @@ const app = new Hono()
       );
     }
   )
+  .post("/check-in-into-office/:office_id/:employee_id", async (c) => {
+    const { office_id, employee_id } = c.req.param();
+    const response = await attendanceService.checkInTime(
+      office_id,
+      employee_id
+    );
+    return SuccessResponse(StatusCodes.OK, "got that", response);
+  })
   .get("/employee", async (c) => {
     const { employeeId } = c.req.query();
     if (!employeeId) {

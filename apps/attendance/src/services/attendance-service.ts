@@ -136,6 +136,13 @@ class AttedanceService {
     const distance = await response.calculateDistance();
     return distance;
   }
+  async checkInTime(office_id: string, employee_id: string) {
+    const response = await this.getDistanceBetweenOfficeAndUser(
+      office_id,
+      employee_id
+    );
+    return response;
+  }
 }
 
 export default new AttedanceService();

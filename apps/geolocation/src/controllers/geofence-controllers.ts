@@ -119,6 +119,18 @@ const geofenceController = new Hono()
     } catch (error: any) {
       return ErrorResponse(StatusCodes.BAD_REQUEST, error, error.message);
     }
+  })
+  .get("/distance-user-office", async (c) => {
+    try {
+      const { office_id, employee_id } = c.req.query();
+      const response = await geofenceServices.distance(
+        office_id as string,
+        employee_id as string
+      );
+      return SuccessResponse(StatusCodes.OK, "distance is found", response);
+    } catch (error: any) {
+      return ErrorResponse(StatusCodes.BAD_REQUEST, error, error.message);
+    }
   });
 
 export default geofenceController;

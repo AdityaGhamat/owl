@@ -10,6 +10,7 @@ import serverConfig from "../config/server-config.js";
 import axios from "axios";
 import geolib from "geolib";
 import MessageProducer from "../lib/queue/producer.js";
+import userServices from "./user-services.js";
 class GeofenceServices {
   async createFence(data: geofenceCreation) {
     let fence;
@@ -158,10 +159,9 @@ class GeofenceServices {
     return coveredMembers;
   }
   async getMembersWithinRadius(office_id: string, radius: number) {
-    const co_ordinates: [number, number] =
-      await officeServices.co_ordinatesOfOffice(office_id);
+    const location = await officeServices.co_ordinatesOfOffice(office_id);
     const response = await axios.get<{ data: [IAuth] }>(
-      `${serverConfig.AUTH_SERVICE}/api/v1/admin/users?lat=${co_ordinates[0]}&lng=${co_ordinates[1]}&rd=${radius}`
+      `${serverConfig.AUTH_SERVICE}/api/v1/admin/users?lat=${location.coordinates[0]}&lng=${location.coordinates[1]}&rd=${radius}`
     );
     if (response.status !== 200) {
       throw new HTTPException(StatusCodes.NOT_FOUND, {
@@ -179,6 +179,20 @@ class GeofenceServices {
     user: [number, number]
   ) {
     const distance = geolib.getDistance(office, user);
+    return distance;
+  }
+  async distance(office_id: string, employee_id: string) {
+    const [office, user] = await Promise.all([
+      officeServices.co_ordinatesOfOffice(office_id),
+      userServices.co_ordinatesOfOffice(employee_id),
+    ]);
+    // console.log(office, "office");
+    // console.log(user, "user");
+    const office_coordinates = office.coordinates;
+    const distance = await this.distanceBetUserAndOffice(
+      office.coordinates,
+      user
+    );
     return distance;
   }
 }

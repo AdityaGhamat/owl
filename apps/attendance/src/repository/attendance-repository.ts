@@ -34,6 +34,12 @@ class AttendanceRepository {
       throw error;
     }
   }
+  async updateAttendanceForCheckIn(
+    employeeId: string,
+    attendanceId: string,
+    office_id: string,
+    updateData: UpdateAttendanceData
+  ) {}
 
   async getAllAttendance(): Promise<Attendance[]> {
     try {

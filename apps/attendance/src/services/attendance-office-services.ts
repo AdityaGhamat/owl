@@ -16,11 +16,11 @@ class AttendanceOfficeServices {
     );
     const data = response.data?.data;
     this.office = data;
+    console.log(this.office);
     return data;
   }
   private async getEmployeeId() {
-    const office = await this.getOfficeDetails();
-    const employees = office?.employees;
+    const employees = this.office?.employees;
     if (!employees) {
       throw new HTTPException(StatusCodes.NOT_FOUND, {
         message: "employees are not found",
