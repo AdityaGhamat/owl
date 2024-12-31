@@ -3,7 +3,7 @@ import { UpdateAttendanceData } from "../types/repository.js";
 import { HTTPException } from "hono/http-exception";
 import { StatusCodes } from "http-status-codes";
 import { AttendanceCreation } from "../types/database.js";
-
+import officeLibService from "../lib/service/office-lib-service.js";
 const prisma = new PrismaClient();
 
 class AttendanceRepository {
@@ -34,13 +34,16 @@ class AttendanceRepository {
       throw error;
     }
   }
-  async updateAttendanceForCheckIn(employeeId: string, officeId: string) {
+  ///////////////////////////////////////come here after updating officestart and end hours.
+  async updateAttendanceForCheckIn(
+    employeeId: string,
+    officeId: string,
+    officestartHour: any
+  ) {
     try {
       const currentDate = new Date();
       const startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
       const endOfDay = new Date(currentDate.setHours(23, 59, 59, 999));
-
-      console.log("Start of Day:", startOfDay, "End of Day:", endOfDay);
 
       const updatedAttendance = await prisma.attendance.updateMany({
         where: {
@@ -50,6 +53,7 @@ class AttendanceRepository {
             gte: startOfDay,
             lte: endOfDay,
           },
+          checkInTime: null,
         },
         data: {
           checkInTime: new Date(),
@@ -66,6 +70,61 @@ class AttendanceRepository {
     } catch (error) {
       throw error;
     }
+  }
+  ///////////////////////////////////////come here after updating officestart and end hours.
+
+  async updateAttendanceForCheckOut(employeeId: string, officeId: string) {
+    const currentDate = new Date();
+    const startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
+    const endOfDay = new Date(currentDate.setHours(23, 59, 59, 999));
+
+    const attendanceRecord = await prisma.attendance.findFirst({
+      where: {
+        employeeId: employeeId,
+        officeId: officeId,
+        date: {
+          gte: startOfDay,
+          lte: endOfDay,
+        },
+        checkOutTime: null,
+      },
+    });
+    if (!attendanceRecord) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message:
+          "No attendance record found for the user today, or already checked out.",
+      });
+    }
+    const employeeCheck = await officeLibService.presentCheck(
+      officeId,
+      employeeId
+    );
+    if (employeeCheck) {
+      throw new HTTPException(StatusCodes.BAD_REQUEST, {
+        message: "Employee is currently present in office.",
+      });
+    }
+
+    const updatedAttendance = await prisma.attendance.updateMany({
+      where: {
+        employeeId: employeeId,
+        officeId: officeId,
+        date: {
+          gte: startOfDay,
+          lte: endOfDay,
+        },
+        checkOutTime: null,
+      },
+      data: {
+        checkOutTime: new Date(),
+      },
+    });
+    if (updatedAttendance.count === 0) {
+      throw new HTTPException(StatusCodes.BAD_REQUEST, {
+        message: "Failed to checkout.",
+      });
+    }
+    return updatedAttendance.count;
   }
 
   async getAllAttendance(): Promise<Attendance[]> {

@@ -114,6 +114,22 @@ class OfficeServices {
     const location = office.location;
     return location;
   }
+  async employeeCheck(office_id: string, employeeId: string) {
+    const office = await this.findOfficeById(office_id);
+    const employees = office?.employees;
+    if (!employees) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "Employees not found.",
+      });
+    }
+    const present = employees.find((employee) => employee === employeeId);
+    if (!present) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "Employee not found.",
+      });
+    }
+    return present;
+  }
 }
 
 export default new OfficeServices();

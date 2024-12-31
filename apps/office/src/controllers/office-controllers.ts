@@ -162,6 +162,26 @@ const officeControllers = new Hono()
       "Successfully got location",
       response
     );
+  })
+  .get("/employee-check/:office_id", async (c) => {
+    const { employeeId } = c.req.query();
+    const { office_id } = c.req.param();
+    const response = await officeServices.employeeCheck(
+      office_id,
+      employeeId as string
+    );
+    if (!response) {
+      return ErrorResponse(
+        StatusCodes.BAD_REQUEST,
+        {},
+        "Failed to find employee"
+      );
+    }
+    return SuccessResponse(
+      StatusCodes.OK,
+      "Successfully got employee",
+      response
+    );
   });
 
 export default officeControllers;
