@@ -67,7 +67,37 @@ const app = new Hono()
       office_id,
       employee_id
     );
-    return SuccessResponse(StatusCodes.OK, "got that", response);
+    if (!response) {
+      return ErrorResponse(
+        StatusCodes.BAD_REQUEST,
+        {},
+        "Failed tup update check in time."
+      );
+    }
+    return SuccessResponse(
+      StatusCodes.OK,
+      "Successfully updated check-in time ",
+      response
+    );
+  })
+  .put("/check-out-office/:office_id/:employee_id", async (c) => {
+    const { office_id, employee_id } = c.req.param();
+    const response = await attendanceService.checkOutTime(
+      office_id,
+      employee_id
+    );
+    if (!response) {
+      return ErrorResponse(
+        StatusCodes.BAD_REQUEST,
+        {},
+        "Failed tup update check out time."
+      );
+    }
+    return SuccessResponse(
+      StatusCodes.OK,
+      "Successfully updated check-out time ",
+      response
+    );
   })
   .get("/employee", async (c) => {
     const { employeeId } = c.req.query();

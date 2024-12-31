@@ -9,7 +9,6 @@ import { StatusCodes } from "http-status-codes";
 import AttendanceOfficeServices from "./attendance-office-services.js";
 import { AttendanceStatus, CheckInMode } from "@prisma/client";
 import AuthService from "../lib/service/auth-lib-service.js";
-import { ErrorResponse } from "../lib/error-response.js";
 
 class AttedanceService {
   async createAttendance(data: AttendanceCreation) {
@@ -158,6 +157,13 @@ class AttedanceService {
       });
     }
     return true;
+  }
+  async checkOutTime(office_id: string, employee_id: string) {
+    const response = await attendanceRepository.updateAttendanceForCheckOut(
+      employee_id,
+      office_id
+    );
+    return response;
   }
 }
 

@@ -40,7 +40,7 @@ app.put(
 );
 app.get("/distance", userController.getDistanceFromOffice);
 app.get("/location", userController.getUserLocation);
-app.put("/location", authValidator, userController.updateLocation);
+app.put("/location", userController.updateLocation);
 app.post(
   "/employees",
   zValidator(employeeIdSchema, "body"),

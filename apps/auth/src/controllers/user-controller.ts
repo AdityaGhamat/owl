@@ -211,7 +211,7 @@ class UserController {
 
   async updateLocation(req: CustomRequest, res: Response, next: NextFunction) {
     try {
-      const id = req.user_id;
+      const id = req.query.id;
       const { location } = req.body;
       const updatedLocation = await userServices.updateLocation(
         id as string,

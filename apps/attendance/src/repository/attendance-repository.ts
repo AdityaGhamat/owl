@@ -34,7 +34,7 @@ class AttendanceRepository {
       throw error;
     }
   }
-  ///////////////////////////////////////come here after updating officestart and end hours.
+
   async updateAttendanceForCheckIn(employeeId: string, officeId: string) {
     try {
       const currentDate = new Date();
@@ -66,17 +66,15 @@ class AttendanceRepository {
       throw error;
     }
   }
-  ///////////////////////////////////////come here after updating officestart and end hours.
 
   async updateAttendanceForCheckOut(employeeId: string, officeId: string) {
     const currentDate = new Date();
     const startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
     const endOfDay = new Date(currentDate.setHours(23, 59, 59, 999));
-
     const attendanceRecord = await prisma.attendance.findFirst({
       where: {
-        employeeId: employeeId,
-        officeId: officeId,
+        employeeId,
+        officeId,
         date: {
           gte: startOfDay,
           lte: endOfDay,
@@ -84,10 +82,11 @@ class AttendanceRepository {
         checkOutTime: null,
       },
     });
+
     if (!attendanceRecord) {
       throw new HTTPException(StatusCodes.NOT_FOUND, {
         message:
-          "No attendance record found for the user today, or already checked out.",
+          "No attendance record found for today, or already checked out.",
       });
     }
     const employeeCheck = await officeLibService.presentCheck(
@@ -96,36 +95,30 @@ class AttendanceRepository {
     );
     if (employeeCheck) {
       throw new HTTPException(StatusCodes.BAD_REQUEST, {
-        message: "Employee is currently present in office.",
+        message: "Employee is currently present in the office.",
       });
     }
     const thresholdTime =
       await officeLibService.getThresholdTimeByOfficeTime(officeId);
     const isLate = officeLibService.isEmployeeLate(
-      attendanceRecord.checkOutTime,
+      attendanceRecord.checkInTime,
       thresholdTime
     );
-    const updatedAttendance = await prisma.attendance.updateMany({
-      where: {
-        employeeId: employeeId,
-        officeId: officeId,
-        date: {
-          gte: startOfDay,
-          lte: endOfDay,
-        },
-        checkOutTime: null,
-      },
+    const updatedAttendance = await prisma.attendance.update({
+      where: { id: attendanceRecord.id },
       data: {
         checkOutTime: new Date(),
-        isLate: isLate,
+        isLate,
       },
     });
-    if (updatedAttendance.count === 0) {
+
+    if (!updatedAttendance) {
       throw new HTTPException(StatusCodes.BAD_REQUEST, {
-        message: "Failed to checkout.",
+        message: "Failed to update checkout.",
       });
     }
-    return updatedAttendance.count;
+
+    return updatedAttendance;
   }
 
   async getAllAttendance(): Promise<Attendance[]> {
