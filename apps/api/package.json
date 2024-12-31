@@ -1,0 +1,30 @@
+{
+  "name": "api-gateway",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "watch": "tsc --watch",
+    "dev": "npx tsx src/index.ts",
+    "build": "tsc -b",
+    "start": "tsc -b && node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "tsx": "^4.19.2"
+  },
+  "dependencies": {
+    "@types/cookie-parser": "^1.4.8",
+    "@types/http-proxy-middleware": "^0.19.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "http-proxy-middleware": "^3.0.3",
+    "http-status-code": "^2.1.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
