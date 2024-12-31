@@ -21,7 +21,7 @@ class OfficeServices {
     }
     return checkInTime > thresholdTime!;
   }
-  public getThresholdTime(
+  private getThresholdTime(
     officeStartTime: string,
     gracePeriodMinutes: number
   ): Date {
@@ -29,6 +29,28 @@ class OfficeServices {
     const startTime = new Date();
     startTime.setHours(hours!, minutes, 0, 0);
     return new Date(startTime.getTime() + gracePeriodMinutes * 60 * 1000);
+  }
+  public async getOfficeTime(office_id: string): Promise<{
+    startTime: string;
+    endTime: string;
+  }> {
+    const response = await axios.get<{
+      data: {
+        startTime: string;
+        endTime: string;
+      };
+    }>(`${serverConfig.OFFICE_SERVICE}/api/v1/office/office-time/${office_id}`);
+    const { startTime, endTime } = response.data?.data;
+    return { startTime, endTime };
+  }
+  public async getThresholdTimeByOfficeTime(
+    office_id: string,
+    gracePeriod?: number
+  ) {
+    const { startTime } = await this.getOfficeTime(office_id);
+
+    const response = this.getThresholdTime(startTime, gracePeriod || 15);
+    return response;
   }
 }
 

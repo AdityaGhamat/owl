@@ -130,6 +130,28 @@ class OfficeServices {
     }
     return present;
   }
+  async updateOfficeTime(
+    office_id: string,
+    startTime: string,
+    finishTime: string
+  ) {
+    const office = await this.findOfficeById(office_id);
+    if (!office) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "Office not found.",
+      });
+    }
+    const updatedOffice = await this.findByIdAndUpdateOffice(office_id, {
+      startTime: startTime,
+      endTime: finishTime,
+    });
+    if (!updatedOffice) {
+      throw new HTTPException(StatusCodes.NOT_FOUND, {
+        message: "Failed to set office time.",
+      });
+    }
+    return updatedOffice;
+  }
 }
 
 export default new OfficeServices();

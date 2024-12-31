@@ -35,16 +35,11 @@ class AttendanceRepository {
     }
   }
   ///////////////////////////////////////come here after updating officestart and end hours.
-  async updateAttendanceForCheckIn(
-    employeeId: string,
-    officeId: string,
-    officestartHour: any
-  ) {
+  async updateAttendanceForCheckIn(employeeId: string, officeId: string) {
     try {
       const currentDate = new Date();
       const startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
       const endOfDay = new Date(currentDate.setHours(23, 59, 59, 999));
-
       const updatedAttendance = await prisma.attendance.updateMany({
         where: {
           employeeId: employeeId,
@@ -104,7 +99,12 @@ class AttendanceRepository {
         message: "Employee is currently present in office.",
       });
     }
-
+    const thresholdTime =
+      await officeLibService.getThresholdTimeByOfficeTime(officeId);
+    const isLate = officeLibService.isEmployeeLate(
+      attendanceRecord.checkOutTime,
+      thresholdTime
+    );
     const updatedAttendance = await prisma.attendance.updateMany({
       where: {
         employeeId: employeeId,
@@ -117,6 +117,7 @@ class AttendanceRepository {
       },
       data: {
         checkOutTime: new Date(),
+        isLate: isLate,
       },
     });
     if (updatedAttendance.count === 0) {

@@ -182,6 +182,20 @@ const officeControllers = new Hono()
       "Successfully got employee",
       response
     );
+  })
+  .put("/office-time/:office_id", async (c) => {
+    const { startTime, endTime } = c.req.query();
+    const { office_id } = c.req.param();
+    const response = await officeServices.updateOfficeTime(
+      office_id,
+      startTime as string,
+      endTime as string
+    );
+    return SuccessResponse(
+      StatusCodes.OK,
+      "Successfully updated start time and finish time",
+      response
+    );
   });
 
 export default officeControllers;
