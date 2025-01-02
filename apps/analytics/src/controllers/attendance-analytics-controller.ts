@@ -16,7 +16,9 @@ const app = new Hono()
   })
   .get("/analytics-by-date", async (c) => {
     const { date, officeId } = c.req.query();
+
     const parsedDate = DateParser(date);
+
     const data = {
       attendanceDate: parsedDate as Date,
     };
@@ -24,6 +26,7 @@ const app = new Hono()
       officeId as string,
       data
     );
+    console.log(response);
     return SuccessResponse(
       StatusCodes.OK,
       "Successfully found records",

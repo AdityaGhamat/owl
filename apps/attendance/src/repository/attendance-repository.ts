@@ -89,15 +89,7 @@ class AttendanceRepository {
           "No attendance record found for today, or already checked out.",
       });
     }
-    const employeeCheck = await officeLibService.presentCheck(
-      officeId,
-      employeeId
-    );
-    if (employeeCheck) {
-      throw new HTTPException(StatusCodes.BAD_REQUEST, {
-        message: "Employee is currently present in the office.",
-      });
-    }
+    await officeLibService.presentCheck(officeId, employeeId);
     const thresholdTime =
       await officeLibService.getThresholdTimeByOfficeTime(officeId);
     const isLate = officeLibService.isEmployeeLate(
