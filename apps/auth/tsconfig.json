@@ -5,11 +5,11 @@
     "rootDir": "./src",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
-      "@repo/*": ["packages/*/src/*"]
+      "@repo/*": ["packages/*"]
     }
   },
   "include": ["src/**/*"],
